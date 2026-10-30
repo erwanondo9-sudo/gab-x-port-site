@@ -1,14 +1,16 @@
--- Gab X-Port : lecture publique minimale des profils des annonceurs
--- À exécuter une seule fois dans Supabase > SQL Editor.
--- Cette fonction ne révèle ni téléphone, ni adresse personnelle, ni e-mail.
--- Elle évite d'ouvrir en lecture directe les tables profiles et companies.
+-- Gab X-Port : profil public des offreurs
+-- Exécuter ce script dans Supabase > SQL Editor après mise à jour du site.
+-- Expose uniquement des informations professionnelles utiles. Aucune adresse privée ni e-mail de connexion.
 
 create or replace function public.get_public_offerer_profile(p_user_id uuid)
 returns table (
   id uuid,
   display_name text,
   country text,
-  account_type text
+  account_type text,
+  activity text,
+  company_website text,
+  professional_phone text
 )
 language plpgsql
 stable
@@ -23,10 +25,18 @@ begin
   return query
   select
     p.id,
-    coalesce(nullif(c.legal_name, ''), nullif(p.full_name, ''), 'Membre Gab X-Port') as display_name,
-    coalesce(nullif(c.country, ''), nullif(p.country, '')) as country,
-    p.account_type
+    coalesce(nullif(c.legal_name, ''), nullif(p.full_name, ''), nullif(u.raw_user_meta_data->>'full_name',''), 'Membre Gab X-Port') as display_name,
+    coalesce(nullif(c.country, ''), nullif(p.country, ''), nullif(u.raw_user_meta_data->>'country','')) as country,
+    p.account_type,
+    coalesce(nullif(u.raw_user_meta_data->>'independent_activity',''), nullif(u.raw_user_meta_data->>'company_activity','')) as activity,
+    nullif(u.raw_user_meta_data->>'company_website','') as company_website,
+    case
+      when p.account_type in ('compagnie','company') then coalesce(nullif(u.raw_user_meta_data->>'company_phone',''), nullif(u.raw_user_meta_data->>'phone',''))
+      when p.account_type = 'exportateur' then nullif(u.raw_user_meta_data->>'phone','')
+      else null
+    end as professional_phone
   from public.profiles as p
+  left join auth.users as u on u.id = p.id
   left join lateral (
     select co.legal_name, co.country
     from public.companies as co
