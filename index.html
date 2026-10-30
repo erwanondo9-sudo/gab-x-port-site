@@ -255,6 +255,18 @@ header.wrap.nav{max-width:none;padding:15px max(4.5vw,22px);background:rgba(5,11
 .gx-hero{padding:0;min-height:455px;position:relative;isolation:isolate;overflow:hidden;background:#050b18}
 .gx-hero:before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,#050b18 0%,#050b18 29%,rgba(5,11,24,.91) 42%,rgba(5,11,24,.18) 72%,rgba(5,11,24,.06) 100%)}
 .gx-hero-art{position:absolute;z-index:-2;right:0;top:0;width:74%;height:100%;background:url('/port-hero.svg') center 47%/cover no-repeat;opacity:.94}
+
+/* Visuel lumineux réservé au mode clair */
+html[data-theme="light"] .gx-hero{background:#d9efff}
+html[data-theme="light"] .gx-hero:before{background:linear-gradient(90deg,rgba(246,251,255,.98) 0%,rgba(246,251,255,.94) 28%,rgba(246,251,255,.76) 43%,rgba(246,251,255,.08) 72%,rgba(246,251,255,0) 100%)}
+html[data-theme="light"] .gx-hero-art{width:100%;background-image:url('/port-hero-day.svg');background-position:center 48%;opacity:1}
+html[data-theme="light"] .gx-eyebrow{color:#17649b}
+html[data-theme="light"] .gx-hero h1{color:#102b49}
+html[data-theme="light"] .gx-hero h1 em{background:linear-gradient(90deg,#087fc5,#15a4dc);background-clip:text;-webkit-background-clip:text;color:transparent}
+html[data-theme="light"] .gx-hero .lead{color:#38566e}
+html[data-theme="light"] .gx-shortcuts button{background:rgba(255,255,255,.88);border-color:#c7deef;color:#17415f}
+html[data-theme="light"] .gx-shortcuts button:hover{border-color:#1685c7;color:#086cae}
+
 .gx-hero-inner{min-height:455px;display:flex;align-items:center;padding-top:42px;padding-bottom:35px}
 .gx-hero-copy{width:min(100%,720px)}
 .gx-eyebrow{font-size:11px;font-weight:900;letter-spacing:3px;color:#a995ff;margin-bottom:18px}
