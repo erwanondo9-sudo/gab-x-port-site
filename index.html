@@ -361,7 +361,7 @@ html[data-theme="light"] .gx-steps>div{background:white;color:#25324d;border-col
 .mobile-bottom-nav{display:none}
 @media(max-width:760px){
  body{padding-bottom:calc(76px + env(safe-area-inset-bottom))}
- .mobile-bottom-nav{position:fixed;z-index:60;left:0;right:0;bottom:0;display:grid;grid-template-columns:repeat(4,1fr);gap:2px;padding:8px 10px calc(8px + env(safe-area-inset-bottom));background:rgba(12,18,36,.96);border-top:1px solid rgba(150,165,205,.22);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 -8px 28px rgba(0,0,0,.18)}
+ .mobile-bottom-nav{position:fixed;z-index:60;left:0;right:0;bottom:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:2px;padding:8px 10px calc(8px + env(safe-area-inset-bottom));background:rgba(12,18,36,.96);border-top:1px solid rgba(150,165,205,.22);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 -8px 28px rgba(0,0,0,.18)}
  .mobile-tab{min-width:0;border:0;background:transparent;color:#9ca8c7;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:4px 2px;border-radius:12px;font:inherit;cursor:pointer}
  .mobile-tab svg{width:22px;height:22px;display:block;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:transform .18s ease}
  .mobile-tab.active svg{stroke-width:2.2;transform:translateY(-1px)}
@@ -465,6 +465,7 @@ html[data-theme="light"] .gx-steps>div{background:white;color:#25324d;border-col
  <button type="button" class="mobile-tab" data-mobile-view="annonces" onclick="showView('annonces')"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg><small>Services</small></button>
  <button type="button" class="mobile-tab" data-mobile-view="messagerie" onclick="showView('messagerie')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8A8.5 8.5 0 0 1 8.7 3.9a8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8z"/></svg><small>Messages</small></button>
  <button type="button" class="mobile-tab" data-mobile-view="espace-personnel" onclick="showView('espace-personnel')"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><small>Mon espace</small></button>
+ <button type="button" class="mobile-tab mobile-login-tab" onclick="openModal('login')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 17l5-5-5-5M15 12H3"/><path d="M12 3h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-6"/></svg><small>Connexion</small></button>
 </nav>
 
 <main><div class="view active" id="view-home">
@@ -542,10 +543,16 @@ function renderListings(){
 }
 document.querySelectorAll('.chip').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));b.classList.add('active');activeQuick=b.dataset.cat;renderListings()}));
 document.getElementById('q').addEventListener('keydown',e=>{if(e.key==='Enter')renderListings()});
-function openModal(which){
- document.getElementById('modalBackdrop').classList.add('show');
+async function openModal(which){
  const signup=which==='signup',listing=which==='publish',login=which==='login';
- document.getElementById('modalTitle').textContent=signup?'Créer un compte':listing?'Publier une annonce':login?'Se connecter':'Contacter Gab X-Port';
+ if(listing){
+  let user=null;try{user=await getCurrentAuthUser()}catch(e){console.error(e)}
+  if(!user){showToast('Connectez-vous avec un compte entreprise pour publier un service.');openModal('login');return;}
+  const role=user.user_metadata?.account_type||user.app_metadata?.account_type;
+  if(!['compagnie','company'].includes(role)){showToast('La publication est réservée aux comptes entreprise.');return;}
+ }
+ document.getElementById('modalBackdrop').classList.add('show');
+ document.getElementById('modalTitle').textContent=signup?'Créer un compte':listing?'Publier un service':login?'Se connecter':'Contacter Gab X-Port';
  document.getElementById('signupForm').style.display=signup?'block':'none';
  document.getElementById('loginForm').style.display=login?'block':'none';
  document.getElementById('listingForm').style.display=listing?'block':'none';
@@ -754,6 +761,12 @@ function updateAuthNavigation(session){
  if(signup)signup.style.display=connected?'none':'';
  const personalLink=document.querySelector('.site-header-nav a[data-view="espace-personnel"]');
  if(personalLink)personalLink.style.display=connected?'':'none';
+ const mobileLogin=document.querySelector('.mobile-login-tab');
+ if(mobileLogin)mobileLogin.style.display=connected?'none':'';
+ const mobileSpace=document.querySelector('.mobile-tab[data-mobile-view="espace-personnel"]');
+ if(mobileSpace)mobileSpace.style.display=connected?'flex':'none';
+ const publish=document.querySelector('button[onclick="openModal(\'publish\')"]');
+ if(publish)publish.style.display=connected?'':'none';
 }
 if(supabaseClient){
  supabaseClient.auth.getSession().then(({data})=>{updateAuthNavigation(data?.session);window.gabxCurrentUser=data?.session?.user||null;});
@@ -815,10 +828,14 @@ async function deleteListing(id){if(!confirm('Supprimer cette annonce ?'))return
 async function logoutAccount(){if(!supabaseClient){showToast('Supabase n’est pas configuré.');return}const {error}=await supabaseClient.auth.signOut();if(error){showToast('Déconnexion impossible : '+error.message);return}updateAuthNavigation(null);showToast('Tu es déconnecté.');showView('home')}
 
 // Navigation entre vues séparées (single-page app avec écrans distincts)
-function showView(name){
+async function showView(name){
+ if(['messagerie','espace-personnel'].includes(name)){
+  let user=null;try{user=await getCurrentAuthUser()}catch(e){console.error(e)}
+  if(!user){showToast('Créez un compte ou connectez-vous pour accéder à cet espace.');openModal('login');return;}
+ }
  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id==='view-'+name));
  document.querySelectorAll('.site-header-nav a').forEach(a=>a.classList.toggle('active',a.dataset.view===name));
- document.querySelectorAll('.mobile-tab').forEach(a=>a.classList.toggle('active',a.dataset.mobileView===name));
+ document.querySelectorAll('.mobile-tab[data-mobile-view]').forEach(a=>a.classList.toggle('active',a.dataset.mobileView===name));
  if(name==='entreprises')renderCompanyDirectory();
  if(name==='messagerie')loadChats(true);
  if(name==='espace-personnel')loadPersonalSpace();
