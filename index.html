@@ -1108,6 +1108,7 @@ loadNotificationEmail();
 renderCompanyDirectory();
 
 window.addEventListener('load',()=>{const route=(location.hash||'').replace('#','');const allowed=['home','annonces','entreprises','messagerie','accompagnement'];if(allowed.includes(route))showView(route);});
+window.addEventListener('load',()=>{const requestedModal=new URLSearchParams(location.search).get('modal');if(['publish','contact'].includes(requestedModal))openModal(requestedModal);});
 
 
 (function(){
