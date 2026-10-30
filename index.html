@@ -245,7 +245,29 @@ function showToast(msg){const t=document.getElementById('toast');t.textContent=m
 
 function openListingDetails(id){const x=getListings().find(a=>String(a.id)===String(id));if(!x)return;const panel=document.getElementById('listingDetail');const direction=x.direction==='fr-ga'?'France → Gabon':x.direction==='ga-fr'?'Gabon → France':'France ⇄ Gabon';const date=x.createdAt?new Date(x.createdAt).toLocaleDateString('fr-FR'):'Non précisée';panel.innerHTML=`<button class="listing-detail-back" onclick="closeListingDetails()">← Retour aux annonces</button><div class="listing-top"><span class="tag ${x.type==='Besoin'?'orange':''}">${esc(x.type||'Annonce')}</span><span style="font-size:11px;color:#748486">Publiée le ${esc(date)}</span></div><h2>${esc(x.title)}</h2><p style="color:#718078;margin:0">${esc(x.company)}</p><div class="listing-detail-facts"><div class="listing-detail-fact"><small>Trajet commercial</small><strong>${esc(direction)}</strong></div><div class="listing-detail-fact"><small>Secteur</small><strong>${esc(x.category)}</strong></div><div class="listing-detail-fact"><small>Localisation</small><strong>${esc(x.city)}</strong></div><div class="listing-detail-fact"><small>Prix / conditions</small><strong>${esc(x.price||'À discuter')}</strong></div></div><h3>Description complète</h3><p class="listing-detail-description">${esc(x.desc)}</p><div class="listing-detail-actions"><button class="btn btn-green" onclick="contactListing('${String(x.id)}')">Contacter l'annonceur ↗</button><button class="btn btn-light" onclick="closeListingDetails()">Retour aux annonces</button></div><p class="form-note">Gab X-Port met les utilisateurs en relation. Les échanges et conditions sont convenus directement entre les parties.</p>`;document.getElementById('listingGrid').style.display='none';document.getElementById('listingDetail').classList.add('show');panel.scrollIntoView({behavior:'smooth',block:'start'});}
 function closeListingDetails(){document.getElementById('listingDetail').classList.remove('show');document.getElementById('listingGrid').style.display='';document.getElementById('listingGrid').scrollIntoView({behavior:'smooth',block:'start'});}
-function contactListing(id){const x=getListings().find(a=>a.id===id);if(!x)return;openModal('contact');document.getElementById('cMessage').value='Bonjour, je vous contacte au sujet de votre annonce « '+x.title+' ». Pouvez-vous me donner plus d’informations ?';}
+async function contactListing(id){
+ const x=getListings().find(a=>String(a.id)===String(id));if(!x)return;
+ if(!supabaseClient){showToast('La messagerie n’est pas disponible pour le moment.');return;}
+ try{
+  const user=await getCurrentAuthUser();
+  if(!user){showToast('Connectez-vous pour contacter l’annonceur.');openModal('login');return;}
+  if(user.id===x.ownerId){showToast('Vous ne pouvez pas vous envoyer un message au sujet de votre propre annonce.');return;}
+  if(!x.ownerId){showToast('Le profil de l’annonceur est introuvable.');return;}
+  const [p1,p2]=[user.id,x.ownerId].sort();
+  let {data:existing,error:findError}=await supabaseClient.from('conversations').select('id').eq('participant_1',p1).eq('participant_2',p2).maybeSingle();
+  if(findError)throw findError;
+  let conversationId=existing?.id;
+  if(!conversationId){
+   const created=await supabaseClient.from('conversations').insert({participant_1:p1,participant_2:p2,created_by:user.id,subject:'Annonce : '+x.title}).select('id').single();
+   if(created.error){if(created.error.code==='23505'){const retry=await supabaseClient.from('conversations').select('id').eq('participant_1',p1).eq('participant_2',p2).single();if(retry.error)throw retry.error;conversationId=retry.data.id;}else throw created.error;}else conversationId=created.data.id;
+  }
+  const message='Bonjour, je vous contacte au sujet de votre annonce « '+x.title+' ». '+ 'Pouvez-vous me donner plus d’informations ?';
+  const {error:messageError}=await supabaseClient.from('messages').insert({conversation_id:conversationId,sender_id:user.id,body:message});
+  if(messageError)throw messageError;
+  await loadChats(false);activeChatId=conversationId;await loadMessages(conversationId);subscribeChatRealtime();
+  showView('messagerie');showToast('Votre message a été envoyé dans la messagerie.');
+ }catch(err){console.error('Contact annonceur',err);showToast('Impossible d’envoyer le message : '+(err.message||'erreur Supabase'))}
+}
 document.getElementById('listingForm').addEventListener('submit',async e=>{
  e.preventDefault();
  if(!supabaseClient){showToast('Supabase n’est pas configuré.');return;}
