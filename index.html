@@ -681,14 +681,14 @@ function renderFavorites(){
 }
 async function openOffererProfile(ownerId){
  if(!ownerId){showToast('Le profil de cet annonceur n’est pas disponible.');return;}
+ if(!supabaseClient){showToast('Le service de profil est momentanément indisponible.');return;}
  try{
-  const result=await supabaseClient.from('profiles').select('id,full_name,country,account_type').eq('id',ownerId).maybeSingle();
+  // RPC sécurisée : seules les informations publiques nécessaires sont retournées.
+  const result=await supabaseClient.rpc('get_public_offerer_profile',{p_user_id:ownerId}).maybeSingle();
   if(result.error)throw result.error;
   const p=result.data;if(!p){showToast('Profil introuvable ou non accessible.');return;}
-  let company=null;
-  if(p.account_type==='compagnie'||p.account_type==='company'){const res=await supabaseClient.from('companies').select('legal_name,country,registered_address,representative_role').eq('owner_id',ownerId).maybeSingle();if(!res.error)company=res.data;}
-  const name=(company&&company.legal_name)||p.full_name||'Membre Gab X-Port';
-  document.getElementById('offererProfileContent').innerHTML='<div class="kicker">Profil professionnel</div><h1>'+esc(name)+'</h1><p class="sub">'+esc(accountLabel(p.account_type))+' · '+esc(p.country||(company&&company.country)||'Pays non renseigné')+'</p><div class="panel"><h3>À propos</h3><p class="sub">Profil inscrit sur Gab X-Port. Consultez ses annonces et échangez directement avec ce professionnel.</p><button class="btn btn-light" onclick="showView(\'annonces\')">Retour aux annonces</button></div>';
+  const name=p.display_name||'Membre Gab X-Port';
+  document.getElementById('offererProfileContent').innerHTML='<div class="kicker">Profil professionnel</div><h1>'+esc(name)+'</h1><p class="sub">'+esc(accountLabel(p.account_type))+' · '+esc(p.country||'Pays non renseigné')+'</p><div class="panel"><h3>À propos</h3><p class="sub">Profil inscrit sur Gab X-Port. Consultez ses annonces et échangez directement avec ce professionnel.</p><button class="btn btn-light" onclick="showView(\\'annonces\\')">Retour aux annonces</button></div>';
   showView('profil-offreur');
  }catch(e){console.error(e);showToast('Impossible de charger ce profil : '+e.message);}
 }
