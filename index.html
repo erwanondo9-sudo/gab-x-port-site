@@ -242,6 +242,76 @@ html[data-theme="dark"] .copyright{border-color:#39384d;color:#a6a4bc}
 @media(max-width:580px){.theme-select{max-width:95px;padding:10px 5px;font-size:10px}.navactions{gap:6px}}
 
 .brand-logo{display:block;width:174px;height:auto;max-height:66px;object-fit:contain}.footer-brand-logo{width:190px;filter:brightness(0) invert(1)}@media(max-width:580px){.brand-logo{width:138px;max-height:54px}.footer-brand-logo{width:170px}}
+
+/* Accueil inspiré de la nouvelle maquette Gab X-Port */
+body{background:#050b18;color:#f4f6ff}
+.topbar{display:none}
+header.wrap.nav{max-width:none;padding:15px max(4.5vw,22px);background:rgba(5,11,24,.94);border-bottom:1px solid #202943;position:sticky;top:0;z-index:15;backdrop-filter:blur(18px)}
+.brand-logo{width:340px;max-height:74px}
+.navlinks{gap:25px;color:#d0d7ec;font-size:13px}
+.navlinks a:hover,.site-header-nav a.active{color:#a58bff}
+.navactions{align-items:center;gap:9px}
+.theme-select{background:#111b31;border-color:#26334f;color:#eef2ff}
+.btn{border-radius:12px}.btn-green{background:linear-gradient(135deg,#7757ff,#9a57ff);box-shadow:0 8px 28px #7b57ff42}
+.btn-green:hover{background:linear-gradient(135deg,#886cff,#a36aff)}
+.btn-dark{background:#15213a;color:#f7f8ff;border:1px solid #2b3855}
+.btn-light{background:#0e1830;color:#edf0ff;border:1px solid #384365}
+.gx-hero{padding:0;min-height:455px;position:relative;isolation:isolate;overflow:hidden;background:#050b18}
+.gx-hero:before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,#050b18 0%,#050b18 29%,rgba(5,11,24,.91) 42%,rgba(5,11,24,.18) 72%,rgba(5,11,24,.06) 100%)}
+.gx-hero-art{position:absolute;z-index:-2;right:0;top:0;width:74%;height:100%;background:url('/port-hero.svg') center 47%/cover no-repeat;opacity:.94}
+.gx-hero-inner{min-height:455px;display:flex;align-items:center;padding-top:42px;padding-bottom:35px}
+.gx-hero-copy{width:min(100%,720px)}
+.gx-eyebrow{font-size:11px;font-weight:900;letter-spacing:3px;color:#a995ff;margin-bottom:18px}
+.gx-hero h1{font-size:clamp(42px,5.2vw,66px);line-height:1.03;letter-spacing:-3px;color:#f8f9ff;margin:0 0 14px}
+.gx-hero h1 em{font-style:normal;background:linear-gradient(90deg,#a7a0ff,#875cff);background-clip:text;-webkit-background-clip:text;color:transparent}
+.gx-hero .lead{color:#aeb9d5;font-size:16px;line-height:1.7;max-width:550px;margin:0 0 22px}
+.gx-home-search{display:grid;grid-template-columns:minmax(220px,1fr) 190px auto;gap:9px;max-width:770px;padding:9px;border:1px solid #35415e;background:rgba(13,24,47,.9);border-radius:17px;box-shadow:0 18px 50px #0004}
+.gx-search-input{display:flex;align-items:center;gap:10px;padding:0 12px;background:#121e38;border:1px solid #273552;border-radius:11px;min-width:0}
+.gx-search-input span{font-size:24px;color:#9eabca}
+.gx-search-input input{width:100%;min-width:0;background:transparent;border:0;outline:0;color:#f4f6ff;font-size:13px}
+.gx-search-input input::placeholder{color:#8290b0}
+.gx-home-search select{background:#121e38;border:1px solid #273552;color:#f1f3ff;border-radius:11px;padding:0 13px;font-size:13px}
+.gx-home-search .btn{white-space:nowrap}
+.gx-shortcuts{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
+.gx-shortcuts button{background:#111d35;border:1px solid #202e4a;color:#d5dcf0;border-radius:999px;padding:9px 15px;font-size:12px}
+.gx-shortcuts button:hover{border-color:#8069ff;color:#c2b5ff}
+.gx-feature-strip{padding:0 0 38px;background:#050b18}
+.gx-feature-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
+.gx-feature{min-height:128px;display:grid;grid-template-columns:56px 1fr 28px;align-items:center;gap:14px;text-align:left;padding:19px;border-radius:18px;border:1px solid #27324d;background:#0c152a;color:#f5f6ff;transition:.2s}
+.gx-feature:hover{transform:translateY(-4px);border-color:#6656b8;box-shadow:0 15px 38px #0003}
+.gx-feature-icon{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;font-size:24px;color:white;background:#7656f5}
+.gx-feature b{display:block;font-size:15px;margin-bottom:6px}
+.gx-feature small{display:block;font-size:11px;line-height:1.55;color:#a9b4d0}
+.gx-feature i{font-style:normal;width:30px;height:30px;display:grid;place-items:center;border-radius:50%;background:#ffffff0d;font-size:18px}
+.gx-purple{border-color:#4a3c80;background:linear-gradient(120deg,#17152f,#0d162b)}.gx-purple .gx-feature-icon{background:#7957f5}
+.gx-teal{border-color:#145b61;background:linear-gradient(120deg,#0c242d,#0c192a)}.gx-teal .gx-feature-icon{background:#00a991}
+.gx-teal b,.gx-teal i{color:#27dfc7}
+.gx-blue{border-color:#1e4e85;background:linear-gradient(120deg,#0c1e39,#0c172b)}.gx-blue .gx-feature-icon{background:#1768df}
+.gx-gold{border-color:#6d4c1c;background:linear-gradient(120deg,#29200f,#171a28)}.gx-gold .gx-feature-icon{background:#c58b14}
+.gx-categories{padding:15px 0 28px;background:#050b18}
+.gx-section-title{display:flex;align-items:end;justify-content:space-between;margin-bottom:20px}
+.gx-section-title .kicker{color:#9d84ff}
+.gx-section-title h2,.gx-lower h2{color:#f2f4ff;font-size:32px;letter-spacing:-1.3px;margin:8px 0 0}
+.gx-all-link{border:0;background:transparent;color:#a995ff;font-size:12px}
+.gx-category-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:10px}
+.gx-category-grid button{min-height:105px;background:#0d172b;border:1px solid #202e48;border-radius:13px;color:#edf1ff;padding:13px 8px;font-size:11px;line-height:1.45;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px}
+.gx-category-grid button:hover{border-color:#6557b8;background:#151d37}
+.gx-category-grid span{font-size:23px}
+.gx-proof{padding:0 0 38px;background:#050b18}
+.gx-proof-grid{display:grid;grid-template-columns:repeat(4,1fr);background:linear-gradient(110deg,#0e1a32,#111a33);border:1px solid #263451;border-radius:20px;padding:20px 18px;gap:12px}
+.gx-proof-grid div{display:flex;flex-direction:column;align-items:center;gap:5px;text-align:center}
+.gx-proof-grid strong{font-size:22px;color:#9679ff}
+.gx-proof-grid small{font-size:11px;color:#aab5d0}
+.gx-lower{background:#080f20}
+.gx-lower .kicker{color:#9d84ff}
+.gx-lower .sub{color:#aab5d0}
+.gx-lower .service{background:#111b31;border-color:#263451;color:#f2f4ff}
+.gx-lower .service p{color:#aab5d0}
+.gx-lower .service-icon{background:#222447;color:#a995ff}
+@media(max-width:1000px){.brand-logo{width:250px}.navlinks{gap:13px}.gx-category-grid{grid-template-columns:repeat(4,1fr)}.gx-feature-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:760px){header.wrap.nav{padding:12px 17px}.navlinks{display:none}.brand-logo{width:220px}.gx-hero-art{width:100%;opacity:.58}.gx-hero:before{background:linear-gradient(90deg,#050b18 0%,rgba(5,11,24,.93) 42%,rgba(5,11,24,.45) 100%)}.gx-hero-inner{min-height:480px;padding-top:48px;padding-bottom:35px}.gx-home-search{grid-template-columns:1fr 1fr}.gx-search-input{grid-column:1/-1;min-height:47px}.gx-home-search .btn{min-height:45px}.gx-feature-grid{grid-template-columns:1fr 1fr}.gx-feature{grid-template-columns:44px 1fr;min-height:125px;padding:14px;gap:10px}.gx-feature-icon{width:42px;height:42px}.gx-feature i{display:none}.gx-category-grid{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:480px){.brand-logo{width:165px}.navactions{gap:5px}.theme-select{max-width:94px;padding:9px 5px;font-size:10px}.navactions .btn-green{font-size:11px;padding:9px}.gx-hero h1{font-size:44px}.gx-hero .lead{font-size:14px}.gx-home-search{grid-template-columns:1fr}.gx-search-input{grid-column:auto}.gx-feature-grid{grid-template-columns:1fr}.gx-feature{min-height:100px;grid-template-columns:48px 1fr 25px}.gx-feature i{display:grid}.gx-section-title{align-items:start;gap:12px;flex-direction:column}.gx-section-title h2{font-size:27px}.gx-category-grid{grid-template-columns:repeat(2,1fr)}.gx-proof-grid{grid-template-columns:repeat(2,1fr)}}
+
 </style>
 </head>
 <body>
@@ -252,30 +322,27 @@ html[data-theme="dark"] .copyright{border-color:#39384d;color:#a6a4bc}
 <div class="navactions"><select id="themeSelect" class="theme-select" aria-label="Choisir le thème"><option value="system">◐ Appareil</option><option value="light">☀ Clair</option><option value="dark">☾ Sombre</option></select><button class="btn btn-light" id="navLoginBtn" onclick="openModal('login')">Se connecter</button><button class="btn btn-green" id="navSignupBtn" onclick="openModal('signup')">Créer un compte</button><button class="btn btn-dark" onclick="openModal('publish')">+ Publier une annonce</button></div>
 </header>
 
-<main><div class="view active" id="view-home"><section class="hero" id="accueil"><div class="wrap hero-grid">
-<div class="hero-copy"><div class="eyebrow"><span class="dot"></span> VOTRE PARTENAIRE COMMERCIAL BILATÉRAL</div>
-<h1>Le commerce<br>sans <em>frontières.</em></h1>
-<p class="lead">La plateforme qui rapproche les entreprises, exportateurs, importateurs et clients entre la France et le Gabon. Trouvez un partenaire, comparez les offres et développez vos échanges.</p>
-<div class="hero-actions"><a class="btn btn-green" href="#annonces">Explorer les annonces <span>↗</span></a><button class="btn btn-light" onclick="openModal('publish')">Déposer une offre +</button></div>
-<div class="trust"><div class="avatars"><span>🇫🇷</span><span>🇬🇦</span><span>↔</span></div><span>Un seul espace pour vos échanges France–Gabon</span></div>
-</div>
-<div class="hero-art"><div class="orb"></div><div class="floating float-one">Deux marchés<strong>Un réseau</strong></div><div class="route-card">
-<div class="route-head"><b>Votre prochain échange commence ici</b><span class="status">● EN LIGNE</span></div>
-<div class="route-line"><div class="flag">🇫🇷</div><div><strong>France</strong><small>Fournisseurs & exportateurs</small></div><div class="plane">✈</div></div><div class="dotted"></div>
-<div class="route-line"><div class="flag">🇬🇦</div><div><strong>Gabon</strong><small>Importateurs & clients</small></div><div class="plane">↗</div></div>
-<div class="route-bottom"><div><small>MISE EN RELATION</small><br><b>Du besoin au partenaire</b></div><div style="font-size:27px">🤝</div></div>
-</div><div class="floating float-two">Import · Export<strong>Dans les deux sens ↔</strong></div></div>
-</div></section><section class="stats"><div class="wrap stats-grid"><div class="stat"><strong>🇫🇷 ⇄ ��🇦</strong><span>Un corridor commercial bilatéral</span></div><div class="stat"><strong>24/7</strong><span>Consultez les offres à tout moment</span></div><div class="stat"><strong>Multi-secteurs</strong><span>Biens, fret et services</span></div><div class="stat"><strong>Direct</strong><span>Contact entre partenaires</span></div></div></section><section class="section services" id="services"><div class="wrap"><div class="kicker">Un écosystème pour vos échanges</div><h2>Tout commence par la bonne connexion.</h2><p class="sub">Gab X-Port aide les professionnels à se trouver et à échanger plus simplement sur le corridor France–Gabon.</p>
-<div class="service-grid" style="margin-top:30px">
-<div class="service"><div class="service-icon">🚢</div><h3>Transport & fret</h3><p>Repérez des prestataires pour vos expéditions maritimes, aériennes ou routières et demandez un devis.</p></div>
-<div class="service"><div class="service-icon">📦</div><h3>Offres import-export</h3><p>Présentez vos produits, recherchez des fournisseurs et identifiez de nouveaux débouchés.</p></div>
-<div class="service"><div class="service-icon">🤝</div><h3>Mise en relation</h3><p>Entrez directement en contact avec un professionnel pour discuter de votre projet.</p></div>
-<div class="service"><div class="service-icon">🧾</div><h3>Accompagnement</h3><p>Préparez vos demandes de devis et renseignez-vous sur les formalités douanières applicables.</p></div>
-</div></div></section><section class="section" id="fonctionnement"><div class="wrap"><div class="kicker">Simple comme bonjour</div><h2>De votre besoin à votre partenaire.</h2><div class="steps">
-<div class="step"><span class="step-num">ÉTAPE 01 — EXPLORER</span><h3>Trouvez une offre</h3><p>Filtrez les annonces par secteur et par sens de transport pour identifier les contacts qui correspondent à votre besoin.</p></div>
-<div class="step"><span class="step-num">ÉTAPE 02 — ÉCHANGER</span><h3>Présentez votre projet</h3><p>Envoyez une demande avec vos coordonnées, votre besoin, les volumes et la destination souhaitée.</p></div>
-<div class="step"><span class="step-num">ÉTAPE 03 — CONCRÉTISER</span><h3>Organisez l'opération</h3><p>Comparez les propositions, vérifiez les prestataires et convenez directement des conditions de votre transaction.</p></div>
-</div></div></section><section class="section" style="padding-top:0"><div class="wrap"><div class="cta"><div><h2>Vous êtes une entreprise ?</h2><p>Présentez vos services ou publiez un besoin pour trouver votre prochain partenaire commercial.</p></div><button class="btn btn-lime" onclick="openModal('publish')">Publier une annonce ↗</button></div></div></section></div><div class="view" id="view-annonces"><section class="section" id="annonces"><div class="wrap">
+<main><div class="view active" id="view-home">
+<section class="hero gx-hero" id="accueil"><div class="gx-hero-art" aria-hidden="true"></div><div class="wrap gx-hero-inner">
+<div class="gx-hero-copy"><div class="gx-eyebrow">IMPORT · EXPORT · LOGISTIQUE</div>
+<h1>Connecter <em>le Gabon</em><br>au monde</h1>
+<p class="lead">La plateforme qui facilite vos échanges internationaux. Trouvez des partenaires, découvrez des opportunités et développez votre activité.</p>
+<div class="gx-home-search"><div class="gx-search-input"><span>⌕</span><input id="homeSearch" placeholder="Rechercher un produit, un service, une entreprise…" aria-label="Rechercher"></div><select id="homeCountry" aria-label="Choisir un pays"><option value="all">Tous les pays</option><option value="France">France</option><option value="Gabon">Gabon</option></select><button class="btn btn-green" onclick="homeSearchListings()">Rechercher ↗</button></div>
+<div class="gx-shortcuts"><button onclick="homeCategory('all')">◇ Produits</button><button onclick="homeCategory('Transport & logistique')">⚙ Services</button><button onclick="showView('entreprises')">▦ Entreprises</button><button onclick="showView('annonces')">↗ Opportunités</button></div>
+</div></div></section>
+<section class="gx-feature-strip"><div class="wrap gx-feature-grid">
+<button class="gx-feature gx-purple" onclick="homeCategory('all')"><span class="gx-feature-icon">◇</span><span><b>Produits</b><small>Découvrez une large gamme de produits gabonais et internationaux</small></span><i>→</i></button>
+<button class="gx-feature gx-teal" onclick="homeCategory('Transport & logistique')"><span class="gx-feature-icon">⚙</span><span><b>Services</b><small>Accédez à des services logistiques, de transport et d’accompagnement</small></span><i>→</i></button>
+<button class="gx-feature gx-blue" onclick="showView('entreprises')"><span class="gx-feature-icon">▦</span><span><b>Entreprises</b><small>Trouvez des partenaires fiables au Gabon et à l’international</small></span><i>→</i></button>
+<button class="gx-feature gx-gold" onclick="showView('annonces')"><span class="gx-feature-icon">▥</span><span><b>Opportunités</b><small>Ne manquez aucune opportunité d’import-export</small></span><i>→</i></button>
+</div></section>
+<section class="gx-categories"><div class="wrap"><div class="gx-section-title"><div><div class="kicker">CATÉGORIES POPULAIRES</div><h2>Explorez nos catégories</h2></div><button class="gx-all-link" onclick="showView('annonces')">Voir toutes les catégories →</button></div>
+<div class="gx-category-grid">
+<button onclick="homeCategory('Agroalimentaire')"><span>🌿</span>Produits agricoles</button><button onclick="homeCategory('Équipements & matériaux')"><span>🧱</span>Matériaux de construction</button><button onclick="homeCategory('Équipements & matériaux')"><span>⚙️</span>Équipements industriels</button><button onclick="homeCategory('Agroalimentaire')"><span>🍴</span>Produits alimentaires</button><button onclick="homeCategory('Autres services')"><span>💻</span>Électronique</button><button onclick="homeCategory('Autres services')"><span>👕</span>Mode et textile</button><button onclick="homeCategory('Autres services')"><span>♥</span>Santé et bien-être</button><button onclick="homeCategory('Transport & logistique')"><span>🚚</span>Services logistiques</button>
+</div></div></section>
+<section class="gx-proof"><div class="wrap gx-proof-grid"><div><strong>France ⇄ Gabon</strong><small>Un corridor commercial bilatéral</small></div><div><strong>3 profils</strong><small>Clients, exportateurs, entreprises</small></div><div><strong>Contact direct</strong><small>Échangez avec vos partenaires</small></div><div><strong>24/7</strong><small>Consultez les annonces à tout moment</small></div></div></section>
+<section class="section gx-lower"><div class="wrap"><div class="kicker">UN ÉCOSYSTÈME POUR VOS ÉCHANGES</div><h2>Tout commence par la bonne connexion.</h2><p class="sub">Gab X-Port rapproche les professionnels de France et du Gabon pour faciliter les échanges et les partenariats.</p><div class="service-grid" style="margin-top:28px"><div class="service"><div class="service-icon">🚢</div><h3>Transport & fret</h3><p>Repérez des prestataires pour vos expéditions et demandez un devis.</p></div><div class="service"><div class="service-icon">📦</div><h3>Offres import-export</h3><p>Présentez vos produits et recherchez des fournisseurs.</p></div><div class="service"><div class="service-icon">🤝</div><h3>Mise en relation</h3><p>Entrez directement en contact avec un professionnel.</p></div><div class="service"><div class="service-icon">🧾</div><h3>Accompagnement</h3><p>Préparez vos demandes et renseignez-vous sur les formalités.</p></div></div></div></section>
+</div><div class="view" id="view-annonces"><section class="section" id="annonces"><div class="wrap">
 <div class="section-head"><div><div class="kicker">Le marché Gab X-Port</div><h2>Les opportunités du moment</h2><p class="sub">Recherchez une offre ou un partenaire selon votre besoin, votre secteur et le sens de votre expédition.</p></div><button class="btn btn-dark" onclick="openModal('publish')">+ Ajouter une annonce</button></div>
 <div class="search-panel"><div class="search-row">
 <div class="field"><label for="q">Que recherchez-vous ?</label><input id="q" placeholder="Ex. pièces auto, cacao, fret…"></div>
@@ -651,6 +718,21 @@ function openCompanyProfile(id){
  details.innerHTML=`<div class="company-grid"><div><div class="panel"><h3>À propos de l’entreprise</h3><p class="sub">${esc(c.description)}</p><h4>Services proposés</h4><div class="filters">${c.services.map(s=>`<span class="chip">${esc(s)}</span>`).join('')}</div><h4>Localisations et zones d’intervention</h4><p class="sub">Adresse déclarée : ${esc(c.location)}<br>Zones indiquées : ${esc(c.zones)}</p></div><div class="panel"><h3>Commentaires et avis</h3><p class="form-note">Avis fictifs de démonstration. Aucun avis n’a été collecté auprès de clients réels.</p>${c.comments.map(r=>`<div class="review"><div class="review-head"><span>${esc(r.name)}</span><span class="stars">${stars(r.rating)}</span></div><p>${esc(r.text)}</p></div>`).join('')}<form class="review-form" onsubmit="submitDemoReview(event,'${c.id}')"><div class="field"><label>Votre nom</label><input required placeholder="Nom affiché"></div><div class="field"><label>Votre note</label><select required><option value="5">5 étoiles</option><option value="4">4 étoiles</option><option value="3">3 étoiles</option><option value="2">2 étoiles</option><option value="1">1 étoile</option></select></div><div class="field full"><label>Votre commentaire</label><textarea required placeholder="Partagez votre expérience…"></textarea></div><button class="btn btn-light" type="submit">Prévisualiser mon avis</button></form></div></div><aside><div class="panel"><h3>Disponibilités</h3><div class="availability-row"><span>Statut</span><strong class="${c.availability==='Disponible'?'available':'limited'}">${esc(c.availability)}</strong></div><div class="availability-row"><span>Horaires indiqués</span><strong>${esc(c.hours)}</strong></div><div class="availability-row"><span>Délais annoncés</span><strong>${esc(c.delay)}</strong></div><p class="form-note">Disponibilités et délais à confirmer directement auprès de l’entreprise avant tout engagement.</p><button class="btn btn-green" style="width:100%" onclick="messageCompany('${c.id}')">Envoyer un message ↗</button><button class="btn btn-light" style="width:100%;margin-top:8px" onclick="showView('entreprises')">Retour à l’annuaire</button></div><div class="panel"><h3>Prise de contact</h3><p class="sub">Utilisez la messagerie pour demander un devis, préciser votre besoin ou vérifier les disponibilités.</p><button class="btn btn-dark" style="width:100%" onclick="messageCompany('${c.id}')">Contacter cette entreprise</button></div></aside></div>`;
  showView('profil-entreprise');
 }
+
+function homeSearchListings(){
+ const q=document.getElementById('homeSearch')?.value||'';
+ const country=document.getElementById('homeCountry')?.value||'all';
+ const target=document.getElementById('q');if(target)target.value=q;
+ const d=document.getElementById('direction');if(d&&country!=='all')d.value='all';
+ showView('annonces');renderListings();
+}
+function homeCategory(category){
+ showView('annonces');
+ const q=document.getElementById('q');if(q)q.value='';
+ const c=document.getElementById('category');if(c)c.value=category;
+ renderListings();
+}
+
 function submitDemoReview(e,id){e.preventDefault();showToast("Avis prévisualisé. Pour publier des avis réels, une connexion utilisateur et une modération seront nécessaires.");e.target.reset();}
 function messageCompany(id){
  const c=sampleCompanies.find(x=>x.id===id);if(!c)return;
