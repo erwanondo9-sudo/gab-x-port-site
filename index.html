@@ -157,14 +157,7 @@ const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_8JhF2kELEsS7l04sNK_nfA__BM3goLp
 const SUPABASE_CONFIGURED = SUPABASE_URL.startsWith("https://") && !SUPABASE_URL.includes("COLLE_ICI") && !!SUPABASE_PUBLISHABLE_KEY && !SUPABASE_PUBLISHABLE_KEY.includes("COLLE_ICI");
 const supabaseClient = SUPABASE_CONFIGURED && window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY) : null;
 
-const sampleListings=[
-{id:1,title:"Recherche de transport maritime",company:"Exemple — Importateur",category:"Transport & logistique",direction:"fr-ga",desc:"Recherche d'un prestataire pour organiser une expédition de marchandises depuis la France vers Libreville.",city:"France → Libreville",type:"Besoin",price:"Devis demandé",demo:true},
-{id:2,title:"Pièces détachées automobiles",company:"Exemple — Fournisseur",category:"Automobile & pièces",direction:"fr-ga",desc:"Offre indicative de pièces auto. Contactez le fournisseur pour vérifier le stock, les références et les modalités d'expédition.",city:"France → Gabon",type:"Offre",price:"Prix sur demande",demo:true},
-{id:3,title:"Produits agricoles gabonais",company:"Exemple — Producteur",category:"Agroalimentaire",direction:"ga-fr",desc:"Recherche de partenaires pour discuter de l'exportation de produits agricoles du Gabon vers la France.",city:"Gabon → France",type:"Partenariat",price:"À négocier",demo:true},
-{id:4,title:"Recherche de fret aérien",company:"Exemple — PME",category:"Transport & logistique",direction:"ga-fr",desc:"Besoin d'une solution de fret aérien pour de petits colis professionnels entre Libreville et Paris.",city:"Libreville → Paris",type:"Besoin",price:"Devis demandé",demo:true},
-{id:5,title:"Matériaux et équipements",company:"Exemple — Acheteur",category:"Équipements & matériaux",direction:"fr-ga",desc:"Recherche de fournisseurs d'équipements et matériaux avec livraison au Gabon. Détails et quantités à confirmer.",city:"France → Gabon",type:"Besoin",price:"Prix sur demande",demo:true},
-{id:6,title:"Partenaire logistique local",company:"Exemple — Prestataire",category:"Transport & logistique",direction:"both",desc:"Recherche de partenaires pour la coordination logistique, la réception et l'organisation des livraisons sur le corridor France–Gabon.",city:"France ⇄ Gabon",type:"Partenariat",price:"Sur devis",demo:true}
-];
+const sampleListings=[];
 let activeQuick="all";
 let publishedListings=[];
 function mapListing(row){return {id:row.id,title:row.title,company:row.company,category:row.category,direction:row.direction,desc:row.description,city:row.city,type:row.listing_type,price:row.price||'À discuter',demo:false,ownerId:row.owner_id,createdAt:row.created_at,status:row.status}}
