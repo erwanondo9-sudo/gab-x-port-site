@@ -312,6 +312,35 @@ header.wrap.nav{max-width:none;padding:15px max(4.5vw,22px);background:rgba(5,11
 @media(max-width:760px){header.wrap.nav{padding:12px 17px}.navlinks{display:none}.brand-logo{width:220px}.gx-hero-art{width:100%;opacity:.58}.gx-hero:before{background:linear-gradient(90deg,#050b18 0%,rgba(5,11,24,.93) 42%,rgba(5,11,24,.45) 100%)}.gx-hero-inner{min-height:480px;padding-top:48px;padding-bottom:35px}.gx-home-search{grid-template-columns:1fr 1fr}.gx-search-input{grid-column:1/-1;min-height:47px}.gx-home-search .btn{min-height:45px}.gx-feature-grid{grid-template-columns:1fr 1fr}.gx-feature{grid-template-columns:44px 1fr;min-height:125px;padding:14px;gap:10px}.gx-feature-icon{width:42px;height:42px}.gx-feature i{display:none}.gx-category-grid{grid-template-columns:repeat(4,1fr)}}
 @media(max-width:480px){.brand-logo{width:165px}.navactions{gap:5px}.theme-select{max-width:94px;padding:9px 5px;font-size:10px}.navactions .btn-green{font-size:11px;padding:9px}.gx-hero h1{font-size:44px}.gx-hero .lead{font-size:14px}.gx-home-search{grid-template-columns:1fr}.gx-search-input{grid-column:auto}.gx-feature-grid{grid-template-columns:1fr}.gx-feature{min-height:100px;grid-template-columns:48px 1fr 25px}.gx-feature i{display:grid}.gx-section-title{align-items:start;gap:12px;flex-direction:column}.gx-section-title h2{font-size:27px}.gx-category-grid{grid-template-columns:repeat(2,1fr)}.gx-proof-grid{grid-template-columns:repeat(2,1fr)}}
 
+
+html[data-theme="dark"] body{background:#050b18;color:#f4f6ff}
+html[data-theme="dark"] header.wrap.nav{background:rgba(5,11,24,.94)!important;border-color:#202943!important}
+html[data-theme="dark"] .navlinks,html[data-theme="dark"] .site-header-nav a{color:#d0d7ec}
+html[data-theme="dark"] .brand-logo{filter:none}
+html[data-theme="dark"] .footer-brand-logo{filter:none}
+html[data-theme="dark"] .gx-hero,html[data-theme="dark"] .gx-feature-strip,html[data-theme="dark"] .gx-categories,html[data-theme="dark"] .gx-proof{background-color:#050b18}
+html[data-theme="dark"] .gx-lower{background:#080f20}
+html[data-theme="light"] body{background:#f7f7fc;color:#282842}
+html[data-theme="light"] header.wrap.nav{background:rgba(255,255,255,.94);border-bottom:1px solid #e6e5f0}
+html[data-theme="light"] .navlinks,html[data-theme="light"] .site-header-nav a{color:#536078}
+html[data-theme="light"] .brand-logo{filter:brightness(.25) saturate(1.2)}
+html[data-theme="light"] .footer-brand-logo{filter:none}
+html[data-theme="light"] .gx-hero,html[data-theme="light"] .gx-feature-strip,html[data-theme="light"] .gx-categories,html[data-theme="light"] .gx-proof{background-color:#f5f6fc}
+html[data-theme="light"] .gx-hero:before{background:linear-gradient(90deg,#f5f6fc 0%,rgba(245,246,252,.96) 35%,rgba(245,246,252,.72) 55%,rgba(245,246,252,.08) 100%)}
+html[data-theme="light"] .gx-hero h1,html[data-theme="light"] .gx-section-title h2,html[data-theme="light"] .gx-lower h2{color:#172443}
+html[data-theme="light"] .gx-hero .lead,html[data-theme="light"] .gx-feature small,html[data-theme="light"] .gx-proof-grid small,html[data-theme="light"] .gx-lower .sub{color:#5d6884}
+html[data-theme="light"] .gx-eyebrow,html[data-theme="light"] .gx-all-link{color:#6558d3}
+html[data-theme="light"] .gx-home-search,html[data-theme="light"] .gx-search-input,html[data-theme="light"] .gx-home-search select{background:#fff;border-color:#dce1ef;color:#243251}
+html[data-theme="light"] .gx-search-input input{color:#243251}
+html[data-theme="light"] .gx-search-input input::placeholder{color:#8490a8}
+html[data-theme="light"] .gx-shortcuts button,html[data-theme="light"] .gx-category-grid button{background:#fff;border-color:#e0e4f0;color:#293653}
+html[data-theme="light"] .gx-feature,html[data-theme="light"] .gx-proof-grid,html[data-theme="light"] .gx-lower .service{background:#fff;border-color:#e0e4f0;color:#25324d}
+html[data-theme="light"] .gx-feature b{color:#25324d}
+html[data-theme="light"] .gx-feature small{color:#68748d}
+html[data-theme="light"] .gx-proof-grid strong{color:#6558d3}
+html[data-theme="light"] .gx-lower{background:#f5f6fc}
+html[data-theme="light"] .gx-lower .service p{color:#68748d}
+
 </style>
 </head>
 <body>
@@ -750,16 +779,18 @@ window.addEventListener('load',()=>{const route=(location.hash||'').replace('#',
 
 (function(){
  const selector=document.getElementById('themeSelect');
- const saved=localStorage.getItem('gabxport-theme')||'system';
+ const saved=localStorage.getItem('gabxport-theme')||'dark';
+ const systemDark=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)');
  function applyTheme(mode){
-  if(mode==='system'){document.documentElement.removeAttribute('data-theme')}
-  else{document.documentElement.setAttribute('data-theme',mode)}
+  const resolved=mode==='system'?(systemDark&&systemDark.matches?'dark':'light'):mode;
+  document.documentElement.setAttribute('data-theme',resolved);
   if(selector)selector.value=mode;
  }
  applyTheme(saved);
  if(selector)selector.addEventListener('change',function(){
   const mode=this.value;localStorage.setItem('gabxport-theme',mode);applyTheme(mode);
  });
+ if(systemDark)systemDark.addEventListener('change',()=>{if((localStorage.getItem('gabxport-theme')||'dark')==='system')applyTheme('system')});
 })();
 
 </script>
