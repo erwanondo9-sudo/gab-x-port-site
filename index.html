@@ -356,6 +356,23 @@ html[data-theme="light"] .gx-lower .service p{color:#68748d}
 html[data-theme="light"] .gx-steps>div{background:white;color:#25324d;border-color:#e0e4f0}html[data-theme="light"] .gx-steps small{color:#68748d}
 @media(max-width:760px){.gx-steps{grid-template-columns:1fr}}
 
+
+/* Barre de navigation fixe sur téléphone */
+.mobile-bottom-nav{display:none}
+@media(max-width:760px){
+ body{padding-bottom:calc(76px + env(safe-area-inset-bottom))}
+ .mobile-bottom-nav{position:fixed;z-index:60;left:0;right:0;bottom:0;display:grid;grid-template-columns:repeat(4,1fr);gap:2px;padding:8px 10px calc(8px + env(safe-area-inset-bottom));background:rgba(12,18,36,.96);border-top:1px solid rgba(150,165,205,.22);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 -8px 28px rgba(0,0,0,.18)}
+ .mobile-tab{min-width:0;border:0;background:transparent;color:#9ca8c7;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:4px 2px;border-radius:12px;font:inherit;cursor:pointer}
+ .mobile-tab span{font-size:21px;line-height:1.1}
+ .mobile-tab small{font-size:10px;font-weight:800;white-space:nowrap}
+ .mobile-tab.active{color:#fff;background:rgba(123,91,255,.2)}
+ .mobile-tab.active span{color:#a995ff}
+ html[data-theme="light"] .mobile-bottom-nav{background:rgba(255,255,255,.96);border-top-color:#dce5f0;box-shadow:0 -8px 28px rgba(22,55,88,.1)}
+ html[data-theme="light"] .mobile-tab{color:#718096}
+ html[data-theme="light"] .mobile-tab.active{color:#075f9f;background:#e9f4ff}
+ html[data-theme="light"] .mobile-tab.active span{color:#087fc5}
+}
+
 </style>
 </head>
 <body>
@@ -365,6 +382,12 @@ html[data-theme="light"] .gx-steps>div{background:white;color:#25324d;border-col
 <nav class="navlinks site-header-nav"><a href="#accueil" data-view="home" class="active">Accueil</a><a href="#annonces" data-view="annonces">Services</a><a href="#messagerie" data-view="messagerie">Messagerie</a><a href="#espace-personnel" data-view="espace-personnel">Mon espace</a></nav>
 <div class="navactions"><select id="themeSelect" class="theme-select" aria-label="Choisir le thème"><option value="system">◐ Appareil</option><option value="light">☀ Clair</option><option value="dark">☾ Sombre</option></select><button class="btn btn-light" id="navLoginBtn" onclick="openModal('login')">Se connecter</button><button class="btn btn-green" id="navSignupBtn" onclick="openModal('signup')">Créer un compte</button><button class="btn btn-dark" onclick="openModal('publish')">+ Publier une annonce</button></div>
 </header>
+<nav class="mobile-bottom-nav" aria-label="Navigation mobile">
+ <button type="button" class="mobile-tab active" data-mobile-view="home" onclick="showView('home')"><span aria-hidden="true">⌂</span><small>Accueil</small></button>
+ <button type="button" class="mobile-tab" data-mobile-view="annonces" onclick="showView('annonces')"><span aria-hidden="true">▤</span><small>Services</small></button>
+ <button type="button" class="mobile-tab" data-mobile-view="messagerie" onclick="showView('messagerie')"><span aria-hidden="true">✉</span><small>Messages</small></button>
+ <button type="button" class="mobile-tab" data-mobile-view="espace-personnel" onclick="showView('espace-personnel')"><span aria-hidden="true">◉</span><small>Mon espace</small></button>
+</nav>
 
 <main><div class="view active" id="view-home">
 <section class="hero gx-hero" id="accueil"><div class="gx-hero-art" aria-hidden="true"></div><div class="wrap gx-hero-inner"><div class="gx-hero-copy"><div class="gx-eyebrow">GAB X-PORT · FRANCE ⇄ GABON</div><h1>Les entreprises proposent.<br><em>Les clients répondent.</em></h1><p class="lead">Une plateforme simple pour publier des services et trouver des clients. Les entreprises présentent leurs offres, les clients intéressés prennent directement contact.</p><div class="gx-shortcuts"><button class="btn btn-green" onclick="showView('annonces')">Découvrir les services ↗</button><button class="btn btn-dark" onclick="openModal('signup')">Créer un compte client</button></div></div></div></section>
@@ -717,6 +740,7 @@ async function logoutAccount(){if(!supabaseClient){showToast('Supabase n’est p
 function showView(name){
  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id==='view-'+name));
  document.querySelectorAll('.site-header-nav a').forEach(a=>a.classList.toggle('active',a.dataset.view===name));
+ document.querySelectorAll('.mobile-tab').forEach(a=>a.classList.toggle('active',a.dataset.mobileView===name));
  if(name==='entreprises')renderCompanyDirectory();
  if(name==='messagerie')loadChats(true);
  if(name==='espace-personnel')loadPersonalSpace();
