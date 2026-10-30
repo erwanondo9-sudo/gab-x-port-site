@@ -1,12 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 450" role="img" aria-labelledby="title desc">
-<title id="title">Gab X-Port</title><desc id="desc">Monogramme GX avec une trajectoire dorée et un avion, suivi du nom Gab X-Port.</desc>
-<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#092a62"/><stop offset="1" stop-color="#008b72"/></linearGradient><linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffd75e"/><stop offset="1" stop-color="#e9a500"/></linearGradient></defs>
-<g transform="translate(165 20)">
-<path d="M260 35C130 5 30 88 30 205c0 110 82 175 186 163 67-8 112-52 125-112H228l28-60h180c5 154-83 244-224 244C65 440-35 344-35 207-35 62 85-32 260-20z" fill="url(#g)"/>
-<path d="M350 5h112l95 117-53 55zM600 210l-62 73 104 125H525L420 282l-55 66 58 60H310l-5-5 100-120-90-110h112l34 42z" fill="url(#g)"/>
-<path d="M180 365C310 295 450 180 625 70" fill="none" stroke="url(#gold)" stroke-width="19" stroke-linecap="round"/>
-<path d="M610 65l95-45-42 96-14-34-39-17z" fill="#092a62"/>
-</g>
-<text x="450" y="390" text-anchor="middle" font-family="Arial,sans-serif" font-size="88" font-weight="800" letter-spacing="-3" fill="#09254d">GAB <tspan fill="#e9ad12">X</tspan>-PORT</text>
-<text x="450" y="430" text-anchor="middle" font-family="Arial,sans-serif" font-size="23" letter-spacing="7" fill="#09254d">CONNECTER LE GABON AU MONDE</text>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 120"><defs><linearGradient id="gx" x2="1" y2="1"><stop stop-color="#fff"/><stop offset="1" stop-color="#aab7d6"/></linearGradient></defs><g transform="translate(4 5)"><path d="M75 10C38 2 8 24 8 59c0 34 24 54 57 49 22-4 37-18 41-39H66l9-17h51c2 40-23 65-62 65C20 117-5 92-5 58-5 20 26-4 75 0z" fill="url(#gx)"/><path d="M112 7h23l20 24-15 13zM155 58l-17 18 24 29h-25l-25-30-15 18 10 12H82l-2-2 27-31-24-29h25l12 15 13-15z" fill="#08b99b"/><path d="M90 103C125 75 157 40 191 13" stroke="#f7bb3d" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M184 11l25-10-11 25-4-9z" fill="#fff"/></g><text x="225" y="58" font-family="Arial,sans-serif" font-size="43" font-weight="800" letter-spacing="-1.8" fill="#fff">GAB <tspan fill="#f7bb3d">X</tspan>-PORT</text><text x="228" y="84" font-family="Arial,sans-serif" font-size="10" font-weight="700" letter-spacing="3.2" fill="#b9c7df">CONNECTER LE GABON AU MONDE</text></svg>
