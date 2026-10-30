@@ -682,17 +682,50 @@ function renderFavorites(){
 async function openOffererProfile(ownerId){
  if(!ownerId){showToast('Le profil de cet annonceur n’est pas disponible.');return;}
  if(!supabaseClient){showToast('Le service de profil est momentanément indisponible.');return;}
+ const content=document.getElementById('offererProfileContent');
+ content.innerHTML='<div class="empty">Chargement du profil professionnel…</div>';
+ showView('profil-offreur');
  try{
-  // RPC sécurisée : seules les informations publiques nécessaires sont retournées.
   const result=await supabaseClient.rpc('get_public_offerer_profile',{p_user_id:ownerId}).maybeSingle();
   if(result.error)throw result.error;
-  const p=result.data;if(!p){showToast('Profil introuvable ou non accessible.');return;}
+  const p=result.data;
+  if(!p){content.innerHTML='<div class="empty">Profil introuvable ou non accessible.</div>';return;}
   const name=p.display_name||'Membre Gab X-Port';
-  document.getElementById('offererProfileContent').innerHTML=`<div class="kicker">Profil professionnel</div><h1>${esc(name)}</h1><p class="sub">${esc(accountLabel(p.account_type))} · ${esc(p.country||'Pays non renseigné')}</p><div class="panel"><h3>À propos</h3><p class="sub">Profil inscrit sur Gab X-Port. Consultez ses annonces et échangez directement avec ce professionnel.</p><button class="btn btn-light" onclick="showView('annonces')">Retour aux annonces</button></div>`;
-  showView('profil-offreur');
- }catch(e){console.error(e);showToast('Impossible de charger ce profil : '+e.message);}
+  const isCompany=['compagnie','company'].includes(p.account_type);
+  const typeLabel=accountLabel(p.account_type);
+  const offers=getListings().filter(x=>String(x.ownerId||'')===String(ownerId));
+  const website=p.company_website?String(p.company_website):'';
+  const websiteUrl=website&&/^https?:\/\//i.test(website)?website:'';
+  const phone=p.professional_phone||'';
+  const activity=p.activity||'';
+  const initials=name.split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0]).join('').toUpperCase()||'GX';
+  content.innerHTML=`<div class="company-title-row"><div class="company-logo">${esc(initials)}</div><div><div class="verified-label">Profil professionnel Gab X-Port</div><h1 style="margin:8px 0">${esc(name)}</h1><p class="sub">${esc(typeLabel)} · ${esc(p.country||'Pays non renseigné')}</p></div></div>
+  <div class="company-facts" style="margin:22px 0"><div class="fact"><small>Type de membre</small><strong>${esc(typeLabel)}</strong></div><div class="fact"><small>Pays d’activité</small><strong>${esc(p.country||'Non renseigné')}</strong></div><div class="fact"><small>Services publiés</small><strong>${offers.length}</strong></div></div>
+  <div class="panel" style="margin:18px 0"><h3>Présentation</h3><p class="sub">${esc(activity|| (isCompany?'Entreprise inscrite sur Gab X-Port.':'Professionnel indépendant inscrit sur Gab X-Port.'))}</p>
+  ${websiteUrl?'<p><strong>Site professionnel :</strong> <a href="'+esc(websiteUrl)+'" target="_blank" rel="noopener noreferrer">'+esc(website)+'</a></p>':''}
+  ${phone?'<p><strong>Téléphone professionnel :</strong> '+esc(phone)+'</p>':''}
+  <p class="form-note">Pour préserver les informations personnelles, les adresses privées et les e-mails de connexion ne sont pas affichés. Vous pouvez contacter ce membre directement via la messagerie Gab X-Port.</p>
+  <button class="btn btn-green" onclick="startConversationWithOfferer('${String(ownerId)}')">Contacter ce professionnel ↗</button></div>
+  <div class="panel"><h3>Services et annonces publiés</h3>${offers.length?'<div class="listing-grid">'+offers.map(x=>'<article class="listing"><div class="listing-top"><span class="tag">'+esc(x.type||'Annonce')+'</span><span>'+esc(directionLabel(x.direction))+'</span></div><h3>'+esc(x.title)+'</h3><p>'+esc(x.desc)+'</p><div class="meta"><span>'+esc(x.category||'')+'</span><span>'+esc(x.city||'')+'</span></div><strong>'+esc(x.price||'À discuter')+'</strong></article>').join('')+'</div>':'<p class="sub">Aucune annonce publiée actuellement.</p>'}</div>`;
+ }catch(e){console.error('Profil offreur',e);content.innerHTML='<div class="empty">Impossible de charger les informations du profil. '+esc(e.message||'Vérifiez la configuration Supabase.')+'</div>';}
 }
-
+async function startConversationWithOfferer(ownerId){
+ if(!ownerId)return;
+ const own=getListings().find(x=>String(x.ownerId||'')===String(ownerId));
+ if(own){await contactListing(own.id);return;}
+ if(!supabaseClient){showToast('La messagerie est momentanément indisponible.');return;}
+ try{
+  const user=await getCurrentAuthUser();
+  if(!user){openModal('login');return;}
+  if(user.id===ownerId){showToast('Vous ne pouvez pas démarrer une conversation avec vous-même.');return;}
+  const [p1,p2]=[user.id,ownerId].sort();
+  let {data:existing,error}=await supabaseClient.from('conversations').select('id').eq('participant_1',p1).eq('participant_2',p2).maybeSingle();
+  if(error)throw error;
+  let id=existing?.id;
+  if(!id){const created=await supabaseClient.from('conversations').insert({participant_1:p1,participant_2:p2,created_by:user.id,subject:'Prise de contact Gab X-Port'}).select('id').single();if(created.error)throw created.error;id=created.data.id;}
+  await loadChats(false);activeChatId=id;await loadMessages(id);subscribeChatRealtime();showView('messagerie');
+ }catch(e){console.error(e);showToast('Impossible de contacter ce professionnel : '+(e.message||'erreur'));}
+}
 async function openListingDetails(id){const x=getListings().find(a=>String(a.id)===String(id));if(!x)return;let user=null;try{user=await getCurrentAuthUser()}catch(e){console.error(e)}if(!user){showToast('Créez un compte ou connectez-vous pour consulter les détails complets des annonces.');openModal('login');return;}const panel=document.getElementById('listingDetail');const direction=directionLabel(x.direction);const date=x.createdAt?new Date(x.createdAt).toLocaleDateString('fr-FR'):'Non précisée';panel.innerHTML=`<button class="listing-detail-back" onclick="closeListingDetails()">← Retour aux annonces</button><div class="listing-top"><span class="tag ${x.type==='Besoin'?'orange':''}">${esc(x.type||'Annonce')}</span><span style="font-size:11px;color:#748486">Publiée le ${esc(date)}</span></div><h2>${esc(x.title)}</h2><p style="color:#718078;margin:0">${esc(x.company)}</p><div class="listing-detail-facts"><div class="listing-detail-fact"><small>Trajet commercial</small><strong>${esc(direction)}</strong></div><div class="listing-detail-fact"><small>Secteur</small><strong>${esc(x.category)}</strong></div><div class="listing-detail-fact"><small>Localisation</small><strong>${esc(x.city)}</strong></div><div class="listing-detail-fact"><small>Prix / conditions</small><strong>${esc(x.price||'À discuter')}</strong></div></div><h3>Description complète</h3><p class="listing-detail-description">${esc(x.desc)}</p><div class="listing-detail-actions"><button class="btn btn-green" onclick="contactListing('${String(x.id)}')">Contacter l'annonceur ↗</button><button class="btn btn-light" onclick="openOffererProfile('${String(x.ownerId||"")}')">Voir le profil de l’offreur ↗</button><button class="btn btn-light" onclick="closeListingDetails()">Retour aux annonces</button></div><p class="form-note">Gab X-Port met les utilisateurs en relation. Les échanges et conditions sont convenus directement entre les parties.</p>`;document.getElementById('listingGrid').style.display='none';document.getElementById('listingDetail').classList.add('show');panel.scrollIntoView({behavior:'smooth',block:'start'});}
 function closeListingDetails(){document.getElementById('listingDetail').classList.remove('show');document.getElementById('listingGrid').style.display='';document.getElementById('listingGrid').scrollIntoView({behavior:'smooth',block:'start'});}
 async function contactListing(id){
