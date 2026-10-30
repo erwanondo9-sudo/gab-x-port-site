@@ -557,8 +557,12 @@ async function openModal(which){
   const role=user.user_metadata?.account_type||user.app_metadata?.account_type;
   if(!['compagnie','company'].includes(role)){showToast('La publication est réservée aux comptes entreprise.');return;}
  }
- document.getElementById('modalBackdrop').classList.add('show');
+ const backdrop=document.getElementById('modalBackdrop');
+ backdrop.classList.add('show');
+ backdrop.setAttribute('aria-modal','true');
+ backdrop.setAttribute('role','dialog');
  document.getElementById('modalTitle').textContent=signup?'Créer un compte':listing?'Publier un service':login?'Se connecter':'Contacter Gab X-Port';
+ if(login){const form=document.getElementById('loginForm');if(form)form.scrollTop=0;}
  document.getElementById('signupForm').style.display=signup?'block':'none';
  document.getElementById('loginForm').style.display=login?'block':'none';
  document.getElementById('listingForm').style.display=listing?'block':'none';
@@ -759,9 +763,11 @@ if(chatCompose)chatCompose.addEventListener('submit',async e=>{
 function simulateReadReceipt(){showToast('Les confirmations de lecture sont maintenant mises à jour lorsque le destinataire ouvre une conversation.');}
 function loadNotificationEmail(){}
 function renderChatListOnAuth(){loadChats(false);}
-async function mobileAccountAction(){
- const user=await getCurrentAuthUser().catch(()=>null);
- if(user)showView('espace-personnel');else openModal('login');
+function mobileAccountAction(){
+ // Ouvre immédiatement la connexion : ne pas attendre l'appel réseau Supabase
+ // qui peut être lent ou bloqué sur certains navigateurs mobiles.
+ if(window.gabxCurrentUser){showView('espace-personnel');return;}
+ openModal('login');
 }
 function updateAuthNavigation(session){
  const connected=!!session?.user;
