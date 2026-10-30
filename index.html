@@ -145,7 +145,7 @@
 <div class="field full"><label for="fDesc">Description du besoin ou de l'offre</label><textarea id="fDesc" required placeholder="Décrivez les produits, volumes, délais et conditions…"></textarea></div>
 <div class="field"><label for="fCity">Ville / pays</label><input id="fCity" required placeholder="Ex. Libreville, Gabon"></div>
 <div class="field"><label for="fContact">E-mail ou téléphone</label><input id="fContact" required placeholder="Vos coordonnées"></div>
-</div><p class="form-note">Démo : cette annonce sera enregistrée uniquement dans le stockage local de ce navigateur. Elle ne sera pas publiée sur internet et aucune notification ne sera envoyée.</p><button class="btn btn-green" type="submit" style="width:100%">Enregistrer l'annonce ↗</button></form>
+</div><p class="form-note">Votre annonce sera publiée sur Gab X-Port après connexion. Les échanges, négociations, paiements et livraisons se font directement entre les membres.</p><button class="btn btn-green" type="submit" style="width:100%">Enregistrer l'annonce ↗</button></form>
 <form id="contactForm" style="display:none"><div class="form-grid"><div class="field full"><label for="cName">Nom / entreprise</label><input id="cName" required></div><div class="field full"><label for="cEmail">E-mail ou téléphone</label><input id="cEmail" required></div><div class="field full"><label for="cMessage">Votre message</label><textarea id="cMessage" required placeholder="Expliquez votre besoin…"></textarea></div></div><p class="form-note">Démo : ce formulaire n'envoie pas encore de message à un administrateur.</p><button class="btn btn-green" type="submit" style="width:100%">Préparer ma demande</button></form>
 </div></div><div class="toast" id="toast"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -166,7 +166,10 @@ const sampleListings=[
 {id:6,title:"Partenaire logistique local",company:"Exemple — Prestataire",category:"Transport & logistique",direction:"both",desc:"Recherche de partenaires pour la coordination logistique, la réception et l'organisation des livraisons sur le corridor France–Gabon.",city:"France ⇄ Gabon",type:"Partenariat",price:"Sur devis",demo:true}
 ];
 let activeQuick="all";
-function getListings(){try{return [...sampleListings,...JSON.parse(localStorage.getItem("gabxportListings")||"[]")]}catch(e){return sampleListings}}
+let publishedListings=[];
+function mapListing(row){return {id:row.id,title:row.title,company:row.company,category:row.category,direction:row.direction,desc:row.description,city:row.city,type:row.listing_type,price:row.price||'À discuter',demo:false,ownerId:row.owner_id,createdAt:row.created_at,status:row.status}}
+function getListings(){return [...sampleListings,...publishedListings]}
+async function loadListings(){if(!supabaseClient)return;const {data,error}=await supabaseClient.from('listings').select('id,owner_id,title,company,category,direction,description,city,listing_type,price,status,created_at').eq('status','published').order('created_at',{ascending:false});if(error){console.error('Chargement des annonces',error);showToast('Impossible de charger les annonces : '+error.message);return;}publishedListings=(data||[]).map(mapListing);renderListings();}
 function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function renderListings(){
  const q=(document.getElementById('q').value||'').trim().toLowerCase(),dir=document.getElementById('direction').value,cat=document.getElementById('category').value;
@@ -362,6 +365,7 @@ if(supabaseClient){
   setTimeout(()=>{loadChats(false);if(session?.user)renderPersonalListings(session.user);},0);
  });
 }else{updateAuthNavigation(null)}
+loadListings();
 
 
 // Espace personnel connecté à Supabase : lecture et mise à jour du profil de l'utilisateur connecté.
