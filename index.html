@@ -905,8 +905,12 @@ document.getElementById('accountProfileForm').addEventListener('submit',async e=
  const payload={full_name:document.getElementById('accountFullName').value.trim(),phone:document.getElementById('accountPhone').value.trim()||null,country:document.getElementById('accountCountry').value};
  const button=e.target.querySelector('button[type="submit"]');button.disabled=true;status.textContent='Enregistrement…';
  try{const {error}=await supabaseClient.from('profiles').update(payload).eq('id',session.user.id);if(error)throw error;
-  if((session.user.user_metadata?.account_type||session.user.app_metadata?.account_type)==='exportateur'){
+  const currentType=session.user.user_metadata?.account_type||session.user.app_metadata?.account_type;
+  if(currentType==='exportateur'){
    const {error:metaError}=await supabaseClient.auth.updateUser({data:{independent_activity:document.getElementById('independentActivityProfile').value.trim(),independent_pickup_address:document.getElementById('independentPickupAddress').value.trim(),independent_delivery_address:document.getElementById('independentDeliveryAddress').value.trim(),independent_pickup_contact:document.getElementById('independentPickupContact').value.trim(),independent_delivery_contact:document.getElementById('independentDeliveryContact').value.trim(),independent_logistics_notes:document.getElementById('independentLogisticsNotes').value.trim()}});if(metaError)throw metaError;
+  }else if(currentType==='compagnie'||currentType==='company'){
+   const companyName=payload.full_name,companyPhone=document.getElementById('accountCompanyPhone').value.trim(),companyAddress=document.getElementById('accountCompanyAddress').value.trim(),companyWebsite=document.getElementById('accountCompanyWebsite').value.trim();
+   const {error:metaError}=await supabaseClient.auth.updateUser({data:{full_name:companyName,company_name:companyName,company_address:companyAddress,company_phone:companyPhone,company_website:companyWebsite,phone:companyPhone}});if(metaError)throw metaError;
   }document.getElementById('accountDisplayName').textContent=payload.full_name;if(!document.getElementById('accountAvatarImage').src||document.getElementById('accountAvatarImage').style.display==='none')setAccountAvatar('',(payload.full_name.split(/\s+/).map(x=>x[0]).slice(0,2).join('')||'GX').toUpperCase());status.textContent='Profil enregistré avec succès.';showToast('Ton profil a été mis à jour.');}
  catch(err){console.error('Mise à jour du profil',err);status.textContent='Enregistrement impossible : '+(err.message||'erreur du service');}
  finally{button.disabled=false}
