@@ -362,7 +362,7 @@ html[data-theme="light"] .gx-steps>div{background:white;color:#25324d;border-col
 @media(max-width:760px){
  body{padding-bottom:calc(82px + env(safe-area-inset-bottom))}
  .mobile-bottom-nav{position:fixed;z-index:60;left:0;right:0;bottom:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-items:stretch;gap:6px;padding:9px 12px calc(9px + env(safe-area-inset-bottom));min-height:70px;background:rgba(12,18,36,.97);border-top:1px solid rgba(150,165,205,.22);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 -8px 28px rgba(0,0,0,.18)}
- .mobile-bottom-nav:has(.mobile-login-tab[style*="display: none"]){grid-template-columns:repeat(4,minmax(0,1fr))}
+ .mobile-bottom-nav{grid-template-columns:repeat(4,minmax(0,1fr))}
  .mobile-tab{width:100%;min-width:0;min-height:50px;border:0;background:transparent;color:#9ca8c7;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:6px 2px;border-radius:12px;font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
  .mobile-tab svg{width:21px;height:21px;flex:0 0 21px;display:block;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:transform .18s ease}
  .mobile-tab.active svg{stroke-width:2.2;transform:translateY(-1px)}
@@ -471,8 +471,7 @@ html[data-theme="light"] .gx-steps>div{background:white;color:#25324d;border-col
  <button type="button" class="mobile-tab active" data-mobile-view="home" onclick="showView('home')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg><small>Accueil</small></button>
  <button type="button" class="mobile-tab" data-mobile-view="annonces" onclick="showView('annonces')"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg><small>Services</small></button>
  <button type="button" class="mobile-tab" data-mobile-view="messagerie" onclick="showView('messagerie')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8A8.5 8.5 0 0 1 8.7 3.9a8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8z"/></svg><small>Messages</small></button>
- <button type="button" class="mobile-tab" data-mobile-view="espace-personnel" onclick="showView('espace-personnel')"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><small>Mon espace</small></button>
- <button type="button" class="mobile-tab mobile-login-tab" onclick="openModal('login')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 17l5-5-5-5M15 12H3"/><path d="M12 3h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-6"/></svg><small>Connexion</small></button>
+ <button type="button" class="mobile-tab mobile-account-tab" data-mobile-view="espace-personnel" onclick="mobileAccountAction()"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="account-login-icon" d="M10 17l5-5-5-5M15 12H3M12 3h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-6"/><circle class="account-profile-icon" cx="12" cy="8" r="4" style="display:none"/><path class="account-profile-icon" d="M4 21a8 8 0 0 1 16 0" style="display:none"/></svg><small>Connexion</small></button>
 </nav>
 
 <main><div class="view active" id="view-home">
@@ -760,6 +759,10 @@ if(chatCompose)chatCompose.addEventListener('submit',async e=>{
 function simulateReadReceipt(){showToast('Les confirmations de lecture sont maintenant mises à jour lorsque le destinataire ouvre une conversation.');}
 function loadNotificationEmail(){}
 function renderChatListOnAuth(){loadChats(false);}
+async function mobileAccountAction(){
+ const user=await getCurrentAuthUser().catch(()=>null);
+ if(user)showView('espace-personnel');else openModal('login');
+}
 function updateAuthNavigation(session){
  const connected=!!session?.user;
  const login=document.getElementById('navLoginBtn');
@@ -768,10 +771,13 @@ function updateAuthNavigation(session){
  if(signup)signup.style.display=connected?'none':'';
  const personalLink=document.querySelector('.site-header-nav a[data-view="espace-personnel"]');
  if(personalLink)personalLink.style.display=connected?'':'none';
- const mobileLogin=document.querySelector('.mobile-login-tab');
- if(mobileLogin)mobileLogin.style.display=connected?'none':'';
- const mobileSpace=document.querySelector('.mobile-tab[data-mobile-view="espace-personnel"]');
- if(mobileSpace)mobileSpace.style.display=connected?'flex':'none';
+ const mobileAccount=document.querySelector('.mobile-account-tab');
+ if(mobileAccount){
+  mobileAccount.querySelector('small').textContent=connected?'Profil':'Connexion';
+  mobileAccount.querySelectorAll('.account-login-icon').forEach(el=>el.style.display=connected?'none':'');
+  mobileAccount.querySelectorAll('.account-profile-icon').forEach(el=>el.style.display=connected?'':'none');
+  mobileAccount.setAttribute('aria-label',connected?'Ouvrir mon profil personnel':'Se connecter ou créer un compte');
+ }
  const publish=document.querySelector('button[onclick="openModal(\'publish\')"]');
  if(publish)publish.style.display=connected?'':'none';
 }
