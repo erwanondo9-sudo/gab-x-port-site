@@ -544,15 +544,27 @@ function mapListing(row){return {id:row.id,title:row.title,company:row.company,c
 function getListings(){return [...sampleListings,...publishedListings]}
 async function loadListings(){if(!supabaseClient)return;const {data,error}=await supabaseClient.from('listings').select('id,owner_id,title,company,category,direction,description,city,listing_type,price,status,created_at').eq('status','published').order('created_at',{ascending:false});if(error){console.error('Chargement des annonces',error);showToast('Impossible de charger les annonces : '+error.message);return;}publishedListings=(data||[]).map(mapListing);renderListings();}
 function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function canonicalDirection(value){
+ const aliases={'international-ga':'other-international-ga','ga-international':'other-ga-international','both':'other-both'};
+ return aliases[value]||value||'';
+}
+function matchesDirection(listingDirection,selectedDirection){
+ const actual=canonicalDirection(listingDirection);
+ if(selectedDirection==='all')return true;
+ const known=['fr-ga','ga-fr','ma-ga','ga-ma','sn-ga','ga-sn','cn-ga','ga-cn'];
+ if(selectedDirection==='other')return !known.includes(actual);
+ return actual===selectedDirection;
+}
 function renderListings(){
  const q=(document.getElementById('q').value||'').trim().toLowerCase(),dir=document.getElementById('direction').value,cat=document.getElementById('category').value;
- const items=getListings().filter(x=>(!q||[x.title,x.company,x.desc,x.city,x.category].join(' ').toLowerCase().includes(q))&&(dir==='all'||(dir==='other'?(!['fr-ga','ga-fr','ma-ga','ga-ma','sn-ga','ga-sn','cn-ga','ga-cn'].includes(x.direction)):x.direction===dir))&&(cat==='all'||x.category===cat)&&(activeQuick==='all'||x.category===activeQuick));
+ const items=getListings().filter(x=>(!q||[x.title,x.company,x.desc,x.city,x.category].join(' ').toLowerCase().includes(q))&&matchesDirection(x.direction,dir)&&(cat==='all'||x.category===cat)&&(activeQuick==='all'||x.category===activeQuick));
  const grid=document.getElementById('listingGrid');
  if(!items.length){grid.innerHTML='<div class="empty">Aucune annonce ne correspond à votre recherche. Essayez d’autres filtres ou publiez votre besoin.</div>';return}
  grid.innerHTML=items.map(x=>`<article class="listing" role="button" tabindex="0" onclick="openListingDetails('${String(x.id)}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openListingDetails('${String(x.id)}')}"><div class="listing-top"><span class="tag ${x.type==='Besoin'?'orange':''}">${esc(x.type||'Annonce')}</span><span style="font-size:10px;color:#748486">${x.demo?'Exemple': 'Annonce locale'}</span></div><h3>${esc(x.title)}</h3><p class="listing-preview">${esc(x.desc)}</p><div class="meta"><span>↔ ${esc(directionLabel(x.direction))}</span><span>⌁ ${esc(x.category)}</span><span>⌖ ${esc(x.city)}</span></div><div class="listing-foot"><div><small style="display:block;color:#82908f;font-size:9px;margin-bottom:4px">${esc(x.company)}</small><strong>${esc(x.price||'À discuter')}</strong></div><button class="text-btn" onclick="event.stopPropagation();openListingDetails('${String(x.id)}')">Voir les détails ↗</button></div></article>`).join('');
 }
 document.querySelectorAll('.chip').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));b.classList.add('active');activeQuick=b.dataset.cat;renderListings()}));
 document.getElementById('q').addEventListener('keydown',e=>{if(e.key==='Enter')renderListings()});
+document.getElementById('direction').addEventListener('change',renderListings);
 async function openModal(which){
  const signup=which==='signup',listing=which==='publish',login=which==='login',reset=which==='resetPassword';
  if(listing){
