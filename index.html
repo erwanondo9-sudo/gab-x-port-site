@@ -65,10 +65,6 @@
 /* V5 — accusés de lecture et notifications e-mail (interface) */
 .read-receipt{display:block;text-align:right;font-size:9px;color:#3976a8;margin-top:4px;font-weight:800}
 .read-receipt.pending{color:#7b898b}
-.account-email-panel{background:#f4f8ef;border:1px solid #dce9d3;border-radius:12px;padding:13px;margin:12px 0}
-.account-email-panel label{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:7px;color:#637775}
-.account-email-panel input{width:100%;border:1px solid #dfe7dc;border-radius:9px;background:white;padding:10px;font:inherit;font-size:12px}
-.notification-note{font-size:10px;color:var(--muted);line-height:1.6;margin-top:8px}
 
 
 /* Fiche détaillée d'annonce */
@@ -224,7 +220,7 @@ html[data-theme="dark"] .route-line small,html[data-theme="dark"] .route-bottom 
 html[data-theme="dark"] .stats{background:#10101c}
 html[data-theme="dark"] .services{background:#1c1c2c}
 html[data-theme="dark"] .step{border-color:#44415f}
-html[data-theme="dark"] .field input,html[data-theme="dark"] .field select,html[data-theme="dark"] .field textarea,html[data-theme="dark"] .chat-compose textarea,html[data-theme="dark"] .account-email-panel input{background:#191929;border-color:#45445b;color:#f1efff}
+html[data-theme="dark"] .field input,html[data-theme="dark"] .field select,html[data-theme="dark"] .field textarea,html[data-theme="dark"] .chat-compose textarea{background:#191929;border-color:#45445b;color:#f1efff}
 html[data-theme="dark"] .btn-light,html[data-theme="dark"] .theme-select,html[data-theme="dark"] .chip,html[data-theme="dark"] .chat-tools button{background:#2c2b40;border-color:#48465f;color:#eeeaff}
 html[data-theme="dark"] .chip.active{background:#6558d3;border-color:#6558d3;color:white}
 html[data-theme="dark"] .chat-sidebar,html[data-theme="dark"] .chat-messages{background:#1d1d2e}
@@ -232,7 +228,7 @@ html[data-theme="dark"] .chat-thread{color:#efedf8}
 html[data-theme="dark"] .chat-thread.active{background:#33304f;border-color:#514b7d}
 html[data-theme="dark"] .chat-bubble.them{background:#343348;color:#f1efff}
 html[data-theme="dark"] .chat-bubble.me{background:#343b56;color:#f1efff}
-html[data-theme="dark"] .fact,html[data-theme="dark"] .account-email-panel{background:#2c2b40;border-color:#48465f}
+html[data-theme="dark"] .fact{background:#2c2b40;border-color:#48465f}
 html[data-theme="dark"] .empty{background:#232336;border-color:#48465f;color:#aaa9c0}
 html[data-theme="dark"] .close{background:#37364c;color:#fff}
 html[data-theme="dark"] .cta{background:linear-gradient(115deg,#5145b2,#302d70)}
@@ -377,7 +373,7 @@ html[data-theme="light"] .gx-steps>div{background:white;color:#25324d;border-col
 </div></section></div><div class="view" id="view-entreprises"><section class="page-hero"><div class="wrap"><div class="kicker">Annuaire professionnel</div><h2>Découvrez les entreprises.</h2><p class="sub">Consultez leurs profils, zones d’intervention, disponibilités et avis avant de prendre contact.</p></div></section><section class="section" style="padding-top:30px"><div class="wrap"><div class="search-panel"><div class="search-row"><div class="field"><label for="companySearch">Entreprise ou service</label><input id="companySearch" placeholder="Ex. transport, pièces auto…"></div><div class="field"><label for="companyCountry">Localisation</label><select id="companyCountry"><option value="all">Toutes les localisations</option><option>France</option><option>Gabon</option></select></div><div class="field"><label for="companySector">Secteur</label><select id="companySector"><option value="all">Tous les secteurs</option><option>Transport & logistique</option><option>Automobile & pièces</option><option>Agroalimentaire</option><option>Équipements & matériaux</option></select></div><button class="btn btn-green" onclick="renderCompanyDirectory()">Rechercher</button></div></div><div class="company-directory" id="companyDirectory" style="margin-top:20px"></div><p class="form-note">Les profils sont des exemples fictifs pour la démonstration. Les avis et disponibilités affichés ne sont pas vérifiés.</p></div></section></div><div class="view" id="view-messagerie"><section class="section" id="messagerie"><div class="wrap">
 <div class="section-head"><div><div class="kicker">Contact direct</div><h2>La conversation commence ici.</h2><p class="sub">Échangez directement avec les personnes intéressées par vos offres. Gab X-Port facilite la mise en relation, sans intervenir dans les négociations, les paiements ou les transactions.</p></div></div>
 <div class="messaging-layout">
-<aside class="chat-sidebar"><h3>Vos conversations</h3><p>Vos conversations privées sont synchronisées avec Supabase entre vos appareils après connexion.</p><div class="account-email-panel"><label for="messageEmail">E-mail de notification</label><input id="messageEmail" type="email" placeholder="vous@exemple.com" autocomplete="email"><button type="button" class="btn btn-light" style="width:100%;margin-top:8px" onclick="saveNotificationEmail()">Enregistrer mon e-mail</button><div class="notification-note">Les notifications par e-mail seront ajoutées dans une étape suivante.</div></div><div class="chat-list" id="chatList"></div></aside>
+<aside class="chat-sidebar"><h3>Vos conversations</h3><p>Vos conversations privées sont synchronisées avec Supabase entre vos appareils après connexion.</p><div class="chat-list" id="chatList"></div></aside>
 <div class="chat-main"><div class="chat-header"><div><strong id="chatPartner">Choisissez une conversation</strong><small id="chatSubtitle">Messagerie de mise en relation</small></div><div class="chat-tools"><button type="button" onclick="simulateReadReceipt()">✓✓ Simuler lecture</button><button type="button" onclick="startNewConversation()">+ Nouvelle conversation</button></div></div><div class="chat-messages" id="chatMessages"><div class="chat-empty">Sélectionnez une conversation ou démarrez un nouvel échange.</div></div><form class="chat-compose" id="chatCompose"><textarea id="chatInput" placeholder="Écrivez votre message…" aria-label="Votre message" required></textarea><button class="btn btn-green" type="submit">Envoyer ↗</button></form></div>
 </div>
 <div class="chat-disclaimer"><strong>Rôle de Gab X-Port :</strong> la plateforme met en relation les utilisateurs. Les échanges commerciaux, négociations, contrats, paiements, livraisons et litiges sont gérés directement entre les parties. Gab X-Port ne reçoit ni ne sécurise les fonds et n’est pas partie aux transactions. Les messages sont privés et synchronisés via Supabase. Les notifications par e-mail seront ajoutées ultérieurement.</div>
@@ -635,7 +631,6 @@ if(chatCompose)chatCompose.addEventListener('submit',async e=>{
  }catch(err){console.error(err);showToast('Message non envoyé : '+(err.message||'erreur Supabase'))}
 });
 function simulateReadReceipt(){showToast('Les confirmations de lecture sont maintenant mises à jour lorsque le destinataire ouvre une conversation.');}
-function saveNotificationEmail(){showToast('Les notifications e-mail nécessitent encore une fonction serveur et un fournisseur d’e-mails.');}
 function loadNotificationEmail(){}
 function renderChatListOnAuth(){loadChats(false);}
 function updateAuthNavigation(session){
