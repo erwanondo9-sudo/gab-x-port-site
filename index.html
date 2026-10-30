@@ -511,7 +511,7 @@ html[data-theme="light"] .gx-steps>div{background:white;color:#25324d;border-col
 <div class="field full company-only" style="display:none"><label for="sCompanyAddress">Adresse professionnelle</label><input id="sCompanyAddress" placeholder="Adresse du siège ou de l’établissement"></div>
 
 </div><p class="form-note">L’inscription utilise l’e-mail et le mot de passe via Supabase. La confirmation par e-mail reste active si elle est exigée dans les paramètres de ton projet.</p><button class="btn btn-green" type="submit" style="width:100%">Créer mon compte ↗</button></form>
-<form id="loginForm" style="display:none"><div class="form-grid"><div class="field full"><label for="lEmail">Adresse e-mail</label><input id="lEmail" type="email" required autocomplete="username" inputmode="email" autocapitalize="none" spellcheck="false"></div><div class="field full"><label for="lPassword">Mot de passe</label><input id="lPassword" type="password" required autocomplete="current-password"></div></div><p class="form-note">Connecte-toi pour retrouver tes échanges et contacter les membres de Gab X-Port.</p><button class="btn btn-green" type="submit" style="width:100%">Se connecter ↗</button><button class="text-btn" type="button" onclick="openModal('signup')">Créer un compte</button></form>
+<form id="loginForm" style="display:none"><div class="form-grid"><div class="field full"><label for="lEmail">Adresse e-mail</label><input id="lEmail" type="email" required autocomplete="username" inputmode="email" autocapitalize="none" spellcheck="false"></div><div class="field full"><label for="lPassword">Mot de passe</label><input id="lPassword" type="password" required autocomplete="current-password"></div></div><p class="form-note">Connecte-toi pour retrouver tes échanges et contacter les membres de Gab X-Port.</p><p id="loginFeedback" role="status" aria-live="polite" style="display:none;margin:10px 0;padding:11px 12px;border-radius:10px;font-size:13px;line-height:1.45;background:#edf5e8;color:#245b3d"></p><button class="btn btn-green" type="submit" style="width:100%">Se connecter ↗</button><button class="text-btn" type="button" onclick="openModal('signup')">Créer un compte</button></form>
 <form id="listingForm"><div class="form-grid">
 
 <input id="fDirection" type="hidden" value="both">
@@ -609,16 +609,33 @@ document.getElementById('signupForm').addEventListener('submit',async e=>{
 });
 document.getElementById('loginForm').addEventListener('submit',async e=>{
  e.preventDefault();
- if(!supabaseClient){showToast('Connexion Supabase non configurée. Configure l’URL et la clé publique dans le fichier.');return}
+ const feedback=document.getElementById('loginFeedback');
+ const button=document.querySelector('#loginForm button[type="submit"]');
+ const say=(message,isError=false)=>{if(feedback){feedback.textContent=message;feedback.style.display='block';feedback.style.background=isError?'#fff0ed':'#edf5e8';feedback.style.color=isError?'#9a3025':'#245b3d';}};
+ if(!supabaseClient){say('La connexion au service est indisponible. Réessaie dans quelques instants.',true);return;}
  const email=document.getElementById('lEmail').value.trim(),password=document.getElementById('lPassword').value;
- const button=document.querySelector('#loginForm button[type="submit"]');button.disabled=true;button.textContent='Connexion…';
+ button.disabled=true;button.textContent='Connexion…';say('Vérification de tes identifiants…');
  try{
   const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});
   if(error)throw error;
-  await ensureCompanyRecord(data.user);
-  closeModal();updateAuthNavigation({user:data.user});showToast('Connexion réussie. Bienvenue dans Gab X-Port.');showView('espace-personnel');
- }catch(err){console.error('Erreur connexion Supabase',err);showToast('Connexion impossible : '+(err.message||'vérifie ton e-mail et ton mot de passe.'))}
- finally{button.disabled=false;button.textContent='Se connecter ↗'}
+  if(!data?.user)throw new Error('Aucun compte utilisateur retourné. Vérifie la confirmation de ton adresse e-mail.');
+  window.gabxCurrentUser=data.user;
+  updateAuthNavigation({user:data.user});
+  closeModal();
+  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id==='view-espace-personnel'));
+  document.querySelectorAll('.site-header-nav a').forEach(a=>a.classList.toggle('active',a.dataset.view==='espace-personnel'));
+  document.querySelectorAll('.mobile-tab[data-mobile-view]').forEach(a=>a.classList.toggle('active',a.dataset.mobileView==='espace-personnel'));
+  window.scrollTo({top:0,behavior:'auto'});
+  showToast('Connexion réussie. Bienvenue dans Gab X-Port.');
+  // Ces tâches secondaires ne doivent pas bloquer l'ouverture de la session.
+  ensureCompanyRecord(data.user).catch(err=>console.error('Profil entreprise à compléter',err));
+  loadPersonalSpace().catch(err=>console.error('Chargement de l’espace personnel',err));
+ }catch(err){
+  console.error('Erreur connexion Supabase',err);
+  say(err.message||'Connexion impossible. Vérifie ton e-mail et ton mot de passe.',true);
+ }finally{
+  button.disabled=false;button.textContent='Se connecter ↗';
+ }
 });
 if(supabaseClient){supabaseClient.auth.getSession().then(async({data})=>{if(data.session?.user){try{await ensureCompanyRecord(data.session.user)}catch(err){console.error('Profil compagnie à compléter',err)}}});}
 
