@@ -482,7 +482,7 @@ html[data-theme="light"] .gx-steps>div{background:white;color:#25324d;border-col
 <div class="section-head"><div><div class="kicker">Le marché Gab X-Port</div><h2>Les services proposés</h2><p class="sub">Découvrez les services publiés par les entreprises et contactez directement celles qui vous intéressent.</p></div></div>
 <div class="search-panel"><div class="search-row">
 <div class="field"><label for="q">Quel service recherchez-vous ?</label><input id="q" placeholder="Ex. transport, livraison, conseil…"></div>
-<div class="field"><label for="direction">Corridor commercial</label><select id="direction"><option value="all">Tous les pays</option><option value="fr-ga">France → Gabon</option><option value="ma-ga">Maroc → Gabon</option><option value="sn-ga">Sénégal → Gabon</option><option value="cn-ga">Chine → Gabon</option><option value="other">Autres</option></select></div>
+<div class="field"><label for="direction">Corridor commercial</label><select id="direction"><option value="all">Tous les corridors</option><option value="fr-ga">France → Gabon</option><option value="ga-fr">Gabon → France</option><option value="ma-ga">Maroc → Gabon</option><option value="ga-ma">Gabon → Maroc</option><option value="sn-ga">Sénégal → Gabon</option><option value="ga-sn">Gabon → Sénégal</option><option value="cn-ga">Chine → Gabon</option><option value="ga-cn">Gabon → Chine</option><option value="other">Autres corridors</option></select></div>
 <div class="field"><input id="category" type="hidden" value="all"></div>
 <button class="btn btn-green" onclick="renderListings()">⌕ Rechercher</button>
 </div></div>
@@ -538,7 +538,7 @@ const sampleListings=[];
 let activeQuick="all";
 let publishedListings=[];
 function directionLabel(value){
- return ({'fr-ga':'International → Gabon','ma-ga':'International → Gabon','sn-ga':'International → Gabon','cn-ga':'International → Gabon','international-ga':'International → Gabon','ga-fr':'Gabon → International','ga-international':'Gabon → International','both':'International ⇄ Gabon'})[value]||'International ⇄ Gabon';
+ return ({'fr-ga':'France → Gabon','ma-ga':'Maroc → Gabon','sn-ga':'Sénégal → Gabon','cn-ga':'Chine → Gabon','international-ga':'International → Gabon','ga-fr':'Gabon → France','ga-ma':'Gabon → Maroc','ga-sn':'Gabon → Sénégal','ga-cn':'Gabon → Chine','ga-international':'Gabon → International','both':'International ⇄ Gabon'})[value]||'International ⇄ Gabon';
 }
 function mapListing(row){return {id:row.id,title:row.title,company:row.company,category:row.category,direction:row.direction,desc:row.description,city:row.city,type:row.listing_type,price:row.price||'À discuter',demo:false,ownerId:row.owner_id,createdAt:row.created_at,status:row.status}}
 function getListings(){return [...sampleListings,...publishedListings]}
@@ -546,7 +546,7 @@ async function loadListings(){if(!supabaseClient)return;const {data,error}=await
 function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function renderListings(){
  const q=(document.getElementById('q').value||'').trim().toLowerCase(),dir=document.getElementById('direction').value,cat=document.getElementById('category').value;
- const items=getListings().filter(x=>(!q||[x.title,x.company,x.desc,x.city,x.category].join(' ').toLowerCase().includes(q))&&(dir==='all'||(dir==='other'?(!['fr-ga','ma-ga','sn-ga','cn-ga'].includes(x.direction)):x.direction===dir))&&(cat==='all'||x.category===cat)&&(activeQuick==='all'||x.category===activeQuick));
+ const items=getListings().filter(x=>(!q||[x.title,x.company,x.desc,x.city,x.category].join(' ').toLowerCase().includes(q))&&(dir==='all'||(dir==='other'?(!['fr-ga','ga-fr','ma-ga','ga-ma','sn-ga','ga-sn','cn-ga','ga-cn'].includes(x.direction)):x.direction===dir))&&(cat==='all'||x.category===cat)&&(activeQuick==='all'||x.category===activeQuick));
  const grid=document.getElementById('listingGrid');
  if(!items.length){grid.innerHTML='<div class="empty">Aucune annonce ne correspond à votre recherche. Essayez d’autres filtres ou publiez votre besoin.</div>';return}
  grid.innerHTML=items.map(x=>`<article class="listing" role="button" tabindex="0" onclick="openListingDetails('${String(x.id)}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openListingDetails('${String(x.id)}')}"><div class="listing-top"><span class="tag ${x.type==='Besoin'?'orange':''}">${esc(x.type||'Annonce')}</span><span style="font-size:10px;color:#748486">${x.demo?'Exemple': 'Annonce locale'}</span></div><h3>${esc(x.title)}</h3><p class="listing-preview">${esc(x.desc)}</p><div class="meta"><span>↔ ${esc(directionLabel(x.direction))}</span><span>⌁ ${esc(x.category)}</span><span>⌖ ${esc(x.city)}</span></div><div class="listing-foot"><div><small style="display:block;color:#82908f;font-size:9px;margin-bottom:4px">${esc(x.company)}</small><strong>${esc(x.price||'À discuter')}</strong></div><button class="text-btn" onclick="event.stopPropagation();openListingDetails('${String(x.id)}')">Voir les détails ↗</button></div></article>`).join('');
