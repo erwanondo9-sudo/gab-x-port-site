@@ -543,7 +543,7 @@ function directionLabel(value){
 }
 function mapListing(row){return {id:row.id,title:row.title,company:row.company,category:row.category,direction:row.direction,desc:row.description,city:row.city,type:row.listing_type,price:row.price||'À discuter',demo:false,ownerId:row.owner_id,createdAt:row.created_at,status:row.status}}
 function getListings(){return [...sampleListings,...publishedListings]}
-async function loadListings(){if(!supabaseClient)return;const {data,error}=await supabaseClient.from('listings').select('id,owner_id,title,company,category,direction,description,city,listing_type,price,status,created_at').eq('status','published').order('created_at',{ascending:false});if(error){console.error('Chargement des annonces',error);showToast('Impossible de charger les annonces : '+error.message);return;}publishedListings=(data||[]).map(mapListing);renderListings();}
+async function loadListings(){if(!supabaseClient)return;const {data,error}=await supabaseClient.from('listings').select('id,owner_id,title,company,category,direction,description,city,listing_type,price,status,created_at').eq('status','published').order('created_at',{ascending:false});if(error){console.error('Chargement des annonces',error);showToast('Impossible de charger les annonces : '+error.message);return;}publishedListings=(data||[]).map(mapListing);renderListings();renderFavorites();}
 function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function canonicalDirection(value){
  const aliases={'international-ga':'other-international-ga','ga-international':'other-ga-international','both':'other-both'};
