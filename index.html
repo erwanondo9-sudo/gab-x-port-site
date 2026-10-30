@@ -502,7 +502,7 @@ html[data-theme="light"] .gx-steps>div{background:white;color:#25324d;border-col
 <div class="modal-backdrop" id="modalBackdrop" onclick="if(event.target===this)closeModal()"><div class="modal"><div class="modal-head"><div><div class="kicker">Gab X-Port</div><h2 id="modalTitle">Publier une annonce</h2></div><button class="close" onclick="closeModal()" aria-label="Fermer">×</button></div><form id="signupForm" style="display:none"><div class="verify-note" style="margin-bottom:16px">Crée ton compte pour trouver des partenaires et échanger directement avec eux. Aucune vérification d’identité via Stripe Identity n’est demandée à cette étape.</div><div class="form-grid">
 <div class="field full"><label for="sAccountType">Type de compte</label><select id="sAccountType" required onchange="updateSignupFields()"><option value="client">Client</option><option value="company">Entreprise</option><option value="independent">Indépendant</option></select></div>
 <div class="field personal-name-only"><label for="sFirstName">Prénom</label><input id="sFirstName" required autocomplete="given-name"></div><div class="field personal-name-only"><label for="sLastName">Nom</label><input id="sLastName" required autocomplete="family-name"></div>
-<div class="field full"><label for="sEmail">E-mail ou numéro de téléphone</label><input id="sEmail" type="text" required autocomplete="username" inputmode="email" autocapitalize="none" spellcheck="false" placeholder="exemple@mail.com ou +241…"><small class="form-note">Choisis l’un des deux : ton e-mail ou ton numéro au format international (+33, +241…).</small></div><div class="field"><label for="sPhone">Téléphone de contact (facultatif)</label><input id="sPhone" type="tel" placeholder="+33… / +241…" autocomplete="tel"></div>
+<div class="field full"><label for="sEmail">Adresse e-mail</label><input id="sEmail" type="email" required autocomplete="email" inputmode="email" autocapitalize="none" spellcheck="false" placeholder="exemple@mail.com"></div><div class="field"><label for="sPhone">Téléphone de contact (facultatif)</label><input id="sPhone" type="tel" placeholder="+33… / +241…" autocomplete="tel"></div>
 <div class="field"><label for="sCountry">Pays de résidence</label><select id="sCountry" required><option value="France">France</option><option value="Gabon">Gabon</option><option value="Autre">Autre</option></select></div>
 <div class="field full"><label for="sPassword">Mot de passe</label><input id="sPassword" type="password" required minlength="10" autocomplete="new-password" placeholder="10 caractères minimum"></div>
 <div class="field full company-only" style="display:none"><label for="sCompanyName">Raison sociale</label><input id="sCompanyName" placeholder="Nom officiel de la compagnie"></div>
@@ -511,8 +511,8 @@ html[data-theme="light"] .gx-steps>div{background:white;color:#25324d;border-col
 <div class="field full company-only" style="display:none"><label for="sCompanyAddress">Adresse du siège social</label><input id="sCompanyAddress" placeholder="Adresse complète du siège social"></div><div class="field company-only" style="display:none"><label for="sCompanyPhone">Numéro d’accueil</label><input id="sCompanyPhone" type="tel" placeholder="+33… / +241…" autocomplete="tel"></div><div class="field company-only" style="display:none"><label for="sCompanyWebsite">Site internet (facultatif)</label><input id="sCompanyWebsite" type="url" placeholder="https://www.exemple.com"></div>
 <div class="field full independent-only" style="display:none"><label for="sIndependentActivity">Activité / produits ou services proposés</label><input id="sIndependentActivity" placeholder="Ex. export de produits agricoles, sourcing, représentation commerciale"></div><div class="field independent-only" style="display:none"><label for="sIndependentCountry">Pays depuis lequel vous exercez</label><select id="sIndependentCountry"><option value="France">France</option><option value="Gabon">Gabon</option><option value="Maroc">Maroc</option><option value="Sénégal">Sénégal</option><option value="Chine">Chine</option><option value="Autre">Autre</option></select></div>
 
-</div><p class="form-note">Tu peux créer ton compte avec une adresse e-mail ou un numéro de téléphone au format international. Un code de confirmation peut être envoyé selon le mode choisi.</p><button class="btn btn-green" type="submit" style="width:100%">Créer mon compte ↗</button></form>
-<form id="phoneVerifyForm" style="display:none"><p class="form-note">Un code de vérification vient d’être envoyé par SMS. Saisis les 6 chiffres reçus pour activer ton compte.</p><div class="field full"><label for="phoneVerifyCode">Code reçu par SMS</label><input id="phoneVerifyCode" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" minlength="6" maxlength="6" required placeholder="123456"></div><p id="phoneVerifyFeedback" role="status" aria-live="polite" class="form-note"></p><button class="btn btn-green" type="submit" style="width:100%">Vérifier mon numéro ↗</button><button class="text-btn" type="button" id="resendPhoneCode">Renvoyer le code</button></form><form id="loginForm" style="display:none"><div class="form-grid"><div class="field full"><label for="lEmail">E-mail ou numéro de téléphone</label><input id="lEmail" type="text" required autocomplete="username" inputmode="email" autocapitalize="none" spellcheck="false" placeholder="exemple@mail.com ou +241…"></div><div class="field full"><label for="lPassword">Mot de passe</label><input id="lPassword" type="password" required autocomplete="current-password"></div></div><p class="form-note">Connecte-toi pour retrouver tes échanges et contacter les membres de Gab X-Port.</p><p id="loginFeedback" role="status" aria-live="polite" style="display:none;margin:10px 0;padding:11px 12px;border-radius:10px;font-size:13px;line-height:1.45;background:#edf5e8;color:#245b3d"></p><button class="btn btn-green" type="submit" style="width:100%">Se connecter ↗</button><button class="text-btn" type="button" onclick="openModal('signup')">Créer un compte</button></form>
+</div><p class="form-note">L’inscription se fait avec une adresse e-mail. Tu recevras un e-mail pour confirmer ton compte.</p><button class="btn btn-green" type="submit" style="width:100%">Créer mon compte ↗</button></form>
+<form id="loginForm" style="display:none"><div class="form-grid"><div class="field full"><label for="lEmail">Adresse e-mail</label><input id="lEmail" type="email" required autocomplete="email" inputmode="email" autocapitalize="none" spellcheck="false" placeholder="exemple@mail.com"></div><div class="field full"><label for="lPassword">Mot de passe</label><input id="lPassword" type="password" required autocomplete="current-password"></div></div><p class="form-note">Connecte-toi pour retrouver tes échanges et contacter les membres de Gab X-Port.</p><p id="loginFeedback" role="status" aria-live="polite" style="display:none;margin:10px 0;padding:11px 12px;border-radius:10px;font-size:13px;line-height:1.45;background:#edf5e8;color:#245b3d"></p><button class="btn btn-green" type="submit" style="width:100%">Se connecter ↗</button><button class="text-btn" type="button" onclick="openModal('signup')">Créer un compte</button></form>
 <form id="listingForm"><div class="form-grid">
 
 <div class="field full"><label for="fDirection">Corridor commercial</label><select id="fDirection" required><option value="fr-ga">France → Gabon</option><option value="ma-ga">Maroc → Gabon</option><option value="sn-ga">Sénégal → Gabon</option><option value="cn-ga">Chine → Gabon</option><option value="ga-fr">Gabon → France</option><option value="both">Autres / multidestination</option></select></div>
@@ -583,37 +583,6 @@ function updateSignupFields(){
  document.querySelectorAll('.company-only').forEach(el=>{el.style.display=company?'block':'none';const input=el.querySelector('input,select');if(input)input.required=company&&['sCompanyAddress','sCompanyPhone'].includes(input.id)});
  document.querySelectorAll('.independent-only').forEach(el=>{el.style.display=independent?'block':'none';const input=el.querySelector('input,select');if(input)input.required=independent&&input.id==='sIndependentActivity'});
 }
-let pendingPhoneSignup=null;
-function showPhoneVerification(phone){
- pendingPhoneSignup=phone;
- document.getElementById('modalTitle').textContent='Vérifier le numéro';
- document.getElementById('signupForm').style.display='none';
- document.getElementById('loginForm').style.display='none';
- document.getElementById('listingForm').style.display='none';
- document.getElementById('contactForm').style.display='none';
- document.getElementById('phoneVerifyForm').style.display='block';
- document.getElementById('phoneVerifyCode').value='';
- document.getElementById('phoneVerifyFeedback').textContent='Code envoyé au '+phone;
-}
-document.getElementById('phoneVerifyForm').addEventListener('submit',async e=>{
- e.preventDefault();
- const code=document.getElementById('phoneVerifyCode').value.trim(),feedback=document.getElementById('phoneVerifyFeedback'),button=e.target.querySelector('button[type="submit"]');
- if(!pendingPhoneSignup){feedback.textContent='Aucune inscription à vérifier. Recommence la création du compte.';return;}
- button.disabled=true;button.textContent='Vérification…';feedback.textContent='Vérification du code…';
- try{
-  const {data,error}=await supabaseClient.auth.verifyOtp({phone:pendingPhoneSignup,token:code,type:'sms'});
-  if(error)throw error;
-  if(!data?.user)throw new Error('La vérification n’a pas retourné de compte.');
-  await ensureCompanyRecord(data.user).catch(err=>console.error('Profil entreprise à compléter',err));
-  window.gabxCurrentUser=data.user;pendingPhoneSignup=null;closeModal();await loadPersonalSpace().catch(err=>console.error('Chargement espace personnel',err));updateAuthNavigation({user:data.user});showToast('Numéro vérifié. Ton compte Gab X-Port est activé.');
- }catch(err){feedback.textContent=err.message||'Code incorrect ou expiré. Réessaie.';}
- finally{button.disabled=false;button.textContent='Vérifier mon numéro ↗';}
-});
-document.getElementById('resendPhoneCode').addEventListener('click',async()=>{
- const feedback=document.getElementById('phoneVerifyFeedback');if(!pendingPhoneSignup)return;
- try{const {error}=await supabaseClient.auth.resend({type:'sms',phone:pendingPhoneSignup});if(error)throw error;feedback.textContent='Un nouveau code vient d’être envoyé.';}
- catch(err){feedback.textContent=err.message||'Impossible de renvoyer le code pour le moment.';}
-});
 function setSignupBusy(busy){const b=document.querySelector('#signupForm button[type="submit"]');if(b){b.disabled=busy;b.textContent=busy?'Création en cours…':'Créer mon compte ↗'}}
 async function ensureCompanyRecord(user){
  if(!supabaseClient||!user||user.user_metadata?.account_type!=='compagnie')return;
@@ -631,19 +600,18 @@ document.getElementById('signupForm').addEventListener('submit',async e=>{
  e.preventDefault();
  if(!supabaseClient){showToast('Le service de compte est momentanément indisponible. Réessaie dans quelques instants.');return}
  const type=document.getElementById('sAccountType').value,company=type==='company',independent=type==='independent';
- const firstName=document.getElementById('sFirstName').value.trim(),lastName=document.getElementById('sLastName').value.trim(),companyName=document.getElementById('sCompanyName').value.trim(),identifier=document.getElementById('sEmail').value.trim(),isEmail=identifier.includes('@'),email=isEmail?identifier.toLowerCase():undefined,phone=isEmail?undefined:identifier.replace(/[\s().-]/g,''),password=document.getElementById('sPassword').value;
- if(!isEmail&&!/^\+[1-9]\d{7,14}$/.test(phone)){showToast('Entre une adresse e-mail valide ou un numéro au format international, par exemple +241… ou +33….');return}
+ const firstName=document.getElementById('sFirstName').value.trim(),lastName=document.getElementById('sLastName').value.trim(),companyName=document.getElementById('sCompanyName').value.trim(),email=document.getElementById('sEmail').value.trim().toLowerCase(),password=document.getElementById('sPassword').value;
+ if(!email||!email.includes('@')){showToast('Entre une adresse e-mail valide.');return}
  if(password.length<10){showToast('Choisis un mot de passe de 10 caractères minimum.');return}
  const accountType=type==='client'?'client':(independent?'exportateur':'compagnie');
  const companyPhone=company?document.getElementById('sCompanyPhone').value.trim():'';
-  const metadata={account_type:accountType,full_name:company?companyName:(firstName+' '+lastName).trim(),phone:company?(companyPhone||phone||''):((document.getElementById('sPhone').value.trim())||phone||''),country:document.getElementById('sCountry').value,independent_activity:independent?document.getElementById('sIndependentActivity').value:'',independent_country:independent?document.getElementById('sIndependentCountry').value:'',company_name:company?companyName:'',registration_number:company?document.getElementById('sRegNumber').value.trim():'',representative_role:company?document.getElementById('sRole').value:'',company_address:company?document.getElementById('sCompanyAddress').value.trim():'',company_phone:company?(companyPhone||phone||''):'',company_website:company?document.getElementById('sCompanyWebsite').value.trim():''};
+  const metadata={account_type:accountType,full_name:company?companyName:(firstName+' '+lastName).trim(),phone:company?companyPhone:document.getElementById('sPhone').value.trim(),country:document.getElementById('sCountry').value,independent_activity:independent?document.getElementById('sIndependentActivity').value:'',independent_country:independent?document.getElementById('sIndependentCountry').value:'',company_name:company?companyName:'',registration_number:company?document.getElementById('sRegNumber').value.trim():'',representative_role:company?document.getElementById('sRole').value:'',company_address:company?document.getElementById('sCompanyAddress').value.trim():'',company_phone:company?companyPhone:'',company_website:company?document.getElementById('sCompanyWebsite').value.trim():''};
  setSignupBusy(true);
  try{
-  const credentials=isEmail?{email,password,options:{data:metadata}}:{phone,password,options:{data:metadata}};
+  const credentials={email,password,options:{data:metadata}};
   const {data,error}=await supabaseClient.auth.signUp(credentials);
   if(error)throw error;
   if(data.session&&data.user){await ensureCompanyRecord(data.user)}
-  if(!isEmail&&!data.session){showPhoneVerification(phone);return;}
   e.target.reset();updateSignupFields();closeModal();
   showToast(data.session?'Compte créé. Tu peux maintenant te connecter et utiliser la messagerie.':'Compte créé. Vérifie ta boîte e-mail pour confirmer ton inscription.');
  }catch(err){console.error('Erreur lors de l’inscription',err);showToast('Inscription impossible : '+(err.message||'vérifie les champs obligatoires et réessaie.'))}
@@ -655,11 +623,11 @@ document.getElementById('loginForm').addEventListener('submit',async e=>{
  const button=document.querySelector('#loginForm button[type="submit"]');
  const say=(message,isError=false)=>{if(feedback){feedback.textContent=message;feedback.style.display='block';feedback.style.background=isError?'#fff0ed':'#edf5e8';feedback.style.color=isError?'#9a3025':'#245b3d';}};
  if(!supabaseClient){say('La connexion au service est indisponible. Réessaie dans quelques instants.',true);return;}
- const identifier=document.getElementById('lEmail').value.trim(),isEmail=identifier.includes('@'),email=isEmail?identifier.toLowerCase():undefined,phone=isEmail?undefined:identifier.replace(/[\s().-]/g,''),password=document.getElementById('lPassword').value;
- if(!isEmail&&!/^\+[1-9]\d{7,14}$/.test(phone)){say('Entre un e-mail valide ou un numéro au format international (+33…, +241…).',true);return}
+ const email=document.getElementById('lEmail').value.trim().toLowerCase(),password=document.getElementById('lPassword').value;
+ if(!email||!email.includes('@')){say('Entre une adresse e-mail valide.',true);return}
  button.disabled=true;button.textContent='Connexion…';say('Vérification de tes identifiants…');
  try{
-  const {data,error}=await supabaseClient.auth.signInWithPassword(isEmail?{email,password}:{phone,password});
+  const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});
   if(error)throw error;
   if(!data?.user)throw new Error('Aucun compte utilisateur retourné. Vérifie la confirmation de ton adresse e-mail.');
   window.gabxCurrentUser=data.user;
