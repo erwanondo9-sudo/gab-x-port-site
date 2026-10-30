@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 700" role="img" aria-label="Port maritime en plein jour avec avion, navire porte-conteneurs et soleil">
+<defs>
+ <linearGradient id="sky" x2="0" y2="1"><stop stop-color="#42a5f5"/><stop offset=".62" stop-color="#b9e5ff"/><stop offset="1" stop-color="#fff1d2"/></linearGradient>
+ <linearGradient id="sea" x2="0" y2="1"><stop stop-color="#45b8d0"/><stop offset="1" stop-color="#08769b"/></linearGradient>
+ <linearGradient id="sun" x2="0" y2="1"><stop stop-color="#fff7b0"/><stop offset="1" stop-color="#ffc84a"/></linearGradient>
+ <linearGradient id="ship" x2="0" y2="1"><stop stop-color="#193d60"/><stop offset="1" stop-color="#09253e"/></linearGradient>
+ <filter id="blur"><feGaussianBlur stdDeviation="22"/></filter>
+</defs>
+<rect width="1600" height="700" fill="url(#sky)"/>
+<circle cx="1260" cy="135" r="76" fill="url(#sun)"/>
+<circle cx="1260" cy="135" r="112" fill="#fff2a8" opacity=".3" filter="url(#blur)"/>
+<g fill="#fff" opacity=".72">
+ <ellipse cx="260" cy="155" rx="115" ry="28"/><ellipse cx="310" cy="140" rx="75" ry="43"/><ellipse cx="365" cy="158" rx="94" ry="27"/>
+ <ellipse cx="820" cy="105" rx="92" ry="23"/><ellipse cx="860" cy="91" rx="60" ry="35"/><ellipse cx="910" cy="108" rx="78" ry="24"/>
+ <ellipse cx="1450" cy="260" rx="105" ry="24"/><ellipse cx="1490" cy="243" rx="65" ry="34"/>
+</g>
+<path d="M0 425 Q190 350 365 405 T740 390 T1100 410 T1600 370 V700 H0Z" fill="#4e9d76" opacity=".8"/>
+<path d="M0 470 Q250 430 470 455 T920 445 T1300 455 T1600 425 V700 H0Z" fill="url(#sea)"/>
+<path d="M0 510 Q260 480 520 505 T1020 495 T1600 480" fill="none" stroke="#d8fbff" stroke-width="5" opacity=".35"/>
+<!-- distant coastal skyline -->
+<g fill="#668da4" opacity=".8">
+ <rect x="115" y="360" width="42" height="105"/><rect x="168" y="330" width="35" height="135"/><rect x="212" y="380" width="58" height="85"/>
+ <rect x="292" y="345" width="48" height="120"/><rect x="350" y="370" width="38" height="95"/><rect x="410" y="320" width="52" height="145"/>
+ <rect x="480" y="360" width="35" height="105"/><rect x="535" y="340" width="58" height="125"/>
+</g>
+<!-- palm trees -->
+<g stroke="#6a5133" stroke-width="12" fill="none"><path d="M80 570 Q78 440 105 350"/><path d="M35 570 Q45 450 55 390"/></g>
+<g fill="#20845f"><path d="M105 355 Q25 290 0 320 Q58 315 105 355 Q62 265 38 270 Q88 315 105 355 Q102 260 130 245 Q130 305 105 355 Q170 270 198 290 Q150 315 105 355 Q205 330 220 365 Q155 350 105 355Z"/><path d="M55 390 Q-8 335 0 365 Q28 365 55 390 Q28 320 15 320 Q42 355 55 390 Q72 320 95 325 Q78 360 55 390 Q112 350 125 375 Q88 370 55 390Z"/></g>
+<!-- terminal cranes -->
+<g stroke="#163c5a" stroke-width="12" fill="none" stroke-linejoin="round">
+ <path d="M1120 480 V155 L1390 155 M1120 155 L1080 480 M1120 180 L1280 330 M1390 155 V480 M1280 155 V480"/>
+ <path d="M1335 480 V210 L1530 210 M1335 210 L1300 480 M1530 210 V480"/>
+</g>
+<g fill="#f5a623"><rect x="1110" y="315" width="95" height="48"/><rect x="1208" y="315" width="95" height="48"/><rect x="1306" y="315" width="95" height="48"/><rect x="1404" y="315" width="95" height="48"/></g>
+<g fill="#e65b42"><rect x="1110" y="368" width="95" height="48"/><rect x="1208" y="368" width="95" height="48"/><rect x="1306" y="368" width="95" height="48"/><rect x="1404" y="368" width="95" height="48"/></g>
+<!-- cargo vessel -->
+<path d="M760 465 H1550 L1470 565 Q1400 600 1190 595 L860 560Z" fill="url(#ship)"/>
+<rect x="890" y="398" width="110" height="62" fill="#f2a72e"/><rect x="1004" y="398" width="110" height="62" fill="#d74c3f"/><rect x="1118" y="398" width="110" height="62" fill="#e8c04b"/><rect x="1232" y="398" width="110" height="62" fill="#277caa"/><rect x="1346" y="398" width="110" height="62" fill="#e16c38"/>
+<rect x="1030" y="350" width="85" height="44" fill="#f0b53b"/><rect x="1120" y="350" width="85" height="44" fill="#2c82ad"/><rect x="1210" y="350" width="85" height="44" fill="#e05b45"/>
+<path d="M790 565 Q1110 620 1465 565" fill="none" stroke="#fff" stroke-width="5" opacity=".55"/>
+<!-- airplane -->
+<g transform="translate(540 190) rotate(-9)">
+ <path d="M0 45 L180 28 L270 -8 Q284 -12 291 -4 L235 35 L405 20 Q430 20 438 32 Q432 44 405 48 L235 55 L300 95 Q307 104 294 107 L180 65 L0 67 Q-25 62 0 45Z" fill="#fff" stroke="#24618a" stroke-width="4"/>
+ <path d="M80 45 L128 12 L155 12 L135 48 M90 63 L138 91 L160 90 L140 62" fill="#d9edfa" stroke="#24618a" stroke-width="3"/>
+ <path d="M20 51 L390 37" stroke="#1681c1" stroke-width="7"/>
+ <circle cx="210" cy="43" r="4" fill="#24618a"/><circle cx="230" cy="42" r="4" fill="#24618a"/>
+</g>
+<!-- foreground quay -->
+<path d="M0 585 Q350 555 650 590 T1150 585 T1600 565 V700 H0Z" fill="#d9c4a0"/>
+<path d="M0 620 H1600" stroke="#fff4dc" stroke-width="8" opacity=".7"/>
+<g fill="#73818a"><rect x="260" y="590" width="18" height="110"/><rect x="510" y="585" width="18" height="115"/><rect x="750" y="590" width="18" height="110"/></g>
+<g fill="#e8f0f4"><rect x="280" y="605" width="180" height="58" rx="4"/><rect x="470" y="605" width="180" height="58" rx="4"/></g>
+</svg>
