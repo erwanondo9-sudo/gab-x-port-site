@@ -609,7 +609,7 @@ document.getElementById('signupForm').addEventListener('submit',async e=>{
   if(data.session&&data.user){await ensureCompanyRecord(data.user)}
   e.target.reset();updateSignupFields();closeModal();
   showToast(data.session?'Compte créé. Tu peux maintenant te connecter et utiliser la messagerie.':'Compte créé. Vérifie ta boîte e-mail si une confirmation est demandée, puis connecte-toi.');
- }catch(err){console.error('Erreur lors de l’inscription',err);showToast('Inscription impossible : '+(err.message||'vérifie la configuration Supabase et les champs obligatoires.'))}
+ }catch(err){console.error('Erreur lors de l’inscription',err);showToast('Inscription impossible : '+(err.message||'vérifie les champs obligatoires et réessaie.'))}
  finally{setSignupBusy(false)}
 });
 document.getElementById('loginForm').addEventListener('submit',async e=>{
@@ -636,7 +636,7 @@ document.getElementById('loginForm').addEventListener('submit',async e=>{
   ensureCompanyRecord(data.user).catch(err=>console.error('Profil entreprise à compléter',err));
   loadPersonalSpace().catch(err=>console.error('Chargement de l’espace personnel',err));
  }catch(err){
-  console.error('Erreur connexion Supabase',err);
+  console.error('Erreur de connexion',err);
   say(err.message||'Connexion impossible. Vérifie ton e-mail et ton mot de passe.',true);
  }finally{
   button.disabled=false;button.textContent='Se connecter ↗';
@@ -858,7 +858,7 @@ async function loadPersonalSpace(){
  document.getElementById('independentPickupContact').value=meta.independent_pickup_contact||'';
  document.getElementById('independentDeliveryContact').value=meta.independent_delivery_contact||'';
  document.getElementById('independentLogisticsNotes').value=meta.independent_logistics_notes||'';
- if(!error)status.textContent='Profil chargé. Tu peux modifier ton nom, ton téléphone et ton pays.';
+ if(!error)status.textContent='Profil chargé. Tu peux modifier tes informations personnelles.';
 }
 function setAccountAvatar(url,initials='GX'){
  const img=document.getElementById('accountAvatarImage'),letters=document.getElementById('accountAvatarInitials');
