@@ -475,8 +475,8 @@ html[data-theme="light"] .gx-steps>div{background:white;color:#25324d;border-col
 </nav>
 
 <main><div class="view active" id="view-home">
-<section class="hero gx-hero" id="accueil"><div class="gx-hero-art" aria-hidden="true"></div><div class="wrap gx-hero-inner"><div class="gx-hero-copy"><div class="gx-eyebrow">GAB X-PORT · INTERNATIONAL ⇄ GABON</div><h1>Plus besoin des contacts.<br><em>Les offres viennent à toi.</em></h1><p class="lead">Une plateforme simple pour publier des services et trouver des clients. Les entreprises présentent leurs offres, les clients intéressés prennent directement contact.</p><div class="gx-shortcuts"><button class="btn btn-green" onclick="showView('annonces')">Découvrir les services ↗</button><button class="btn btn-dark" onclick="openModal('signup')">Créer un compte client</button></div></div></div></section>
-<section class="gx-feature-strip"><div class="wrap gx-feature-grid"><button class="gx-feature gx-purple" onclick="openModal('signup')"><span class="gx-feature-icon">▦</span><span><b>Vous êtes une entreprise ?</b><small>Créez votre compte et publiez vos services pour être visible auprès des clients</small></span><i>→</i></button><button class="gx-feature gx-teal" onclick="showView('annonces')"><span class="gx-feature-icon">⌕</span><span><b>Vous êtes un client ?</b><small>Parcourez les services disponibles et contactez directement l’entreprise</small></span><i>→</i></button></div></section>
+<section class="hero gx-hero" id="accueil"><div class="gx-hero-art" aria-hidden="true"></div><div class="wrap gx-hero-inner"><div class="gx-hero-copy"><div class="gx-eyebrow">GAB X-PORT · INTERNATIONAL ⇄ GABON</div><h1>Plus besoin des contacts.<br><em>Les offres viennent à toi.</em></h1><p class="lead">Une plateforme simple pour publier des services et trouver des clients. Les entreprises présentent leurs offres, les clients intéressés prennent directement contact.</p><div class="gx-shortcuts"><button class="btn btn-green" onclick="showView('annonces')">Découvrir les services ↗</button><button class="btn btn-dark" id="heroSignupSuggestion" onclick="openModal('signup')">Créer un compte client</button></div></div></div></section>
+<section class="gx-feature-strip" id="accountTypeSuggestions"><div class="wrap gx-feature-grid"><button class="gx-feature gx-purple" data-account-suggestion onclick="openSignupForType('company')"><span class="gx-feature-icon">▦</span><span><b>Vous êtes une entreprise ?</b><small>Créez votre compte entreprise et publiez vos services.</small></span><i>→</i></button><button class="gx-feature gx-teal" data-account-suggestion onclick="openSignupForType('independent')"><span class="gx-feature-icon">↗</span><span><b>Vous êtes exportateur indépendant ?</b><small>Présentez votre activité et publiez vos services sans créer une entreprise.</small></span><i>→</i></button></div></section>
 <section class="gx-categories"><div class="wrap"><div class="gx-section-title"><div><div class="kicker">COMMENT ÇA MARCHE ?</div><h2>Simple. Direct. Efficace.</h2></div></div><div class="gx-category-grid gx-steps"><div><span>01</span><b>L’entreprise publie</b><small>Elle décrit son service, sa zone d’intervention et ses conditions.</small></div><div><span>02</span><b>Le client découvre</b><small>Il consulte les offres et choisit le service qui correspond à son besoin.</small></div><div><span>03</span><b>Le client répond</b><small>Il contacte l’entreprise via la messagerie pour échanger directement.</small></div></div></div></section>
 <section class="gx-proof"><div class="wrap gx-proof-grid"><div><strong>Entreprises</strong><small>Publient leurs services</small></div><div><strong>Clients</strong><small>Consultent les offres</small></div><div><strong>Messagerie</strong><small>Contact direct</small></div><div><strong>International ⇄ Gabon</strong><small>Un accès aux marchés du monde entier</small></div></div></section></div><div class="view" id="view-annonces"><section class="section" id="annonces"><div class="wrap">
 <div class="section-head"><div><div class="kicker">Le marché Gab X-Port</div><h2>Les services proposés</h2><p class="sub">Découvrez les services publiés par les entreprises et contactez directement celles qui vous intéressent.</p></div></div>
@@ -574,6 +574,7 @@ async function openModal(which){
  if(signup)updateSignupFields();
 }
 function closeModal(){document.getElementById('modalBackdrop').classList.remove('show')}
+async function openSignupForType(type){await openModal('signup');const select=document.getElementById('sAccountType');if(select){select.value=type;updateSignupFields();}}
 function updateSignupFields(){
  const type=document.getElementById('sAccountType').value;
  const company=type==='company',independent=type==='independent';
@@ -792,6 +793,12 @@ function mobileAccountAction(){
 }
 function updateAuthNavigation(session){
  const connected=!!session?.user;
+ const role=session?.user?.user_metadata?.account_type||session?.user?.app_metadata?.account_type||'';
+ const showSuggestions=!connected||role==='client';
+ const suggestionStrip=document.getElementById('accountTypeSuggestions');
+ if(suggestionStrip)suggestionStrip.style.display=showSuggestions?'':'none';
+ const heroSuggestion=document.getElementById('heroSignupSuggestion');
+ if(heroSuggestion)heroSuggestion.style.display=connected?'none':'';
  const login=document.getElementById('navLoginBtn');
  const signup=document.getElementById('navSignupBtn');
  if(login)login.style.display=connected?'none':'';
