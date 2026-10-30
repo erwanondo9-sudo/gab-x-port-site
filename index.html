@@ -512,7 +512,7 @@ html[data-theme="light"] .gx-steps>div{background:white;color:#25324d;border-col
 <div class="field full independent-only" style="display:none"><label for="sIndependentActivity">Activité / produits ou services proposés</label><input id="sIndependentActivity" placeholder="Ex. export de produits agricoles, sourcing, représentation commerciale"></div><div class="field independent-only" style="display:none"><label for="sIndependentCountry">Pays depuis lequel vous exercez</label><select id="sIndependentCountry"><option value="France">France</option><option value="Gabon">Gabon</option><option value="Maroc">Maroc</option><option value="Sénégal">Sénégal</option><option value="Chine">Chine</option><option value="Autre">Autre</option></select></div>
 
 </div><p class="form-note">Tu peux créer ton compte avec une adresse e-mail ou un numéro de téléphone au format international. Un code de confirmation peut être envoyé selon le mode choisi.</p><button class="btn btn-green" type="submit" style="width:100%">Créer mon compte ↗</button></form>
-<form id="loginForm" style="display:none"><div class="form-grid"><div class="field full"><label for="lEmail">E-mail ou numéro de téléphone</label><input id="lEmail" type="text" required autocomplete="username" inputmode="email" autocapitalize="none" spellcheck="false" placeholder="exemple@mail.com ou +241…"></div><div class="field full"><label for="lPassword">Mot de passe</label><input id="lPassword" type="password" required autocomplete="current-password"></div></div><p class="form-note">Connecte-toi pour retrouver tes échanges et contacter les membres de Gab X-Port.</p><p id="loginFeedback" role="status" aria-live="polite" style="display:none;margin:10px 0;padding:11px 12px;border-radius:10px;font-size:13px;line-height:1.45;background:#edf5e8;color:#245b3d"></p><button class="btn btn-green" type="submit" style="width:100%">Se connecter ↗</button><button class="text-btn" type="button" onclick="openModal('signup')">Créer un compte</button></form>
+<form id="phoneVerifyForm" style="display:none"><p class="form-note">Un code de vérification vient d’être envoyé par SMS. Saisis les 6 chiffres reçus pour activer ton compte.</p><div class="field full"><label for="phoneVerifyCode">Code reçu par SMS</label><input id="phoneVerifyCode" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" minlength="6" maxlength="6" required placeholder="123456"></div><p id="phoneVerifyFeedback" role="status" aria-live="polite" class="form-note"></p><button class="btn btn-green" type="submit" style="width:100%">Vérifier mon numéro ↗</button><button class="text-btn" type="button" id="resendPhoneCode">Renvoyer le code</button></form><form id="loginForm" style="display:none"><div class="form-grid"><div class="field full"><label for="lEmail">E-mail ou numéro de téléphone</label><input id="lEmail" type="text" required autocomplete="username" inputmode="email" autocapitalize="none" spellcheck="false" placeholder="exemple@mail.com ou +241…"></div><div class="field full"><label for="lPassword">Mot de passe</label><input id="lPassword" type="password" required autocomplete="current-password"></div></div><p class="form-note">Connecte-toi pour retrouver tes échanges et contacter les membres de Gab X-Port.</p><p id="loginFeedback" role="status" aria-live="polite" style="display:none;margin:10px 0;padding:11px 12px;border-radius:10px;font-size:13px;line-height:1.45;background:#edf5e8;color:#245b3d"></p><button class="btn btn-green" type="submit" style="width:100%">Se connecter ↗</button><button class="text-btn" type="button" onclick="openModal('signup')">Créer un compte</button></form>
 <form id="listingForm"><div class="form-grid">
 
 <div class="field full"><label for="fDirection">Corridor commercial</label><select id="fDirection" required><option value="fr-ga">France → Gabon</option><option value="ma-ga">Maroc → Gabon</option><option value="sn-ga">Sénégal → Gabon</option><option value="cn-ga">Chine → Gabon</option><option value="ga-fr">Gabon → France</option><option value="both">Autres / multidestination</option></select></div>
@@ -583,6 +583,37 @@ function updateSignupFields(){
  document.querySelectorAll('.company-only').forEach(el=>{el.style.display=company?'block':'none';const input=el.querySelector('input,select');if(input)input.required=company&&['sCompanyAddress','sCompanyPhone'].includes(input.id)});
  document.querySelectorAll('.independent-only').forEach(el=>{el.style.display=independent?'block':'none';const input=el.querySelector('input,select');if(input)input.required=independent&&input.id==='sIndependentActivity'});
 }
+let pendingPhoneSignup=null;
+function showPhoneVerification(phone){
+ pendingPhoneSignup=phone;
+ document.getElementById('modalTitle').textContent='Vérifier le numéro';
+ document.getElementById('signupForm').style.display='none';
+ document.getElementById('loginForm').style.display='none';
+ document.getElementById('listingForm').style.display='none';
+ document.getElementById('contactForm').style.display='none';
+ document.getElementById('phoneVerifyForm').style.display='block';
+ document.getElementById('phoneVerifyCode').value='';
+ document.getElementById('phoneVerifyFeedback').textContent='Code envoyé au '+phone;
+}
+document.getElementById('phoneVerifyForm').addEventListener('submit',async e=>{
+ e.preventDefault();
+ const code=document.getElementById('phoneVerifyCode').value.trim(),feedback=document.getElementById('phoneVerifyFeedback'),button=e.target.querySelector('button[type="submit"]');
+ if(!pendingPhoneSignup){feedback.textContent='Aucune inscription à vérifier. Recommence la création du compte.';return;}
+ button.disabled=true;button.textContent='Vérification…';feedback.textContent='Vérification du code…';
+ try{
+  const {data,error}=await supabaseClient.auth.verifyOtp({phone:pendingPhoneSignup,token:code,type:'sms'});
+  if(error)throw error;
+  if(!data?.user)throw new Error('La vérification n’a pas retourné de compte.');
+  await ensureCompanyRecord(data.user).catch(err=>console.error('Profil entreprise à compléter',err));
+  window.gabxCurrentUser=data.user;pendingPhoneSignup=null;closeModal();await loadPersonalSpace().catch(err=>console.error('Chargement espace personnel',err));updateAuthNavigation({user:data.user});showToast('Numéro vérifié. Ton compte Gab X-Port est activé.');
+ }catch(err){feedback.textContent=err.message||'Code incorrect ou expiré. Réessaie.';}
+ finally{button.disabled=false;button.textContent='Vérifier mon numéro ↗';}
+});
+document.getElementById('resendPhoneCode').addEventListener('click',async()=>{
+ const feedback=document.getElementById('phoneVerifyFeedback');if(!pendingPhoneSignup)return;
+ try{const {error}=await supabaseClient.auth.resend({type:'sms',phone:pendingPhoneSignup});if(error)throw error;feedback.textContent='Un nouveau code vient d’être envoyé.';}
+ catch(err){feedback.textContent=err.message||'Impossible de renvoyer le code pour le moment.';}
+});
 function setSignupBusy(busy){const b=document.querySelector('#signupForm button[type="submit"]');if(b){b.disabled=busy;b.textContent=busy?'Création en cours…':'Créer mon compte ↗'}}
 async function ensureCompanyRecord(user){
  if(!supabaseClient||!user||user.user_metadata?.account_type!=='compagnie')return;
@@ -612,8 +643,9 @@ document.getElementById('signupForm').addEventListener('submit',async e=>{
   const {data,error}=await supabaseClient.auth.signUp(credentials);
   if(error)throw error;
   if(data.session&&data.user){await ensureCompanyRecord(data.user)}
+  if(!isEmail&&!data.session){showPhoneVerification(phone);return;}
   e.target.reset();updateSignupFields();closeModal();
-  showToast(data.session?'Compte créé. Tu peux maintenant te connecter et utiliser la messagerie.':(isEmail?'Compte créé. Vérifie ta boîte e-mail pour confirmer ton inscription.':'Compte créé. Vérifie les SMS pour confirmer ton numéro de téléphone.'));
+  showToast(data.session?'Compte créé. Tu peux maintenant te connecter et utiliser la messagerie.':'Compte créé. Vérifie ta boîte e-mail pour confirmer ton inscription.');
  }catch(err){console.error('Erreur lors de l’inscription',err);showToast('Inscription impossible : '+(err.message||'vérifie les champs obligatoires et réessaie.'))}
  finally{setSignupBusy(false)}
 });
