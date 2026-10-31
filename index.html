@@ -696,14 +696,12 @@ async function openOffererProfile(ownerId){
   const offers=getListings().filter(x=>String(x.ownerId||'')===String(ownerId));
   const website=p.company_website?String(p.company_website):'';
   const websiteUrl=website&&/^https?:\/\//i.test(website)?website:'';
-  const phone=p.professional_phone||'';
   const activity=p.activity||'';
   const initials=name.split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0]).join('').toUpperCase()||'GX';
   content.innerHTML=`<div class="company-title-row"><div class="company-logo">${esc(initials)}</div><div><div class="verified-label">Profil professionnel Gab X-Port</div><h1 style="margin:8px 0">${esc(name)}</h1><p class="sub">${esc(typeLabel)} · ${esc(p.country||'Pays non renseigné')}</p></div></div>
   <div class="company-facts" style="margin:22px 0"><div class="fact"><small>Type de membre</small><strong>${esc(typeLabel)}</strong></div><div class="fact"><small>Pays d’activité</small><strong>${esc(p.country||'Non renseigné')}</strong></div><div class="fact"><small>Services publiés</small><strong>${offers.length}</strong></div></div>
   <div class="panel" style="margin:18px 0"><h3>Présentation</h3><p class="sub">${esc(activity|| (isCompany?'Entreprise inscrite sur Gab X-Port.':'Professionnel indépendant inscrit sur Gab X-Port.'))}</p>
   ${websiteUrl?'<p><strong>Site professionnel :</strong> <a href="'+esc(websiteUrl)+'" target="_blank" rel="noopener noreferrer">'+esc(website)+'</a></p>':''}
-  ${phone?'<p><strong>Téléphone professionnel :</strong> '+esc(phone)+'</p>':''}
   <p class="form-note">Pour préserver les informations personnelles, les adresses privées et les e-mails de connexion ne sont pas affichés. Le bouton ci-dessous ouvre directement le canal de contact choisi par ce professionnel.</p>
   <button class="btn btn-green" onclick="startConversationWithOfferer('${String(ownerId)}')">Contacter ce professionnel ↗</button></div>
   <div class="panel"><h3>Services et annonces publiés</h3>${offers.length?'<div class="listing-grid">'+offers.map(x=>'<article class="listing"><div class="listing-top"><span class="tag">'+esc(x.type||'Annonce')+'</span><span>'+esc(directionLabel(x.direction))+'</span></div><h3>'+esc(x.title)+'</h3><p>'+esc(x.desc)+'</p><div class="meta"><span>'+esc(x.category||'')+'</span><span>'+esc(x.city||'')+'</span></div><strong>'+esc(x.price||'À discuter')+'</strong></article>').join('')+'</div>':'<p class="sub">Aucune annonce publiée actuellement.</p>'}</div>`;
