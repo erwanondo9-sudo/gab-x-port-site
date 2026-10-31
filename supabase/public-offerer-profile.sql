@@ -10,7 +10,10 @@ returns table (
   account_type text,
   activity text,
   company_website text,
-  professional_phone text
+  professional_phone text,
+  contact_method text,
+  contact_email text,
+  whatsapp_phone text
 )
 language plpgsql
 stable
@@ -34,7 +37,10 @@ begin
       when p.account_type in ('compagnie','company') then coalesce(nullif(u.raw_user_meta_data->>'company_phone',''), nullif(u.raw_user_meta_data->>'phone',''))
       when p.account_type = 'exportateur' then nullif(u.raw_user_meta_data->>'phone','')
       else null
-    end as professional_phone
+    end as professional_phone,
+    coalesce(nullif(u.raw_user_meta_data->>'public_contact_method',''), 'whatsapp') as contact_method,
+    nullif(u.raw_user_meta_data->>'public_contact_email','') as contact_email,
+    coalesce(nullif(u.raw_user_meta_data->>'public_whatsapp_phone',''), nullif(u.raw_user_meta_data->>'company_phone',''), nullif(u.raw_user_meta_data->>'phone',''), nullif(p.phone,'')) as whatsapp_phone
   from public.profiles as p
   left join auth.users as u on u.id = p.id
   left join lateral (
