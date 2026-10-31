@@ -495,6 +495,50 @@ html[data-theme="dark"] body{background:#0b1713;color:#e8f5ed}html[data-theme="d
 @media(max-width:900px){header.wrap.nav{padding:12px 20px}.brand-logo{width:185px}.gx-hero,.gx-hero-inner{min-height:490px}.gx-hero-art{width:90%;opacity:.65}.gx-hero:before{background:linear-gradient(90deg,#062a25 0%,rgba(6,42,37,.94) 45%,rgba(6,42,37,.48) 100%)}}
 @media(max-width:700px){.topbar{display:none}header.wrap.nav{padding:10px 15px}.brand-logo{width:145px}.navactions .btn-light,.navactions .btn-dark{display:none}.theme-select{max-width:108px;padding:9px 22px 9px 10px;font-size:11px}.gx-hero,.gx-hero-inner{min-height:530px}.gx-hero-inner{padding-top:55px;padding-bottom:45px}.gx-hero-art{width:100%;opacity:.32;background-position:65% center}.gx-hero:before{background:linear-gradient(90deg,rgba(6,42,37,.98),rgba(6,42,37,.78))}.gx-hero h1{font-size:clamp(43px,12vw,60px);letter-spacing:-2.8px}.gx-hero .lead{font-size:15px}.gx-home-search{grid-template-columns:1fr}.gx-home-search .btn{width:100%}.gx-feature-grid{grid-template-columns:1fr 1fr}.section{padding:55px 0}}
 @media(max-width:420px){.gx-feature-grid{grid-template-columns:1fr}.theme-select{max-width:98px}}
+
+/* Ajustements de lisibilité, contrastes et mise en page */
+:root{--gx-page:#f4f7f2;--gx-surface:#ffffff;--gx-text:#12352d;--gx-muted:#536d63;--gx-border:#d6e4da;--gx-field:#fbfdf9;--gx-accent:#087b5a;--gx-soft:#eaf3eb}
+html[data-theme="light"]{color-scheme:light;--gx-page:#f4f7f2;--gx-surface:#fff;--gx-text:#12352d;--gx-muted:#536d63;--gx-border:#d6e4da;--gx-field:#fbfdf9;--gx-accent:#087b5a;--gx-soft:#eaf3eb}
+html[data-theme="dark"]{color-scheme:dark;--gx-page:#0b1713;--gx-surface:#172923;--gx-text:#edf7f0;--gx-muted:#b5c9bd;--gx-border:#355346;--gx-field:#0e1d17;--gx-accent:#69d6a4;--gx-soft:#20392d}
+body{background:var(--gx-page);color:var(--gx-text)}
+.view{color:var(--gx-text)}
+.view .section,.view .wrap{min-width:0}
+.view .panel,.view .listing,.view .service,.view .company-card,.view .listing-detail,.view .search-panel,.view .route-card{background:var(--gx-surface);color:var(--gx-text);border-color:var(--gx-border)}
+.view .panel{padding:clamp(18px,2.5vw,30px);border-radius:20px;box-shadow:0 12px 35px rgba(5,40,27,.07)}
+.view .panel h2,.view .panel h3,.view .section h2,.view .section h3{color:var(--gx-text)}
+.view .sub,.view .form-note,.view .meta,.view .empty,.view .listing p,.view .service p,.view .company-card p{color:var(--gx-muted)}
+.account-layout{grid-template-columns:minmax(230px,.72fr) minmax(0,1.65fr);gap:22px;align-items:start}
+.account-layout>.panel{min-width:0}
+.account-summary{position:sticky;top:112px}
+.account-summary .btn{width:100%;white-space:normal;line-height:1.35}
+.account-summary .text-btn{color:#b33b3b!important;background:transparent;border:1px solid #e7caca;border-radius:12px;padding:11px 12px}
+.account-avatar{background:#d9f36a;color:#12352d}
+#accountProfileForm{display:block;min-width:0}
+#accountProfileForm .form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+#accountProfileForm .field{min-width:0}
+#accountProfileForm .field.full{grid-column:1/-1}
+#accountProfileForm label{color:var(--gx-text);font-weight:750}
+#accountProfileForm input,#accountProfileForm select,#accountProfileForm textarea{width:100%;max-width:100%;min-width:0;min-height:46px;padding:12px 14px;border:1px solid var(--gx-border);border-radius:12px;background:var(--gx-field);color:var(--gx-text);font:inherit}
+#accountProfileForm input:disabled{opacity:1;color:var(--gx-muted);background:var(--gx-soft);cursor:not-allowed}
+#accountProfileForm input:focus,#accountProfileForm select:focus,#accountProfileForm textarea:focus{outline:0;border-color:var(--gx-accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--gx-accent) 18%,transparent)}
+#accountProfileForm .form-note{font-size:12px;line-height:1.6;margin:10px 0 16px;color:var(--gx-muted)}
+#accountProfileForm button[type="submit"]{min-height:46px}
+#accountStatus{padding:0;color:var(--gx-muted);line-height:1.6}
+#personalListings{margin-top:12px}
+.page-hero .kicker,.view .kicker{color:var(--gx-accent)}
+.page-hero h2,.page-hero h1{color:var(--gx-text)}
+.view .btn-light{background:var(--gx-surface);color:var(--gx-text);border:1px solid var(--gx-border)}
+.view .tag{background:var(--gx-soft);color:var(--gx-accent)}
+@media(max-width:850px){.account-layout{grid-template-columns:1fr}.account-summary{position:static}.account-summary>div[style*="display:grid"]{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+@media(max-width:560px){.account-layout{gap:14px}.account-layout>.panel{padding:17px}.account-summary>div[style*="display:grid"]{grid-template-columns:1fr!important}#accountProfileForm .form-grid{grid-template-columns:1fr;gap:12px}#accountProfileForm .field.full{grid-column:auto}.view .section{padding-left:0;padding-right:0}.section-head{align-items:flex-start;gap:12px;flex-wrap:wrap}.section-head .btn{width:100%}}
+html[data-theme="dark"] .view .panel,html[data-theme="dark"] .view .listing,html[data-theme="dark"] .view .service,html[data-theme="dark"] .view .company-card,html[data-theme="dark"] .view .listing-detail,html[data-theme="dark"] .view .search-panel,html[data-theme="dark"] .view .route-card{background:#172923;border-color:#355346;color:#edf7f0}
+html[data-theme="dark"] .view .panel h2,html[data-theme="dark"] .view .panel h3,html[data-theme="dark"] .view .section h2,html[data-theme="dark"] .view .section h3,html[data-theme="dark"] .page-hero h2,html[data-theme="dark"] .page-hero h1{color:#edf7f0}
+html[data-theme="dark"] .view .sub,html[data-theme="dark"] .view .form-note,html[data-theme="dark"] .view .meta,html[data-theme="dark"] .view .empty{color:#b5c9bd}
+html[data-theme="dark"] #accountProfileForm label{color:#edf7f0}
+html[data-theme="dark"] #accountProfileForm input,html[data-theme="dark"] #accountProfileForm select,html[data-theme="dark"] #accountProfileForm textarea{background:#0e1d17;border-color:#456452;color:#f1faf4}
+html[data-theme="dark"] #accountProfileForm input:disabled{background:#20392d;color:#b5c9bd}
+html[data-theme="dark"] .account-summary .text-btn{color:#ffaaa4!important;border-color:#714542}
+html[data-theme="dark"] .view .btn-light{background:#20392d;color:#edf7f0;border-color:#456452}
 </style>
 </head>
 <body>
