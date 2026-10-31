@@ -545,6 +545,33 @@ html[data-theme="dark"] .view .btn-light{background:#20392d;color:#edf7f0;border
  display:block;background:#172923;color:#edf7f0;border:1px solid #30483b;border-left:4px solid #30483b;border-radius:12px;padding:14px 16px;line-height:1.65;box-shadow:none
 }
 .verify-note strong,.note strong,.notice strong,.important-notice strong,.legal-notice strong{color:#ffffff}
+
+/* Accueil : forcer le fond sombre de l'avis légal/informatif, même si un style inline existe */
+body #view-home .verify-note,
+body #view-home .note,
+body #view-home .notice,
+body #view-home [role="note"],
+body #view-home [class*="notice"],
+body #view-home [class*="alert"]{
+ background:#172923!important;
+ background-color:#172923!important;
+ color:#edf7f0!important;
+ border:1px solid #30483b!important;
+ border-left:4px solid #30483b!important;
+ border-radius:12px!important;
+ padding:14px 16px!important;
+ box-shadow:none!important;
+}
+body #view-home .verify-note *,
+body #view-home .note *,
+body #view-home .notice *,
+body #view-home [role="note"] *,
+body #view-home [class*="notice"] *,
+body #view-home [class*="alert"] *{color:#edf7f0!important}
+body #view-home .verify-note strong,
+body #view-home .note strong,
+body #view-home .notice strong,
+body #view-home [role="note"] strong{color:#fff!important}
 </style>
 </head>
 <body>
