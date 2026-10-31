@@ -11,7 +11,51 @@ main{min-height:calc(100vh - 170px);padding:46px 0 76px}.hero{padding:58px 60px;
 footer{background:#062a25;color:#dcebe1;padding:24px 0}.foot{display:flex;align-items:center;justify-content:space-between;gap:20px}.footlinks{display:flex;gap:18px;flex-wrap:wrap}.foot a{color:#c2d8cb;text-decoration:none;font-size:12px}
 @media(max-width:720px){.wrap{width:min(100% - 30px,1120px)}.nav{min-height:70px;gap:10px;flex-wrap:wrap;padding:10px 0}.brand img{width:145px}.navlinks{gap:12px;order:3;width:100%;overflow:auto}.navlinks a{white-space:nowrap;font-size:12px}.theme-select{font-size:11px;padding:9px 20px 9px 10px}.hero{padding:38px 25px;border-radius:20px}.lead{font-size:15px}.grid{grid-template-columns:1fr}.foot{align-items:flex-start;flex-direction:column}}
 html[data-theme="dark"]{color-scheme:dark;background:#0b1713}html[data-theme="dark"] body{background:#0b1713;color:#e8f5ed}html[data-theme="dark"] header{background:rgba(8,25,19,.95);border-color:#29443a}html[data-theme="dark"] .navlinks a{color:#d8e9df}html[data-theme="dark"] .theme-select{background:#172923;border-color:#355346;color:#e8f5ed}html[data-theme="dark"] .hero{background:radial-gradient(circle at 88% 12%,#d9f36a25,transparent 30%),linear-gradient(130deg,#071b15,#124332)}html[data-theme="dark"] .card{background:#172923;border-color:#29443a}html[data-theme="dark"] .card h3{color:#76d9aa}html[data-theme="dark"] .card p,html[data-theme="dark"] .note{color:#b5c9bd}html[data-theme="dark"] .note{background:#12271e;border-color:#76b98b}html[data-theme="dark"] footer{background:#06120f}
-</style>
+
+/* Ajustements de lisibilité, contrastes et mise en page */
+:root{--gx-page:#f4f7f2;--gx-surface:#ffffff;--gx-text:#12352d;--gx-muted:#536d63;--gx-border:#d6e4da;--gx-field:#fbfdf9;--gx-accent:#087b5a;--gx-soft:#eaf3eb}
+html[data-theme="light"]{color-scheme:light;--gx-page:#f4f7f2;--gx-surface:#fff;--gx-text:#12352d;--gx-muted:#536d63;--gx-border:#d6e4da;--gx-field:#fbfdf9;--gx-accent:#087b5a;--gx-soft:#eaf3eb}
+html[data-theme="dark"]{color-scheme:dark;--gx-page:#0b1713;--gx-surface:#172923;--gx-text:#edf7f0;--gx-muted:#b5c9bd;--gx-border:#355346;--gx-field:#0e1d17;--gx-accent:#69d6a4;--gx-soft:#20392d}
+body{background:var(--gx-page);color:var(--gx-text)}
+.view{color:var(--gx-text)}
+.section,.wrap{min-width:0}
+.panel,.listing,.service,.company-card,.listing-detail,.search-panel,.route-card{background:var(--gx-surface);color:var(--gx-text);border-color:var(--gx-border)}
+.panel{padding:clamp(18px,2.5vw,30px);border-radius:20px;box-shadow:0 12px 35px rgba(5,40,27,.07)}
+.panel h2,.panel h3,.section h2,.section h3{color:var(--gx-text)}
+.sub,.form-note,.meta,.empty,.listing p,.service p,.company-card p{color:var(--gx-muted)}
+.account-layout{grid-template-columns:minmax(230px,.72fr) minmax(0,1.65fr);gap:22px;align-items:start}
+.account-layout>.panel{min-width:0}
+.account-summary{position:sticky;top:112px}
+.account-summary .btn{width:100%;white-space:normal;line-height:1.35}
+.account-summary .text-btn{color:#b33b3b!important;background:transparent;border:1px solid #e7caca;border-radius:12px;padding:11px 12px}
+.account-avatar{background:#d9f36a;color:#12352d}
+#accountProfileForm{display:block;min-width:0}
+#accountProfileForm .form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+#accountProfileForm .field{min-width:0}
+#accountProfileForm .field.full{grid-column:1/-1}
+#accountProfileForm label{color:var(--gx-text);font-weight:750}
+#accountProfileForm input,#accountProfileForm select,#accountProfileForm textarea{width:100%;max-width:100%;min-width:0;min-height:46px;padding:12px 14px;border:1px solid var(--gx-border);border-radius:12px;background:var(--gx-field);color:var(--gx-text);font:inherit}
+#accountProfileForm input:disabled{opacity:1;color:var(--gx-muted);background:var(--gx-soft);cursor:not-allowed}
+#accountProfileForm input:focus,#accountProfileForm select:focus,#accountProfileForm textarea:focus{outline:0;border-color:var(--gx-accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--gx-accent) 18%,transparent)}
+#accountProfileForm .form-note{font-size:12px;line-height:1.6;margin:10px 0 16px;color:var(--gx-muted)}
+#accountProfileForm button[type="submit"]{min-height:46px}
+#accountStatus{padding:0;color:var(--gx-muted);line-height:1.6}
+#personalListings{margin-top:12px}
+.page-hero .kicker,.kicker{color:var(--gx-accent)}
+.page-hero h2,.page-hero h1{color:var(--gx-text)}
+.btn-light{background:var(--gx-surface);color:var(--gx-text);border:1px solid var(--gx-border)}
+.tag{background:var(--gx-soft);color:var(--gx-accent)}
+@media(max-width:850px){.account-layout{grid-template-columns:1fr}.account-summary{position:static}.account-summary>div[style*="display:grid"]{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+@media(max-width:560px){.account-layout{gap:14px}.account-layout>.panel{padding:17px}.account-summary>div[style*="display:grid"]{grid-template-columns:1fr!important}#accountProfileForm .form-grid{grid-template-columns:1fr;gap:12px}#accountProfileForm .field.full{grid-column:auto}.section{padding-left:0;padding-right:0}.section-head{align-items:flex-start;gap:12px;flex-wrap:wrap}.section-head .btn{width:100%}}
+html[data-theme="dark"] .panel,html[data-theme="dark"] .listing,html[data-theme="dark"] .service,html[data-theme="dark"] .company-card,html[data-theme="dark"] .listing-detail,html[data-theme="dark"] .search-panel,html[data-theme="dark"] .route-card{background:#172923;border-color:#355346;color:#edf7f0}
+html[data-theme="dark"] .panel h2,html[data-theme="dark"] .panel h3,html[data-theme="dark"] .section h2,html[data-theme="dark"] .section h3,html[data-theme="dark"] .page-hero h2,html[data-theme="dark"] .page-hero h1{color:#edf7f0}
+html[data-theme="dark"] .sub,html[data-theme="dark"] .form-note,html[data-theme="dark"] .meta,html[data-theme="dark"] .empty{color:#b5c9bd}
+html[data-theme="dark"] #accountProfileForm label{color:#edf7f0}
+html[data-theme="dark"] #accountProfileForm input,html[data-theme="dark"] #accountProfileForm select,html[data-theme="dark"] #accountProfileForm textarea{background:#0e1d17;border-color:#456452;color:#f1faf4}
+html[data-theme="dark"] #accountProfileForm input:disabled{background:#20392d;color:#b5c9bd}
+html[data-theme="dark"] .account-summary .text-btn{color:#ffaaa4!important;border-color:#714542}
+html[data-theme="dark"] .btn-light{background:#20392d;color:#edf7f0;border-color:#456452}
+html[data-theme="dark"] .panel,html[data-theme="dark"] .card{background:#172923;border-color:#355346;color:#edf7f0}html[data-theme="dark"] .card h3{color:#69d6a4}html[data-theme="dark"] .card p,html[data-theme="dark"] .note{color:#b5c9bd}</style>
 </head><body><header><div class="wrap nav"><a class="brand" href="/"><img src="/logo-gabxport.svg" alt="Gab X-Port"></a><nav class="navlinks"><a href="/annonces.html">Annonces</a><a href="/services.html">Services</a><a href="/fonctionnement.html">Fonctionnement</a><a href="/publier.html">Publier</a></nav><select id="themeSelect" class="theme-select" aria-label="Choisir le thème"><option value="system">Auto</option><option value="light">Clair</option><option value="dark">Sombre</option></select></div></header><main><div class="wrap"><section class="hero"><div class="eyebrow">Informations légales</div><h1>Confidentialité & conditions d’utilisation</h1><p class="lead">Cette page présente les principes d’utilisation de Gab X-Port et les règles générales de protection des informations communiquées sur la plateforme.</p></section><section class="grid"><article class="card"><h3>Utilisation de la plateforme</h3><p>Gab X-Port permet aux membres de publier des annonces de services, de consulter des profils et d’entrer en relation directement. Chaque membre s’engage à fournir des informations exactes et à respecter la législation applicable.</p></article><article class="card"><h3>Données personnelles</h3><p>Les informations de compte sont utilisées pour gérer l’inscription, le profil, les annonces et la messagerie. Les membres doivent éviter de publier des données sensibles ou des informations personnelles qui ne sont pas nécessaires à leur annonce.</p></article><article class="card"><h3>Rôle de Gab X-Port</h3><p>Gab X-Port est un service de mise en relation. Les membres restent responsables de leurs échanges, vérifications, accords, paiements et prestations. La plateforme n’est ni transitaire ni service douanier.</p></article></section></div></main><footer><div class="wrap foot"><span>© 2026 Gab X-Port · Connecter le Gabon au monde</span><nav class="footlinks"><a href="https://mail.google.com/mail/?view=cm&fs=1&to=gabxport120%40gmail.com&su=Prise%20de%20contact%20-%20Gab%20X-Port" target="_blank" rel="noopener">Nous contacter</a><a href="/confidentialite.html">Confidentialité & conditions</a><a href="/">Accueil</a></nav></div></footer><script>
 (function(){const selector=document.getElementById('themeSelect');const saved=localStorage.getItem('gabxport-theme')||'system';const media=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)');function apply(mode){document.documentElement.setAttribute('data-theme',mode==='system'?(media&&media.matches?'dark':'light'):mode);if(selector)selector.value=mode}apply(saved);if(selector)selector.addEventListener('change',function(){localStorage.setItem('gabxport-theme',this.value);apply(this.value)});if(media)media.addEventListener('change',()=>{if((localStorage.getItem('gabxport-theme')||'system')==='system')apply('system')})})();
 </script></body></html>
