@@ -2,7 +2,9 @@
 -- Exécuter ce script dans Supabase > SQL Editor après mise à jour du site.
 -- Expose uniquement des informations professionnelles utiles. Aucune adresse privée ni e-mail de connexion.
 
-create or replace function public.get_public_offerer_profile(p_user_id uuid)
+drop function if exists public.get_public_offerer_profile(uuid);
+
+create function public.get_public_offerer_profile(p_user_id uuid)
 returns table (
   id uuid,
   display_name text,
