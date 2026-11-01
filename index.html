@@ -62,6 +62,18 @@
 @media(max-width:580px){.company-directory{grid-template-columns:1fr}.company-facts{grid-template-columns:1fr}.company-title-row h2{font-size:20px}.panel{padding:16px}.review-form{grid-template-columns:1fr}.review-form .field.full{grid-column:auto}}
 
 
+
+/* Programme Membres Fondateurs — affichage privé dans l'espace propriétaire */
+.founder-panel{margin:0 0 22px;padding:17px 18px;border:1px solid #d7e5d7;border-radius:14px;background:#f1f7ef;color:#203b2b}
+.founder-panel-top{display:flex;align-items:center;gap:12px}
+.founder-icon{width:38px;height:38px;display:grid;place-items:center;border-radius:11px;background:#dcebdc;color:#286b52;font-size:20px}
+.founder-panel strong{display:block;font-size:14px}
+.founder-panel-top small,.founder-private-note{display:block;font-size:10px;color:#637568;margin-top:4px}
+.founder-panel p{font-size:12px;line-height:1.6;margin:12px 0 8px;color:#405848}
+html[data-theme="dark"] .founder-panel{background:#1c3023;border-color:#38533f;color:#edf4eb}
+html[data-theme="dark"] .founder-icon{background:#294633;color:#a8d2b3}
+html[data-theme="dark"] .founder-panel-top small,html[data-theme="dark"] .founder-private-note,html[data-theme="dark"] .founder-panel p{color:#b7c9ba}
+
 /* V5 — accusés de lecture et notifications e-mail (interface) */
 .read-receipt{display:block;text-align:right;font-size:9px;color:#3976a8;margin-top:4px;font-weight:800}
 .read-receipt.pending{color:#7b898b}
@@ -864,6 +876,11 @@ html[data-theme="dark"] .gx-proof-grid{background:#0b1410}
 </aside>
 <div class="panel">
 <div class="section-head"><div><div class="kicker">Informations personnelles</div><h2 style="font-size:27px">Mon profil</h2><p class="sub">Ces informations aident les autres membres à savoir avec qui ils échangent.</p></div></div>
+<div id="foundingMemberPanel" class="founder-panel" style="display:none" aria-live="polite">
+ <div class="founder-panel-top"><span class="founder-icon">✦</span><div><strong id="foundingMemberTitle">Membre fondateur Gab X-Port</strong><small id="foundingMemberSubtitle">Avantage associé à ce compte entreprise</small></div></div>
+ <p id="foundingMemberDescription"></p>
+ <small class="founder-private-note">Statut privé : visible uniquement depuis le compte propriétaire de l’entreprise.</small>
+</div>
 <form id="accountProfileForm">
 <div class="form-grid">
 <div class="field full"><label for="accountFullName">Nom complet</label><input id="accountFullName" required maxlength="120" autocomplete="name"></div>
@@ -1323,6 +1340,27 @@ async function requestAccountDeactivation(){
 }
 
 // Espace personnel : lecture et mise à jour du profil de l'utilisateur connecté.
+
+async function loadFoundingMemberStatus(user,accountType){
+ const panel=document.getElementById('foundingMemberPanel');
+ if(!panel)return;
+ panel.style.display='none';
+ if(!supabaseClient||!user||!['compagnie','company'].includes(accountType))return;
+ try{
+  // RPC sécurisée : Supabase ne retourne que le statut lié à auth.uid().
+  const {data,error}=await supabaseClient.rpc('get_my_founding_member_status');
+  if(error)throw error;
+  const row=Array.isArray(data)?data[0]:data;
+  if(!row||!row.is_founding_member||row.benefit_status!=='active')return;
+  const free=row.benefit_tier==='founder_free';
+  document.getElementById('foundingMemberTitle').textContent=free?'Membre fondateur — Cercle des 5':'Partenaire fondateur — Cercle des 15';
+  document.getElementById('foundingMemberSubtitle').textContent='Statut enregistré pour cette entreprise';
+  document.getElementById('foundingMemberDescription').textContent=free
+   ?'Ton entreprise fait partie des 5 premières inscrites. Son statut de fondatrice est conservé pour l’application des avantages prévus lors du lancement de la monétisation.'
+   :'Ton entreprise fait partie des 10 entreprises suivantes. La réduction de 50 % prévue sera associée à ce compte lors du lancement de la monétisation.';
+  panel.style.display='block';
+ }catch(err){console.warn('Statut membre fondateur non disponible',err);}
+}
 async function loadPersonalSpace(){
  const status=document.getElementById('accountStatus');
  if(!supabaseClient){status.textContent='Le service de compte est momentanément indisponible.';return}
@@ -1340,6 +1378,7 @@ async function loadPersonalSpace(){
  else profile=data;
  const accountType=profile?.account_type||meta.account_type||'';
  const isCompany=accountType==='compagnie'||accountType==='company';
+ await loadFoundingMemberStatus(user,accountType);
  const fullName=isCompany?(meta.company_name||profile?.full_name||meta.full_name||''):(profile?.full_name||meta.full_name||'');
  document.querySelector('label[for="accountFullName"]').textContent=isCompany?'Nom de l’entreprise':'Nom complet';
  
