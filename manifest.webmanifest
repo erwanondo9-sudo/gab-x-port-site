@@ -1,0 +1,21 @@
+{
+  "id": "/",
+  "name": "Gab X-Port",
+  "short_name": "Gab X-Port",
+  "description": "Le commerce sans frontières — services, commerce, transport et import-export.",
+  "lang": "fr",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f3f0e8",
+  "theme_color": "#172923",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
