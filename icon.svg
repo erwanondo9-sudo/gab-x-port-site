@@ -1,5 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 302 90">
-<rect width="302" height="90" rx="2" fill="#070d19"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 302 302">
+<rect width="302" height="302" rx="42" fill="#070d19"/>
+<g transform="translate(0 106)">
 <path d="M55 23 A27 27 0 1 0 56 76" fill="none" stroke="#dce1ed" stroke-width="5.5" stroke-linecap="round"/>
 <path d="M76 25h13l27 35-8 11h-8L76 25Z" fill="#08b99e"/>
 <path d="M98 25h13L85 61l-8 10H64l34-46Z" fill="#08b99e"/>
@@ -8,4 +9,4 @@
 <path d="m59 60 15-16 8 10-15 16Z" fill="#08b99e"/>
 <text x="130" y="47" font-family="Arial,Helvetica,sans-serif" font-size="21" font-weight="900" letter-spacing="-1" fill="#fff">GAB <tspan fill="#f2b72d">X</tspan>-PORT</text>
 <text x="131" y="61" font-family="Arial,Helvetica,sans-serif" font-size="5.4" font-weight="700" letter-spacing="1.05" fill="#dce1ed">CONNECTER LE GABON AU MONDE</text>
-</svg>
+</g></svg>
