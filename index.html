@@ -1305,7 +1305,7 @@ function updateAuthNavigation(session){
   mobileAccount.setAttribute('aria-label',connected?'Ouvrir mon profil personnel':'Se connecter ou créer un compte');
  }
  const canPublish=connected&&['compagnie','company','exportateur','independent'].includes(role);
- document.querySelectorAll('button[onclick*="openModal(\\'publish\\')"]').forEach(el=>{el.style.display=canPublish?'':'none';el.hidden=!canPublish;});
+ document.querySelectorAll('button[onclick*="publish"]').forEach(el=>{el.style.display=canPublish?'':'none';el.hidden=!canPublish;});
  document.querySelectorAll('a[href="/publier.html"]').forEach(el=>{el.style.display=canPublish?'':'none';el.hidden=!canPublish;});
  const personalIntro=document.querySelector('#view-espace-personnel .section-head .sub');
  if(personalIntro&&!canPublish&&connected)personalIntro.textContent='Consultez vos informations et gérez votre compte Gab X-Port.';
