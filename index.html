@@ -865,7 +865,7 @@ html[data-theme="dark"] .gx-proof-grid{background:#0b1410}
 <div class="listing-grid" id="listingGrid"></div>
 <div class="listing-detail" id="listingDetail"></div>
 
-</div></section></div><div class="view" id="view-favoris"><section class="section"><div class="wrap"><h2>Mes favoris</h2><div class="listing-grid" id="favoriteGrid"></div></div></section></div><div class="view" id="view-historique"><section class="section"><div class="wrap"><div class="section-head"><div><div class="kicker">Votre activité</div><h2>Historique des annonces</h2><p class="sub">Retrouvez les annonces que vous avez déjà consultées sur cet appareil.</p></div><button class="btn btn-light" type="button" onclick="clearListingHistory()">Effacer l’historique</button></div><div class="listing-grid" id="historyGrid"></div></div></section></div><div class="view" id="view-profil-offreur"><section class="page-hero"><div class="wrap"><button class="listing-detail-back" onclick="showView('annonces')">← Retour aux annonces</button><div id="offererProfileContent"></div></div></section></div><div class="view" id="view-entreprises"><section class="page-hero"><div class="wrap"><div class="kicker">Annuaire professionnel</div><h2>Découvrez les entreprises.</h2><p class="sub">Consultez leurs profils, leurs zones d’intervention au Gabon et à l’international, leurs disponibilités et leurs avis avant de prendre contact.</p></div></section><section class="section" style="padding-top:30px"><div class="wrap"><div class="search-panel"><div class="search-row"><div class="field"><label for="companySearch">Entreprise ou service</label><input id="companySearch" placeholder="Ex. transport, pièces auto…"></div><div class="field"><label for="companyCountry">Localisation</label><select id="companyCountry"><option value="all">Toutes les localisations</option><option>France</option><option>Gabon</option></select></div><div class="field"><label for="companySector">Secteur</label><select id="companySector"><option value="all">Tous les secteurs</option><option>Transport & logistique</option><option>Automobile & pièces</option><option>Agroalimentaire</option><option>Équipements & matériaux</option></select></div><button class="btn btn-green" onclick="renderCompanyDirectory()">Rechercher</button></div></div><div class="company-directory" id="companyDirectory" style="margin-top:20px"></div><p class="form-note">Les profils sont des exemples fictifs pour la démonstration. Les avis et disponibilités affichés ne sont pas vérifiés.</p></div></section></div><div class="view" id="view-messagerie" style="display:none!important"><section class="section" id="messagerie"><div class="wrap">
+</div></section></div><div class="view" id="view-favoris"><section class="section"><div class="wrap"><h2>Mes favoris</h2><p class="sub">Tes favoris sont liés à ton compte : ils te suivent sur tous tes appareils.</p><div class="listing-grid" id="favoriteGrid"></div></div></section></div><div class="view" id="view-historique"><section class="section"><div class="wrap"><div class="section-head"><div><div class="kicker">Votre activité</div><h2>Historique des annonces</h2><p class="sub">Retrouvez les annonces que vous avez déjà consultées, sur tous tes appareils.</p></div><button class="btn btn-light" type="button" onclick="clearListingHistory()">Effacer l’historique</button></div><div class="listing-grid" id="historyGrid"></div></div></section></div><div class="view" id="view-profil-offreur"><section class="page-hero"><div class="wrap"><button class="listing-detail-back" onclick="showView('annonces')">← Retour aux annonces</button><div id="offererProfileContent"></div></div></section></div><div class="view" id="view-entreprises"><section class="page-hero"><div class="wrap"><div class="kicker">Annuaire professionnel</div><h2>Découvrez les entreprises.</h2><p class="sub">Consultez leurs profils, leurs zones d’intervention au Gabon et à l’international, leurs disponibilités et leurs avis avant de prendre contact.</p></div></section><section class="section" style="padding-top:30px"><div class="wrap"><div class="search-panel"><div class="search-row"><div class="field"><label for="companySearch">Entreprise ou service</label><input id="companySearch" placeholder="Ex. transport, pièces auto…"></div><div class="field"><label for="companyCountry">Localisation</label><select id="companyCountry"><option value="all">Toutes les localisations</option><option>France</option><option>Gabon</option></select></div><div class="field"><label for="companySector">Secteur</label><select id="companySector"><option value="all">Tous les secteurs</option><option>Transport & logistique</option><option>Automobile & pièces</option><option>Agroalimentaire</option><option>Équipements & matériaux</option></select></div><button class="btn btn-green" onclick="renderCompanyDirectory()">Rechercher</button></div></div><div class="company-directory" id="companyDirectory" style="margin-top:20px"></div><p class="form-note">Les profils sont des exemples fictifs pour la démonstration. Les avis et disponibilités affichés ne sont pas vérifiés.</p></div></section></div><div class="view" id="view-messagerie" style="display:none!important"><section class="section" id="messagerie"><div class="wrap">
 <div class="section-head"><div><div class="kicker">Contact direct</div><h2>La conversation commence ici.</h2><p class="sub">Échangez directement avec les personnes intéressées par vos offres. Gab X-Port facilite la mise en relation, sans intervenir dans les négociations, les paiements ou les transactions.</p></div></div>
 <div class="messaging-layout">
 <aside class="chat-sidebar"><h3>Vos conversations</h3><p>Vos conversations privées sont synchronisées entre vos appareils après connexion.</p><div class="chat-list" id="chatList"></div></aside>
@@ -1090,23 +1090,134 @@ function showToast(msg){const t=document.getElementById('toast');t.textContent=m
 async function toggleFavorite(id){
  id=String(id);const isFavorite=favoriteListingIds.includes(id);
  favoriteListingIds=isFavorite?favoriteListingIds.filter(x=>x!==id):favoriteListingIds.concat(id);
- localStorage.setItem('gabxport-favorites',JSON.stringify(favoriteListingIds));renderListings();renderFavorites();
+ favoritesRevision++;
+ cacheFavorites();renderListings();renderFavorites();
  try{
-  const user=await getCurrentAuthUser();
-  if(user&&supabaseClient){const {error}=await supabaseClient.rpc('set_listing_favorite',{p_listing_id:id,p_is_favorite:!isFavorite});if(error)throw error;}
-  showToast(isFavorite?'Annonce retirée des favoris.':'Annonce ajoutée aux favoris.');
+  let user=null;
+  try{user=await getCurrentAuthUser()}catch(err){if(!/session/i.test(err.message||''))throw err}
+  if(user&&supabaseClient){
+   const {error}=await supabaseClient.rpc('set_listing_favorite',{p_listing_id:id,p_is_favorite:!isFavorite});
+   if(error)throw error;
+   showToast(isFavorite?'Annonce retirée des favoris.':'Annonce ajoutée aux favoris. Retrouve-la sur tous tes appareils.');
+  }else{
+   showToast(isFavorite?'Annonce retirée des favoris.':'Annonce ajoutée aux favoris. Connecte-toi pour la retrouver sur tes autres appareils.');
+  }
  }catch(err){console.error('Synchronisation favori',err);showToast('Favori enregistré sur cet appareil, mais la synchronisation a échoué.');}
 }
 const LISTING_HISTORY_KEY="gabxport-listing-history";
 function getListingHistory(){try{const raw=JSON.parse(localStorage.getItem(LISTING_HISTORY_KEY)||"[]");return Array.isArray(raw)?raw.filter(v=>v&&v.id).slice(0,100):[]}catch(e){return[]}}
-function recordListingVisit(listing){const history=getListingHistory().filter(v=>String(v.id)!==String(listing.id));history.unshift({id:String(listing.id),viewedAt:new Date().toISOString()});try{localStorage.setItem(LISTING_HISTORY_KEY,JSON.stringify(history.slice(0,100)))}catch(e){console.warn("Historique indisponible",e)}}
+function recordListingVisit(listing){const history=getListingHistory().filter(v=>String(v.id)!==String(listing.id));history.unshift({id:String(listing.id),viewedAt:new Date().toISOString()});historyRevision++;try{localStorage.setItem(LISTING_HISTORY_KEY,JSON.stringify(history.slice(0,100)))}catch(e){console.warn("Historique indisponible",e)}}
 function renderHistory(){const grid=document.getElementById("historyGrid");if(!grid)return;const history=getListingHistory();const listings=getListings();const items=history.map(v=>({listing:listings.find(x=>String(x.id)===String(v.id)),viewedAt:v.viewedAt})).filter(v=>v.listing);if(!items.length){grid.innerHTML='<div class="empty">Vous n’avez pas encore consulté d’annonce. Les annonces ouvertes apparaîtront ici.</div>';return;}grid.innerHTML=items.map(({listing:x,viewedAt})=>`<article class="listing"><div class="listing-top"><span class="tag ${x.type==='Besoin'?'orange':''}">${esc(x.type||'Annonce')}</span><span class="tag gx-visited-tag">Déjà consultée</span></div><h3>${esc(x.title)}</h3><p class="listing-preview">${esc(x.desc)}</p><div class="meta"><span>↔ ${esc(directionLabel(x.direction))}</span><span>⌁ ${esc(x.category)}</span><span>⌖ ${esc(x.city)}</span></div><div class="listing-foot"><small>Consultée le ${viewedAt?new Date(viewedAt).toLocaleString('fr-FR'):'Date inconnue'}</small><button class="text-btn" onclick="showView('annonces');openListingDetails('${String(x.id)}')">Voir l’annonce ↗</button></div></article>`).join("");}
-function clearListingHistory(){try{localStorage.removeItem(LISTING_HISTORY_KEY)}catch(e){}renderHistory();renderListings();showToast("Historique effacé.");}
+async function clearListingHistory(){
+ try{
+  if(supabaseClient&&window.gabxCurrentUser){
+   const {error}=await supabaseClient.rpc('clear_my_listing_history');
+   if(error&&!isMissingRpc(error))console.warn('Effacement de l’historique distant',error);
+  }
+ }catch(err){console.warn('Effacement de l’historique distant',err)}
+ try{localStorage.removeItem(LISTING_HISTORY_KEY);localStorage.setItem(HISTORY_MIGRATED_KEY,'1')}catch(e){}
+ historyRevision++;
+ renderHistory();renderListings();showToast("Historique effacé sur tous tes appareils.");
+}
 function renderFavorites(){
  const grid=document.getElementById('favoriteGrid');if(!grid)return;
  const items=getListings().filter(x=>favoriteListingIds.includes(String(x.id)));
  if(!items.length){grid.innerHTML='<div class="empty">Aucun favori pour le moment. Ajoutez une annonce avec ♡ Favoris pour la retrouver ici.</div>';return;}
  grid.innerHTML=items.map(x=>'<article class="listing"><h3>'+esc(x.title)+'</h3><p>'+esc(x.desc)+'</p><button class="text-btn" onclick="toggleFavorite(\''+String(x.id)+'\')">♥ Retirer</button><button class="text-btn" onclick="showView(\'annonces\');openListingDetails(\''+String(x.id)+'\')">Voir l’annonce ↗</button></article>').join('');
+}
+
+// SYNCHRONISATION MULTI-APPAREILS
+// Les favoris et l’historique suivent le compte Supabase : ce qui est fait sur
+// un ordinateur se retrouve sur le téléphone après connexion avec le même compte.
+// Le stockage local sert de cache immédiat et de secours hors connexion.
+const FAVORITES_STORAGE_KEY='gabxport-favorites';
+const FAVORITES_MIGRATED_KEY='gabxport-favorites-migrated';
+const HISTORY_MIGRATED_KEY='gabxport-history-migrated';
+let accountSyncTask=null;
+let favoritesRevision=0;
+let historyRevision=0;
+
+function cacheFavorites(){try{localStorage.setItem(FAVORITES_STORAGE_KEY,JSON.stringify(favoriteListingIds))}catch(e){}}
+function cacheHistory(history){try{localStorage.setItem(LISTING_HISTORY_KEY,JSON.stringify(history.slice(0,100)))}catch(e){}}
+function isMissingRpc(error){return !!error&&(error.code==='PGRST202'||/Could not find the function/i.test(error.message||''))}
+
+// Envoie une seule fois les favoris créés avant la connexion, puis le compte
+// devient la source de vérité (une suppression sur un appareil ne revient pas).
+async function pushLocalFavoritesOnce(){
+ if(localStorage.getItem(FAVORITES_MIGRATED_KEY)==='1')return true;
+ const pending=favoriteListingIds.slice();
+ if(pending.length){
+  const errors=await Promise.all(pending.map(id=>supabaseClient.rpc('set_listing_favorite',{p_listing_id:id,p_is_favorite:true}).then(({error})=>error).catch(err=>err)));
+  if(errors.some(Boolean))return false;
+ }
+ localStorage.setItem(FAVORITES_MIGRATED_KEY,'1');
+ return true;
+}
+
+async function pushLocalHistoryOnce(){
+ if(localStorage.getItem(HISTORY_MIGRATED_KEY)==='1')return true;
+ const pending=getListingHistory().map(v=>String(v.id));
+ if(pending.length){
+  const errors=await Promise.all(pending.map(id=>supabaseClient.rpc('record_listing_view',{p_listing_id:id}).then(({error})=>error).catch(err=>err)));
+  if(errors.some(Boolean))return false;
+ }
+ localStorage.setItem(HISTORY_MIGRATED_KEY,'1');
+ return true;
+}
+
+async function syncAccountState(){
+ if(!supabaseClient)return;
+ if(accountSyncTask)return accountSyncTask;
+ accountSyncTask=(async()=>{
+  const user=window.gabxCurrentUser||null;
+  if(!user)return;
+  const favoritesStart=favoritesRevision,historyStart=historyRevision;
+  const favoritesSynced=await pushLocalFavoritesOnce();
+  const historySynced=await pushLocalHistoryOnce();
+  const results=await Promise.allSettled([
+   supabaseClient.rpc('get_my_listing_favorites'),
+   supabaseClient.rpc('get_my_listing_history')
+  ]);
+  const favoritesResult=results[0],historyResult=results[1];
+  if(favoritesResult.status==='fulfilled'&&!favoritesResult.value.error){
+   if(favoritesRevision===favoritesStart){
+    const remote=(favoritesResult.value.data||[]).map(String);
+    favoriteListingIds=favoritesSynced?remote:Array.from(new Set(remote.concat(favoriteListingIds)));
+    cacheFavorites();renderListings();renderFavorites();
+   }
+  }else if(favoritesResult.status==='fulfilled'&&favoritesResult.value.error){
+   console.info('Favoris distants indisponibles',favoritesResult.value.error);
+  }
+  if(historyResult.status==='fulfilled'&&!historyResult.value.error){
+   if(historyRevision===historyStart){
+    const remote=(historyResult.value.data||[]).map(row=>({id:String(row.listing_id),viewedAt:row.viewed_at})).filter(v=>v.id);
+    const merged=historySynced?remote:Array.from(new Map(remote.concat(getListingHistory()).map(v=>[v.id,v])).values());
+    cacheHistory(merged.sort((a,b)=>String(b.viewedAt).localeCompare(String(a.viewedAt))));
+    renderHistory();renderListings();
+   }
+  }else if(historyResult.status==='fulfilled'&&historyResult.value.error&&!isMissingRpc(historyResult.value.error)){
+   console.info('Historique distant indisponible',historyResult.value.error);
+  }
+ })().catch(err=>console.warn('Synchronisation du compte',err)).finally(()=>{accountSyncTask=null});
+ return accountSyncTask;
+}
+
+// À la déconnexion, on vide le cache pour qu’un autre compte sur le même
+// appareil ne voie pas les favoris et l’historique du précédent.
+async function clearAccountCaches(){
+ favoriteListingIds=[];
+ try{
+  localStorage.removeItem(FAVORITES_STORAGE_KEY);
+  localStorage.removeItem(LISTING_HISTORY_KEY);
+  localStorage.removeItem(FAVORITES_MIGRATED_KEY);
+  localStorage.removeItem(HISTORY_MIGRATED_KEY);
+ }catch(e){}
+ renderFavorites();renderHistory();renderListings();
+}
+
+if(supabaseClient){
+ window.addEventListener('focus',()=>{if(window.gabxCurrentUser)syncAccountState()});
+ document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&window.gabxCurrentUser)syncAccountState()});
 }
 async function openOffererProfile(ownerId){
  if(!ownerId){showToast('Le profil de cet annonceur n’est pas disponible.');return;}
@@ -1311,13 +1422,14 @@ function updateAuthNavigation(session){
  if(personalIntro&&!canPublish&&connected)personalIntro.textContent='Consultez vos informations et gérez votre compte Gab X-Port.';
 }
 if(supabaseClient){
- supabaseClient.auth.getSession().then(({data})=>{updateAuthNavigation(data?.session);window.gabxCurrentUser=data?.session?.user||null;});
+ supabaseClient.auth.getSession().then(({data})=>{updateAuthNavigation(data?.session);window.gabxCurrentUser=data?.session?.user||null;if(data?.session?.user)syncAccountState();});
  supabaseClient.auth.onAuthStateChange((_event,session)=>{
   window.gabxCurrentUser=session?.user||null;
   if(_event==='PASSWORD_RECOVERY'){openModal('resetPassword');}
   if(_event==='SIGNED_IN'&&session?.user){supabaseClient.rpc('cancel_account_deletion').then(({error})=>{if(error)console.warn('Annulation de la suppression programmée',error);});}
+  if(_event==='SIGNED_OUT'){clearAccountCaches();}
   updateAuthNavigation(session);
-  setTimeout(()=>{loadChats(false);if(session?.user)renderPersonalListings(session.user);},0);
+  setTimeout(()=>{loadChats(false);if(session?.user){renderPersonalListings(session.user);syncAccountState();}},0);
  });
 }else{updateAuthNavigation(null)}
 loadListings();
@@ -1488,6 +1600,7 @@ async function showView(name){
  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id==='view-'+name));
  document.querySelectorAll('.site-header-nav a').forEach(a=>a.classList.toggle('active',a.dataset.view===name));
  document.querySelectorAll('.mobile-tab[data-mobile-view]').forEach(a=>a.classList.toggle('active',a.dataset.mobileView===name));
+ if(name==='favoris'||name==='historique'){syncAccountState();}
  if(name==='entreprises')renderCompanyDirectory();
   if(name==='favoris')renderFavorites();
  if(name==='historique')renderHistory();
