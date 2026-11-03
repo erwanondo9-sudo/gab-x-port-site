@@ -1304,8 +1304,11 @@ function updateAuthNavigation(session){
   mobileAccount.querySelectorAll('.account-profile-icon').forEach(el=>el.style.display=connected?'':'none');
   mobileAccount.setAttribute('aria-label',connected?'Ouvrir mon profil personnel':'Se connecter ou créer un compte');
  }
- const publish=document.querySelector('button[onclick="openModal(\'publish\')"]');
- if(publish)publish.style.display=connected?'':'none';
+ const canPublish=connected&&['compagnie','company','exportateur','independent'].includes(role);
+ document.querySelectorAll('button[onclick*="openModal(\\'publish\\')"]').forEach(el=>{el.style.display=canPublish?'':'none';el.hidden=!canPublish;});
+ document.querySelectorAll('a[href="/publier.html"]').forEach(el=>{el.style.display=canPublish?'':'none';el.hidden=!canPublish;});
+ const personalIntro=document.querySelector('#view-espace-personnel .section-head .sub');
+ if(personalIntro&&!canPublish&&connected)personalIntro.textContent='Consultez vos informations et gérez votre compte Gab X-Port.';
 }
 if(supabaseClient){
  supabaseClient.auth.getSession().then(({data})=>{updateAuthNavigation(data?.session);window.gabxCurrentUser=data?.session?.user||null;});
