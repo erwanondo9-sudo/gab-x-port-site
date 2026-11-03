@@ -1,0 +1,916 @@
+/* ============================================================================
+   GAB X-PORT — FINITION C
+   « Polished » · fluidité · micro-interactions · profondeur visuelle
+   ----------------------------------------------------------------------------
+   Feuille chargée après les styles inline de chaque page : elle ne redéfinit
+   jamais la direction artistique « Atlantic Editorial », elle la met en
+   volume. Trois principes :
+
+   1. PROFONDEUR  — une échelle d'ombre unique, des filets lumineux, des
+                    surfaces légèrement dégradées, une lumière d'ambiance.
+   2. FLUIDITÉ    — des courbes et des durées communes, des entrées en
+                    cascade, des apparitions au défilement.
+   3. MICRO       — chaque élément actionnable réagit : survol, appui,
+                    focus, déplacement du curseur.
+   ========================================================================== */
+
+:root {
+  /* Courbes et durées — un seul vocabulaire de mouvement */
+  --gx-ease: cubic-bezier(.22, 1, .36, 1);
+  --gx-ease-soft: cubic-bezier(.4, 0, .2, 1);
+  --gx-spring: cubic-bezier(.34, 1.42, .64, 1);
+  --gx-t-fast: 150ms;
+  --gx-t: 280ms;
+  --gx-t-slow: 560ms;
+
+  /* Surfaces */
+  --gx-paper: #f3f0e8;
+  --gx-paper-2: #f7f4ec;
+  --gx-surface: #fffdf8;
+  --gx-surface-2: #faf7ef;
+  --gx-ink: #172923;
+  --gx-ink-2: #33473c;
+  --gx-muted: #5e6e65;
+  --gx-line: #dedfd5;
+  --gx-line-2: #cfd3c4;
+  --gx-green: #286b52;
+  --gx-green-deep: #1d5741;
+  --gx-clay: #9c4526;
+  --gx-clay-soft: #e5a36c;
+  --gx-ring: rgba(40, 107, 82, .26);
+
+  /* Profondeur */
+  --gx-hairline: inset 0 1px 0 rgba(255, 255, 255, .92);
+  --gx-shadow-1: 0 1px 2px rgba(23, 41, 35, .06), 0 2px 6px -2px rgba(23, 41, 35, .08);
+  --gx-shadow-2: 0 2px 6px rgba(23, 41, 35, .05), 0 16px 32px -14px rgba(23, 41, 35, .20);
+  --gx-shadow-3: 0 4px 10px rgba(23, 41, 35, .06), 0 34px 64px -24px rgba(23, 41, 35, .30);
+  --gx-shadow-inset: inset 0 1px 2px rgba(23, 41, 35, .05);
+
+  --gx-radius: 10px;
+  --gx-radius-lg: 16px;
+  --gx-radius-xl: 22px;
+}
+
+html[data-theme="dark"] {
+  --gx-paper: #111b17;
+  --gx-paper-2: #16221c;
+  --gx-surface: #1b2921;
+  --gx-surface-2: #1f2f26;
+  --gx-ink: #e8eee8;
+  --gx-ink-2: #c9d4cb;
+  --gx-muted: #a9b7ad;
+  --gx-line: #2f4036;
+  --gx-line-2: #3d5044;
+  --gx-green: #8fbd9e;
+  --gx-green-deep: #79ab89;
+  --gx-clay: #e8b48f;
+  --gx-clay-soft: #e5a36c;
+  --gx-ring: rgba(143, 189, 158, .32);
+  --gx-hairline: inset 0 1px 0 rgba(255, 255, 255, .05);
+  --gx-shadow-1: 0 1px 2px rgba(0, 0, 0, .30), 0 2px 6px -2px rgba(0, 0, 0, .35);
+  --gx-shadow-2: 0 2px 6px rgba(0, 0, 0, .30), 0 18px 34px -16px rgba(0, 0, 0, .60);
+  --gx-shadow-3: 0 4px 12px rgba(0, 0, 0, .35), 0 36px 70px -26px rgba(0, 0, 0, .70);
+  --gx-shadow-inset: inset 0 1px 2px rgba(0, 0, 0, .28);
+}
+
+/* ---------------------------------------------------------------- 1. BASE -- */
+
+html { scroll-padding-top: 96px; }
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+html[data-theme="light"] body { color: var(--gx-ink); }
+
+h1, h2, h3 { text-wrap: balance; }
+p, .lead, .sub { text-wrap: pretty; }
+
+::selection { background: rgba(169, 85, 45, .20); color: var(--gx-ink); }
+
+/* Barre de défilement discrète, accordée au papier */
+::-webkit-scrollbar { width: 11px; height: 11px; }
+::-webkit-scrollbar-track { background: var(--gx-paper); }
+::-webkit-scrollbar-thumb {
+  background: #c9cec1;
+  border: 3px solid var(--gx-paper);
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover { background: #aeb6a7; }
+html[data-theme="dark"] ::-webkit-scrollbar-thumb { background: #3c4c41; }
+html[data-theme="dark"] ::-webkit-scrollbar-thumb:hover { background: #4d6053; }
+
+/* Un anneau de focus visible, jamais sur la souris */
+:where(a, button, select, input, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--gx-green);
+  outline-offset: 3px;
+}
+html[data-theme="dark"] :where(a, button, select, input, textarea, [tabindex]):focus-visible {
+  outline-color: var(--gx-green);
+}
+
+/* ------------------------------------------------------- 2. EN-TÊTE & NAV -- */
+
+header.wrap.nav {
+  /* Une seule surface du haut de page au défilement : plus de saut de teinte. */
+  background: rgba(248, 246, 239, .94) !important;
+  border-bottom: 1px solid rgba(23, 41, 35, .07) !important;
+  transition: box-shadow var(--gx-t-slow) var(--gx-ease),
+              background-color var(--gx-t-slow) var(--gx-ease);
+  box-shadow: 0 1px 0 rgba(23, 41, 35, .06);
+}
+html[data-theme="dark"] header.wrap.nav {
+  background: rgba(17, 27, 23, .94) !important;
+  border-bottom-color: rgba(255, 255, 255, .06) !important;
+}
+
+header.wrap.nav.gx-scrolled {
+  box-shadow: 0 1px 0 rgba(23, 41, 35, .08),
+              0 18px 40px -30px rgba(23, 41, 35, .55);
+  background: rgba(248, 246, 239, .97) !important;
+}
+html[data-theme="dark"] header.wrap.nav.gx-scrolled {
+  background: rgba(14, 24, 19, .97) !important;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, .05),
+              0 18px 40px -30px rgba(0, 0, 0, .8);
+}
+
+/* Soulignement qui se déploie sous le lien */
+.navlinks a,
+.site-header-nav a {
+  position: relative;
+  padding-bottom: 3px;
+  transition: color var(--gx-t) var(--gx-ease);
+}
+.navlinks a::after,
+.site-header-nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -3px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--gx-clay-soft);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform .42s var(--gx-ease);
+  opacity: .95;
+}
+.navlinks a:hover::after,
+.navlinks a.active::after,
+.site-header-nav a:hover::after,
+.site-header-nav a.active::after { transform: scaleX(1); }
+
+/* Le sélecteur de thème ressemble enfin à un menu */
+.theme-select {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'><path d='M1 1.5 6 6.5l5-5' fill='none' stroke='%236b7a72' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 10px 7px;
+  border-radius: var(--gx-radius);
+  padding-right: 28px;
+  transition: border-color var(--gx-t) var(--gx-ease),
+              box-shadow var(--gx-t) var(--gx-ease),
+              background-color var(--gx-t) var(--gx-ease);
+}
+.theme-select:hover { border-color: var(--gx-line-2); box-shadow: var(--gx-shadow-1); }
+html[data-theme="dark"] .theme-select {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'><path d='M1 1.5 6 6.5l5-5' fill='none' stroke='%23a9b7ad' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+}
+
+/* ------------------------------------------------------------- 3. BOUTONS -- */
+
+.btn {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: var(--gx-radius);
+  box-shadow: var(--gx-shadow-1) !important;
+  transition: transform var(--gx-t) var(--gx-ease),
+              box-shadow var(--gx-t) var(--gx-ease),
+              background-color var(--gx-t-fast) var(--gx-ease-soft),
+              border-color var(--gx-t-fast) var(--gx-ease-soft),
+              color var(--gx-t-fast) var(--gx-ease-soft);
+}
+
+/* Reflet qui suit le curseur */
+.btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(150px 120px at var(--gx-mx, 50%) var(--gx-my, 50%),
+              rgba(255, 255, 255, .30), transparent 72%);
+  opacity: 0;
+  transition: opacity var(--gx-t) var(--gx-ease);
+}
+
+@media (hover: hover) {
+  .btn:hover { transform: translateY(-2px) !important; box-shadow: var(--gx-shadow-2) !important; }
+  .btn:hover::after { opacity: 1; }
+}
+
+.btn:active {
+  transform: translateY(0) scale(.985) !important;
+  box-shadow: var(--gx-shadow-1) !important;
+  transition-duration: 90ms;
+}
+
+.btn-green {
+  background: linear-gradient(180deg, #2f765a 0%, #256449 100%);
+  border: 1px solid #1f5841;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .16),
+              0 8px 18px -8px rgba(31, 88, 65, .60) !important;
+}
+.btn-green:hover {
+  background: linear-gradient(180deg, #337d60 0%, #286b4f 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .18),
+              0 16px 30px -12px rgba(31, 88, 65, .66) !important;
+}
+
+.btn-dark {
+  background: linear-gradient(180deg, #1e3329 0%, #16261f 100%);
+  border: 1px solid #16261f;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .10),
+              0 8px 18px -10px rgba(23, 41, 35, .80) !important;
+}
+.btn-dark:hover { background: linear-gradient(180deg, #24402f 0%, #1a2e24 100%); }
+
+.btn-light {
+  background: var(--gx-surface);
+  border: 1px solid var(--gx-line);
+  color: var(--gx-ink);
+  box-shadow: var(--gx-hairline), var(--gx-shadow-1) !important;
+}
+.btn-light:hover {
+  background: var(--gx-surface-2);
+  border-color: var(--gx-line-2);
+}
+
+.btn-lime {
+  background: linear-gradient(180deg, #eeb887 0%, #e2a068 100%);
+  color: #2b2018;
+  border: 1px solid #d3913f;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .35),
+              0 8px 18px -9px rgba(169, 85, 45, .55) !important;
+}
+
+/* Les liens d'action texte gagnent un vrai état de survol */
+.text-btn {
+  transition: color var(--gx-t-fast) var(--gx-ease-soft),
+              opacity var(--gx-t-fast) var(--gx-ease-soft);
+}
+.text-btn:hover { color: var(--gx-green); }
+
+/* ------------------------------------------------------------- 4. HÉRO -- */
+
+.gx-hero {
+  background-color: #12211b;
+  box-shadow: 0 34px 70px -40px rgba(23, 41, 35, .65);
+}
+
+.gx-hero-art {
+  transform: translate3d(0, var(--gx-parallax, 0px), 0) scale(1.02);
+  transition: transform .25s linear;
+  will-change: transform;
+}
+html[data-theme="light"] .gx-hero { box-shadow: 0 34px 70px -44px rgba(23, 41, 35, .45); }
+
+/* Rythme de la colonne éditoriale */
+.gx-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.gx-eyebrow::before {
+  content: "";
+  width: 26px;
+  height: 1px;
+  background: currentColor;
+  opacity: .55;
+}
+
+html[data-theme="dark"] .gx-hero h1,
+html[data-theme="dark"] .gx-hero .lead {
+  text-shadow: 0 2px 26px rgba(0, 0, 0, .28);
+}
+
+/* Entrée en cascade de la copie — rejouée à chaque retour sur l'accueil */
+@keyframes gx-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: none; }
+}
+.view.active .gx-hero-copy > * {
+  animation: gx-rise .85s var(--gx-ease) both;
+}
+.view.active .gx-hero-copy > *:nth-child(1) { animation-delay: .04s; }
+.view.active .gx-hero-copy > *:nth-child(2) { animation-delay: .12s; }
+.view.active .gx-hero-copy > *:nth-child(3) { animation-delay: .21s; }
+.view.active .gx-hero-copy > *:nth-child(4) { animation-delay: .30s; }
+
+/* Le bouton principal du héros passe de la lime à la terre cuite éditoriale */
+.hero.gx-hero .btn-green,
+.gx-hero .btn-green {
+  background: linear-gradient(180deg, #f0b585 0%, #e3a26b 100%);
+  color: #2b2018;
+  border: 1px solid rgba(255, 255, 255, .28);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .45),
+              0 12px 26px -12px rgba(0, 0, 0, .55) !important;
+}
+.hero.gx-hero .btn-green:hover,
+.gx-hero .btn-green:hover {
+  background: linear-gradient(180deg, #f6c095 0%, #eaab74 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .5),
+              0 18px 34px -14px rgba(0, 0, 0, .6) !important;
+}
+/* En clair, le héros est lumineux : le bouton secondaire redevient une
+   surface blanche, sinon le texte blanc se perd sur le ciel. */
+html[data-theme="light"] .hero.gx-hero .btn-dark,
+html[data-theme="light"] .gx-hero .btn-dark {
+  background: var(--gx-surface);
+  border: 1px solid rgba(23, 41, 35, .16);
+  color: var(--gx-ink);
+  backdrop-filter: none;
+}
+html[data-theme="light"] .hero.gx-hero .btn-dark:hover,
+html[data-theme="light"] .gx-hero .btn-dark:hover {
+  background: #fff;
+  border-color: var(--gx-green);
+  color: var(--gx-green);
+}
+
+html[data-theme="dark"] .hero.gx-hero .btn-dark,
+html[data-theme="dark"] .gx-hero .btn-dark {
+  background: rgba(255, 255, 255, .07);
+  border: 1px solid rgba(255, 255, 255, .30);
+  color: #fff;
+  backdrop-filter: blur(6px);
+}
+html[data-theme="dark"] .hero.gx-hero .btn-dark:hover,
+html[data-theme="dark"] .gx-hero .btn-dark:hover {
+  background: rgba(255, 255, 255, .13);
+  border-color: rgba(255, 255, 255, .45);
+}
+
+/* Repères de recherche */
+.gx-shortcuts button {
+  border-radius: 10px;
+  transition: transform var(--gx-t) var(--gx-ease),
+              background-color var(--gx-t) var(--gx-ease),
+              border-color var(--gx-t) var(--gx-ease),
+              color var(--gx-t) var(--gx-ease);
+}
+@media (hover: hover) {
+  .gx-shortcuts button:hover { transform: translateY(-1px); }
+}
+
+/* -------------------------------------------------- 5. BANDEAUX & PREUVES -- */
+
+.gx-feature {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: var(--gx-radius-lg);
+  box-shadow: var(--gx-hairline), var(--gx-shadow-1);
+  transition: transform .42s var(--gx-ease) var(--gx-delay, 0ms),
+              box-shadow .42s var(--gx-ease),
+              border-color var(--gx-t) var(--gx-ease),
+              opacity .6s var(--gx-ease) var(--gx-delay, 0ms);
+}
+
+.gx-feature::after,
+.listing::after,
+.service::after,
+.company-card::after,
+.gx-steps > div::after,
+.gx-category-grid button::after,
+.panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(260px 220px at var(--gx-mx, 50%) var(--gx-my, 0%),
+              rgba(40, 107, 82, .10), transparent 66%);
+  opacity: 0;
+  transition: opacity .5s var(--gx-ease);
+}
+
+@media (hover: hover) {
+  .gx-feature:hover::after,
+  .listing:hover::after,
+  .service:hover::after,
+  .company-card:hover::after,
+  .gx-steps > div:hover::after,
+  .gx-category-grid button:hover::after,
+  .panel:hover::after { opacity: 1; }
+}
+html[data-theme="dark"] .gx-feature::after,
+html[data-theme="dark"] .listing::after,
+html[data-theme="dark"] .service::after,
+html[data-theme="dark"] .company-card::after,
+html[data-theme="dark"] .gx-steps > div::after,
+html[data-theme="dark"] .gx-category-grid button::after,
+html[data-theme="dark"] .panel::after {
+  background: radial-gradient(260px 220px at var(--gx-mx, 50%) var(--gx-my, 0%),
+              rgba(255, 255, 255, .07), transparent 66%);
+}
+
+.gx-feature-icon {
+  transition: transform .45s var(--gx-spring), box-shadow var(--gx-t) var(--gx-ease);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .18), 0 8px 18px -10px rgba(23, 41, 35, .55);
+}
+.gx-feature i {
+  transition: transform .4s var(--gx-ease), background-color var(--gx-t) var(--gx-ease);
+}
+@media (hover: hover) {
+  .gx-feature:hover .gx-feature-icon { transform: scale(1.06) rotate(-3deg); }
+  .gx-feature:hover i { transform: translateX(3px); }
+  .gx-feature:hover { transform: translateY(-4px); box-shadow: var(--gx-shadow-2); }
+}
+
+/* Cartes « Comment ça marche » */
+.gx-steps > div {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  box-shadow: var(--gx-hairline), var(--gx-shadow-1);
+}
+.gx-steps > div > span {
+  color: #067a56;
+  transition: transform .45s var(--gx-spring), box-shadow var(--gx-t) var(--gx-ease);
+}
+@media (hover: hover) {
+  .gx-steps > div:hover { transform: translateY(-3px); box-shadow: var(--gx-shadow-2); }
+  .gx-steps > div:hover > span { transform: translateY(-2px) scale(1.06); }
+}
+
+/* Grille de catégories */
+.gx-category-grid button {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  transition: transform .35s var(--gx-ease),
+              border-color var(--gx-t) var(--gx-ease),
+              background-color var(--gx-t) var(--gx-ease),
+              box-shadow var(--gx-t) var(--gx-ease);
+}
+.gx-category-grid button span {
+  transition: transform .45s var(--gx-spring);
+}
+@media (hover: hover) {
+  .gx-category-grid button:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--gx-shadow-2);
+  }
+  .gx-category-grid button:hover span { transform: scale(1.12) rotate(-4deg); }
+}
+
+/* Bandeau de preuves : une pièce sombre posée sur le papier */
+.gx-proof-grid {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--gx-radius-lg);
+  background: linear-gradient(150deg, #1d342b 0%, #142621 58%, #172c24 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .09),
+              0 28px 54px -28px rgba(23, 41, 35, .70);
+}
+.gx-proof-grid::before {
+  content: "";
+  position: absolute;
+  right: -60px;
+  top: -140px;
+  width: 340px;
+  height: 340px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(229, 163, 108, .20), transparent 66%);
+  pointer-events: none;
+}
+.gx-proof-grid::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(120% 120% at 0% 0%, rgba(255, 255, 255, .07), transparent 52%);
+  pointer-events: none;
+}
+.gx-proof-grid > div {
+  position: relative;
+  z-index: 1;
+  padding: 22px 14px;
+  transition: transform .4s var(--gx-ease);
+}
+.gx-proof-grid > div + div { box-shadow: inset 1px 0 0 rgba(255, 255, 255, .07); }
+@media (hover: hover) {
+  .gx-proof-grid > div:hover { transform: translateY(-2px); }
+}
+
+/* ------------------------------------------------------- 6. SECTIONS & CARTES -- */
+
+.section { padding: 84px 0; }
+.section-head { margin-bottom: 32px; }
+
+.kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  /* Terre cuite dense : ≈5,5:1 sur le papier, ≈9:1 en sombre. */
+  color: var(--gx-clay);
+}
+.gx-section-title .kicker,
+.gx-lower .kicker { color: var(--gx-clay); }
+html[data-theme="dark"] .gx-eyebrow { color: #e5a36c; }
+.kicker::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: .75;
+}
+
+.section h2,
+.gx-section-title h2,
+.gx-lower h2 {
+  line-height: 1.08;
+  letter-spacing: -1.6px;
+}
+
+.sub { color: var(--gx-muted); }
+.lead { color: var(--gx-ink-2); }
+.meta { color: var(--gx-muted); }
+.form-note { color: var(--gx-muted); }
+
+.search-panel,
+.listing,
+.service,
+.panel,
+.company-card,
+.listing-detail,
+.messaging-layout {
+  background: var(--gx-surface);
+  border: 1px solid var(--gx-line);
+  border-radius: var(--gx-radius-lg);
+  box-shadow: var(--gx-hairline), var(--gx-shadow-1);
+}
+
+/* Panneau de recherche : il s'allume quand on y travaille */
+.search-panel {
+  position: relative;
+  transition: box-shadow .45s var(--gx-ease), border-color .3s var(--gx-ease);
+}
+.search-panel:focus-within {
+  border-color: #a9c3b3;
+  box-shadow: 0 0 0 4px rgba(40, 107, 82, .08),
+              0 22px 48px -26px rgba(23, 41, 35, .40);
+}
+html[data-theme="dark"] .search-panel:focus-within {
+  border-color: #4b6a58;
+  box-shadow: 0 0 0 4px rgba(143, 189, 158, .10),
+              0 22px 48px -26px rgba(0, 0, 0, .7);
+}
+
+/* Champs : survol, focus, remplissage */
+.field input,
+.field select,
+.field textarea,
+.chat-compose textarea {
+  transition: border-color var(--gx-t) var(--gx-ease),
+              box-shadow var(--gx-t) var(--gx-ease),
+              background-color var(--gx-t) var(--gx-ease);
+}
+.field input:hover,
+.field select:hover,
+.field textarea:hover,
+.chat-compose textarea:hover { border-color: var(--gx-line-2); }
+
+/* Cartes d'annonces */
+.listing {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  transition: transform .42s var(--gx-ease) var(--gx-delay, 0ms),
+              box-shadow .42s var(--gx-ease),
+              border-color var(--gx-t) var(--gx-ease),
+              opacity .6s var(--gx-ease) var(--gx-delay, 0ms);
+}
+.listing h3 {
+  transition: color var(--gx-t) var(--gx-ease);
+  letter-spacing: -.4px;
+}
+@media (hover: hover) {
+  .listing:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--gx-shadow-3);
+    border-color: #c3d2c5;
+  }
+  .listing:hover h3 { color: var(--gx-green-deep); }
+}
+
+/* Les cartes respirent : filet supérieur et pied aligné */
+.listing-top { margin-bottom: 12px; }
+.listing-foot {
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid var(--gx-line);
+}
+
+.tag {
+  transition: background-color var(--gx-t) var(--gx-ease), color var(--gx-t) var(--gx-ease);
+}
+
+/* Entreprises et services */
+.service,
+.company-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  transition: transform .42s var(--gx-ease) var(--gx-delay, 0ms),
+              box-shadow .42s var(--gx-ease),
+              border-color var(--gx-t) var(--gx-ease),
+              opacity .6s var(--gx-ease) var(--gx-delay, 0ms);
+}
+.service-icon,
+.company-logo {
+  transition: transform .45s var(--gx-spring);
+}
+@media (hover: hover) {
+  .service:hover,
+  .company-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--gx-shadow-2);
+    border-color: #c3d2c5;
+  }
+  .service:hover .service-icon,
+  .company-card:hover .company-logo { transform: scale(1.05) rotate(-3deg); }
+}
+
+/* Panneaux de contenu : profondeur sans déplacement */
+.panel {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  transition: box-shadow .4s var(--gx-ease), border-color .3s var(--gx-ease);
+}
+@media (hover: hover) {
+  .panel:hover { box-shadow: var(--gx-hairline), var(--gx-shadow-2); }
+}
+
+/* Puces de filtre */
+.chip {
+  transition: transform var(--gx-t) var(--gx-ease),
+              background-color var(--gx-t) var(--gx-ease),
+              border-color var(--gx-t) var(--gx-ease),
+              color var(--gx-t) var(--gx-ease),
+              box-shadow var(--gx-t) var(--gx-ease);
+}
+.chip:hover { box-shadow: var(--gx-shadow-1); }
+.chip:active { transform: scale(.96); }
+.chip.active {
+  background: var(--gx-ink);
+  border-color: var(--gx-ink);
+  color: var(--gx-paper);
+  box-shadow: var(--gx-shadow-1);
+}
+
+/* Appel à l'action */
+.cta {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--gx-radius-xl);
+  background: linear-gradient(130deg, #2c7357 0%, #245f47 55%, #1d5140 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .12),
+              0 30px 60px -30px rgba(23, 41, 35, .70);
+}
+.cta::before {
+  content: "";
+  position: absolute;
+  right: -70px;
+  top: -170px;
+  width: 360px;
+  height: 360px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, .14);
+  box-shadow: 0 0 0 34px rgba(255, 255, 255, .045),
+              0 0 0 68px rgba(255, 255, 255, .03);
+  pointer-events: none;
+}
+
+/* ------------------------------------------------ 7. MESSAGERIE & MODALES -- */
+
+.chat-thread {
+  transition: background-color var(--gx-t) var(--gx-ease),
+              border-color var(--gx-t) var(--gx-ease),
+              transform var(--gx-t) var(--gx-ease);
+}
+@media (hover: hover) {
+  .chat-thread:hover { background: color-mix(in srgb, var(--gx-green) 6%, transparent); }
+}
+.chat-bubble {
+  box-shadow: 0 1px 2px rgba(23, 41, 35, .05);
+  transition: transform var(--gx-t) var(--gx-ease);
+}
+
+/* Modale : voile + panneau qui montent ensemble */
+.modal-backdrop { backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+.modal-backdrop.show { animation: gx-veil .32s var(--gx-ease-soft) both; }
+.modal-backdrop.show .modal { animation: gx-panel .42s var(--gx-ease) both; }
+@keyframes gx-veil {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes gx-panel {
+  from { opacity: 0; transform: translateY(14px) scale(.975); }
+  to { opacity: 1; transform: none; }
+}
+.modal {
+  border: 1px solid var(--gx-line);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .8),
+              0 40px 90px -30px rgba(10, 26, 19, .55);
+}
+
+/* Toast : il entre et sort en douceur, sans display brutal */
+.toast {
+  display: block !important;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(16px) scale(.98);
+  transition: opacity .35s var(--gx-ease),
+              transform .45s var(--gx-spring),
+              visibility 0s linear .35s;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .08),
+              0 24px 50px -18px rgba(10, 26, 19, .65);
+}
+.toast.show {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition-delay: 0s;
+}
+html[data-theme="light"] .toast {
+  background: #172923;
+  color: #f4f1e8;
+}
+
+/* ---------------------------------------------------------------- 8. PIED -- */
+
+.footer {
+  position: relative;
+  border-top: 1px solid rgba(255, 255, 255, .06);
+}
+.footer::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(229, 163, 108, .55), transparent);
+  pointer-events: none;
+}
+.footer a { transition: color var(--gx-t) var(--gx-ease); }
+.footer .brand-logo { transition: opacity var(--gx-t) var(--gx-ease); }
+.footer .brand:hover .brand-logo { opacity: .85; }
+
+/* ----------------------------------------------- 9. NAVIGATION MOBILE (APP) -- */
+
+/* Marqueur « déjà consultée » (règles auparavant placées hors du <head>) */
+.gx-visited-tag {
+  background: #e9f2ed !important;
+  color: #27634c !important;
+  border: 1px solid #c9dfd2 !important;
+  font-weight: 800;
+}
+html[data-theme="dark"] .gx-visited-tag {
+  background: #203b30 !important;
+  color: #b7e0c7 !important;
+  border-color: #315846 !important;
+}
+
+@media (max-width: 760px) {
+  .mobile-tab {
+    position: relative;
+    transition: transform .22s var(--gx-ease),
+                background-color var(--gx-t) var(--gx-ease),
+                color var(--gx-t) var(--gx-ease) !important;
+  }
+  .mobile-tab::before {
+    content: "";
+    position: absolute;
+    top: 4px;
+    left: 50%;
+    width: 18px;
+    height: 2px;
+    border-radius: 2px;
+    background: currentColor;
+    transform: translateX(-50%) scaleX(0);
+    opacity: .9;
+    transition: transform .35s var(--gx-ease);
+  }
+  .mobile-tab.active::before { transform: translateX(-50%) scaleX(1); }
+  .mobile-tab:active { transform: scale(.93); }
+  .mobile-tab svg { transition: transform .35s var(--gx-spring); }
+  .mobile-tab.active svg { transform: translateY(-1px) scale(1.04); }
+}
+
+/* ------------------------------- 9 bis. PROFONDEUR EN THÈME SOMBRE --------- */
+
+/* Les surcharges sombres du site sont plus spécifiques que les règles de base :
+   on rétablit l'échelle d'ombre avec la même portée. */
+html[data-theme="dark"] :is(.search-panel, .listing, .service, .panel, .company-card,
+    .listing-detail, .messaging-layout, .modal, .gx-feature) {
+  box-shadow: var(--gx-hairline), var(--gx-shadow-1);
+}
+
+html[data-theme="dark"] :is(.listing:hover, .service:hover, .company-card:hover) {
+  box-shadow: var(--gx-hairline), var(--gx-shadow-3);
+  border-color: var(--gx-line-2);
+}
+
+html[data-theme="dark"] .panel:hover {
+  box-shadow: var(--gx-hairline), var(--gx-shadow-2);
+}
+
+html[data-theme="dark"] .gx-feature:hover {
+  box-shadow: var(--gx-hairline), var(--gx-shadow-2);
+  border-color: var(--gx-line-2);
+}
+
+html[data-theme="dark"] body #view-home .gx-categories .gx-steps > div {
+  box-shadow: var(--gx-hairline), var(--gx-shadow-1) !important;
+}
+html[data-theme="dark"] body #view-home .gx-categories .gx-steps > div:hover {
+  box-shadow: var(--gx-hairline), var(--gx-shadow-2) !important;
+}
+
+/* ------------------------------------------------------ 10. DÉTAILS MOBILES -- */
+
+@media (max-width: 760px) {
+  .gx-proof-grid > div + div { box-shadow: none; }
+  .listing-foot { padding-top: 14px; }
+}
+
+
+/* --------------------------------------------- 11. APPARITIONS AU DÉFILEMENT -- */
+
+.gx-reveal { opacity: 0; transform: translateY(20px); }
+.gx-in { opacity: 1; transform: none; }
+
+.section.gx-reveal,
+.page-hero.gx-reveal,
+.gx-categories.gx-reveal,
+.gx-proof.gx-reveal,
+.gx-feature-strip.gx-reveal,
+.cta.gx-reveal,
+.gx-proof-grid.gx-reveal {
+  transition: opacity .75s var(--gx-ease) var(--gx-delay, 0ms),
+              transform .75s var(--gx-ease) var(--gx-delay, 0ms);
+}
+
+/* Les vues changent en fondu, pas en claquement */
+.view.active { animation: gx-view .34s var(--gx-ease-soft) both; }
+@keyframes gx-view {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ------------------------------------------------------- 12. ACCESSIBILITÉ -- */
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *,
+  *::before,
+  *::after {
+    animation-duration: .001ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+    transition-delay: 0ms !important;
+  }
+  .gx-reveal { opacity: 1 !important; transform: none !important; }
+  .view.active .gx-hero-copy > * { animation: none !important; }
+  .gx-hero-art { transform: none !important; }
+}
+
+/* Sur écran tactile et petit, on retire les effets de survol coûteux */
+@media (hover: none) {
+  .listing:hover,
+  .service:hover,
+  .company-card:hover,
+  .gx-feature:hover,
+  .gx-category-grid button:hover,
+  .gx-steps > div:hover { transform: none; }
+}
+
+/* Impression et export PDF : tout est visible, sans mouvement ni ombre */
+@media print {
+  .gx-reveal { opacity: 1 !important; transform: none !important; }
+  .gx-hero-art { transform: none !important; }
+  header.wrap.nav { position: static !important; }
+  .mobile-bottom-nav, .toast, .modal-backdrop { display: none !important; }
+  .gx-feature, .listing, .service, .company-card, .panel,
+  .gx-steps > div, .gx-category-grid button { box-shadow: none !important; }
+}
