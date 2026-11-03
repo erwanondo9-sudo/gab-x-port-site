@@ -992,7 +992,7 @@ async function openModal(which){
   let user=null;try{user=await getCurrentAuthUser()}catch(e){console.error(e)}
   if(!user){showToast('Connectez-vous avec un compte entreprise pour publier un service.');openModal('login');return;}
   const role=user.user_metadata?.account_type||user.app_metadata?.account_type;
-  if(!['compagnie','company','exportateur'].includes(role)){showToast('La publication est réservée aux entreprises et exportateurs indépendants.');return;}
+  if(!['compagnie','company','exportateur','independent'].includes(role)){showToast('La publication est réservée aux entreprises et exportateurs indépendants.');return;}
  }
  const backdrop=document.getElementById('modalBackdrop');
  backdrop.classList.add('show');
@@ -1169,7 +1169,7 @@ document.getElementById('listingForm').addEventListener('submit',async e=>{
  let user;try{user=await getCurrentAuthUser()}catch(err){showToast('Connexion impossible : '+err.message);return;}
  if(!user){showToast('Connecte-toi pour publier une annonce.');openModal('login');return;}
  const accountType=user.user_metadata?.account_type||user.app_metadata?.account_type;
- if(accountType!=='compagnie'&&accountType!=='company'&&accountType!=='exportateur'){showToast('La publication est réservée aux entreprises et exportateurs indépendants.');return;}
+ if(!['compagnie','company','exportateur','independent'].includes(accountType)){showToast('La publication est réservée aux entreprises et exportateurs indépendants.');return;}
  const payload={owner_id:user.id,title:document.getElementById('fTitle').value.trim(),company:document.getElementById('fCompany').value.trim(),category:document.getElementById('fCategory').value,direction:document.getElementById('fDirection').value,description:document.getElementById('fDesc').value.trim(),city:document.getElementById('fCity').value.trim(),listing_type:'Service',price:'À discuter'};
  const button=e.target.querySelector('button[type=submit]');button.disabled=true;
  try{const {error}=await supabaseClient.from('listings').insert(payload);if(error)throw error;e.target.reset();closeModal();activeQuick='all';document.querySelectorAll('.chip').forEach(x=>x.classList.toggle('active',x.dataset.cat==='all'));document.getElementById('q').value='';document.getElementById('direction').value='all';document.getElementById('category').value='all';await loadListings();await renderPersonalListings(user);showView('espace-personnel');showToast('Annonce publiée sur Gab X-Port.');}
@@ -1191,7 +1191,7 @@ async function getCurrentAuthUser(){
  window.gabxCurrentUser=user;
  return user;
 }
-function accountLabel(type){return ({client:'Client',exportateur:'Indépendant',compagnie:'Entreprise'})[type]||'Membre Gab X-Port';}
+function accountLabel(type){return ({client:'Client',exportateur:'Indépendant',independent:'Indépendant',compagnie:'Entreprise',company:'Entreprise'})[type]||'Membre Gab X-Port';}
 async function loadChats(keepSelection=true){
  const list=document.getElementById('chatList');
  if(!supabaseClient){list.innerHTML='<p class="form-note">La messagerie est momentanément indisponible.</p>';renderActiveChat();return;}
