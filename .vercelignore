@@ -1,0 +1,10 @@
+# Fichiers du dépôt qui ne doivent pas être publiés avec le site.
+supabase/
+tests/
+README.md
+_headers
+tools/
+.impeccable/
+PRODUCT.md
+DESIGN.md
+_redirects

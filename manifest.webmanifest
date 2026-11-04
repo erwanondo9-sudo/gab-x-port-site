@@ -2,20 +2,18 @@
   "id": "/",
   "name": "Gab X-Port",
   "short_name": "Gab X-Port",
-  "description": "Le commerce sans frontières — services, commerce, transport et import-export.",
+  "description": "Le bon partenaire, au bon endroit : services, transport et import-export entre le Gabon et le monde.",
   "lang": "fr",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#f3f0e8",
-  "theme_color": "#172923",
+  "background_color": "#0a1322",
+  "theme_color": "#0a1322",
   "icons": [
-    {
-      "src": "/icon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
-    }
+    { "src": "/assets/img/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/assets/img/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/assets/img/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "/assets/img/app-icon.svg", "sizes": "any", "type": "image/svg+xml" }
   ]
 }

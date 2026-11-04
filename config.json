@@ -1,0 +1,80 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "low-contrast",
+        "value": "*",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-11-04T15:26:24.076Z",
+        "reason": "Claude: flagged pair #04685a on #111827 is a:hover inside dark sections, overridden to #fff by gx.css:142; measured dark button contrast 8.12:1"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-11-04T15:27:09.348Z",
+        "reason": "Claude: measured text inset hero 32px+, pro-band 46px+; .card has padding clamp(18px,3vw,28px) (gx.css:369); .messaging panes pad their own content"
+      },
+      {
+        "rule": "marquee",
+        "value": "*",
+        "files": [
+          "*.html"
+        ],
+        "createdAt": "2026-11-04T18:50:23.931Z",
+        "reason": "User asked to integrate the hero-01 component's scrolling BrandSlider, adapted to real sectors and corridors; pauses on hover/focus and stays still under prefers-reduced-motion"
+      },
+      {
+        "rule": "radial-halo",
+        "value": "*",
+        "files": [
+          "*.html"
+        ],
+        "createdAt": "2026-11-04T19:14:56.347Z",
+        "reason": "User-requested reference: 21st.dev community gradient 'gg' (grainy moving gradient), adapted to Gabon flag colours for the hero fields"
+      },
+      {
+        "rule": "radial-halo",
+        "value": "*",
+        "files": [
+          "assets/css/gx-v3.css"
+        ],
+        "createdAt": "2026-11-04T19:14:56.847Z",
+        "reason": "User-requested reference: 21st.dev community gradient 'gg' (grainy moving gradient), adapted to Gabon flag colours for the hero fields"
+      },
+      {
+        "rule": "low-contrast",
+        "value": "*",
+        "files": [
+          "professionnels.html"
+        ],
+        "createdAt": "2026-11-04T19:43:29.459Z",
+        "reason": "Claude: detector resolves gx.css light tokens; gx-v4.css sets the void #0e0918 ground on every theme; browser contrast sweep of these pages at 375-1440 px found no text under 4.5:1"
+      },
+      {
+        "rule": "low-contrast",
+        "value": "*",
+        "files": [
+          "confidentialite.html"
+        ],
+        "createdAt": "2026-11-04T19:43:29.941Z",
+        "reason": "Claude: detector resolves gx.css light tokens; gx-v4.css sets the void #0e0918 ground on every theme; browser contrast sweep of these pages at 375-1440 px found no text under 4.5:1"
+      },
+      {
+        "rule": "low-contrast",
+        "value": "*",
+        "files": [
+          "404.html"
+        ],
+        "createdAt": "2026-11-04T19:43:30.411Z",
+        "reason": "Claude: detector resolves gx.css light tokens; gx-v4.css sets the void #0e0918 ground on every theme; browser contrast sweep of these pages at 375-1440 px found no text under 4.5:1"
+      }
+    ]
+  }
+}

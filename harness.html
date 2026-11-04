@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="fr">
+<head><meta charset="utf-8"><title>Gab X-Port — banc de test</title><meta name="robots" content="noindex"></head>
+<body>
+<p>Chargement du site avec un faux Supabase…</p>
+<script>
+/* Banc de test local : charge index.html en remplaçant la bibliothèque
+   Supabase par tests/mock-supabase.js. Rien n'est envoyé à la vraie base.
+   Ouvrir http://localhost:5173/tests/harness.html (serveur local). */
+fetch('/index.html', { cache: 'no-store' }).then(function (r) { return r.text(); }).then(function (html) {
+  var swapped = html.replace(/<script src="https:\/\/cdn\.jsdelivr\.net\/npm\/@supabase[^>]*><\/script>/, '<script src="/tests/mock-supabase.js"><\/script>');
+  if (swapped === html) throw new Error('Balise Supabase introuvable dans index.html');
+  // ?messaging=1 : active la messagerie interne (masquée en production) pour la tester.
+  if (/[?&]messaging=1/.test(location.search)) {
+    return fetch('/assets/js/app.js', { cache: 'no-store' }).then(function (r) { return r.text(); }).then(function (js) {
+      return swapped.replace('<script src="/assets/js/app.js" defer><\/script>', function () { return '<script>' + js.replace('messaging: false', 'messaging: true') + '<\/script>'; });
+    });
+  }
+  return swapped;
+}).then(function (swapped) {
+  history.replaceState(null, '', '/tests/harness.html' + location.search + location.hash);
+  document.open(); document.write(swapped); document.close();
+});
+</script>
+</body>
+</html>

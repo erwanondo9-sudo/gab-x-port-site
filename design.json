@@ -1,0 +1,472 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-04T20:10:00Z",
+  "title": "Design System: Gab X-Port",
+  "extensions": {
+    "colorMeta": {
+      "void": {
+        "role": "neutral",
+        "displayName": "Void",
+        "canonical": "#0e0918",
+        "tonalRamp": [
+          "#06030c",
+          "#0a0612",
+          "#0e0918",
+          "#1a1624",
+          "#2c2834",
+          "#3e3a46",
+          "#8f8a96",
+          "#d1cece"
+        ]
+      },
+      "surface-1": {
+        "role": "neutral",
+        "displayName": "Surface 1",
+        "canonical": "#1a1624",
+        "tonalRamp": [
+          "#0e0918",
+          "#1a1624",
+          "#1b1728",
+          "#241f30",
+          "#2c2834",
+          "#353041",
+          "#3e3a46",
+          "#a8a2a2"
+        ]
+      },
+      "surface-2": {
+        "role": "neutral",
+        "displayName": "Surface 2 (canvas)",
+        "canonical": "#1b1728"
+      },
+      "surface-3": {
+        "role": "neutral",
+        "displayName": "Surface 3 (field)",
+        "canonical": "#2c2834"
+      },
+      "smoke": {
+        "role": "neutral",
+        "displayName": "Smoke",
+        "canonical": "#3e3a46"
+      },
+      "ash": {
+        "role": "neutral",
+        "displayName": "Ash",
+        "canonical": "#d1cece",
+        "tonalRamp": [
+          "#3e3a46",
+          "#5c5862",
+          "#7a7680",
+          "#8f8a96",
+          "#a8a2a2",
+          "#bdb9b9",
+          "#d1cece",
+          "#ffffff"
+        ]
+      },
+      "fog": {
+        "role": "neutral",
+        "displayName": "Fog",
+        "canonical": "#a8a2a2"
+      },
+      "ember-start": {
+        "role": "primary",
+        "displayName": "Ember (light end)",
+        "canonical": "#fd8925",
+        "tonalRamp": [
+          "#1a0700",
+          "#2e1a19",
+          "#6b2a08",
+          "#b04a10",
+          "#fd8925",
+          "#ff8a5c",
+          "#ffb27a",
+          "#ffe0c7"
+        ]
+      },
+      "ember-end": {
+        "role": "primary",
+        "displayName": "Ember (hot end)",
+        "canonical": "#ff0c00"
+      },
+      "ember-solid": {
+        "role": "primary",
+        "displayName": "Ember Solid",
+        "canonical": "#ff5a1f",
+        "tonalRamp": [
+          "#1a0700",
+          "#2e1a19",
+          "#7a2a0e",
+          "#c84216",
+          "#ff5a1f",
+          "#ff7a3d",
+          "#ffa680",
+          "#ffd6c4"
+        ]
+      },
+      "ember-ink": {
+        "role": "primary",
+        "displayName": "Ember Ink",
+        "canonical": "#1a0700"
+      },
+      "ember-icon": {
+        "role": "primary",
+        "displayName": "Ember Icon",
+        "canonical": "#ff8a5c"
+      },
+      "volt-start": {
+        "role": "secondary",
+        "displayName": "Volt (blue end)",
+        "canonical": "#077ac7"
+      },
+      "volt-end": {
+        "role": "secondary",
+        "displayName": "Volt (violet end)",
+        "canonical": "#6b21ef"
+      },
+      "volt-solid": {
+        "role": "secondary",
+        "displayName": "Volt Solid",
+        "canonical": "#5b8cff",
+        "tonalRamp": [
+          "#0b1640",
+          "#14286e",
+          "#1f3ea3",
+          "#3a63d6",
+          "#5b8cff",
+          "#7ea6ff",
+          "#9ec0ff",
+          "#d6e3ff"
+        ]
+      },
+      "volt-pulse": {
+        "role": "secondary",
+        "displayName": "Volt Pulse",
+        "canonical": "#9ec0ff"
+      },
+      "silver-rail": {
+        "role": "tertiary",
+        "displayName": "Silver Rail",
+        "canonical": "#e5e7eb"
+      },
+      "pill-tag": {
+        "role": "tertiary",
+        "displayName": "Pill Tag",
+        "canonical": "rgba(163, 163, 163, .14)"
+      },
+      "pill-tag-on": {
+        "role": "tertiary",
+        "displayName": "Pill Tag (pressed)",
+        "canonical": "rgba(163, 163, 163, .2)"
+      },
+      "hairline": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "rgba(255, 255, 255, .08)"
+      },
+      "rose-glow": {
+        "role": "tertiary",
+        "displayName": "Rose Glow",
+        "canonical": "rgba(175, 106, 140, .46)"
+      },
+      "gabon-green": {
+        "role": "tertiary",
+        "displayName": "Gabon Green",
+        "canonical": "#009e60"
+      },
+      "gabon-yellow": {
+        "role": "tertiary",
+        "displayName": "Gabon Yellow",
+        "canonical": "#fcd116"
+      },
+      "gabon-blue": {
+        "role": "tertiary",
+        "displayName": "Gabon Blue",
+        "canonical": "#3a75c4"
+      },
+      "rose-glow-mid": {
+        "role": "tertiary",
+        "displayName": "Rose Glow Mid",
+        "canonical": "rgba(98, 65, 83, .38)"
+      },
+      "ember-glow": {
+        "role": "tertiary",
+        "displayName": "Ember Glow",
+        "canonical": "rgba(217, 126, 75, .16)"
+      }
+    },
+    "gradients": [
+      {
+        "name": "ember",
+        "value": "linear-gradient(30deg, #fd8925, #ff0c00)",
+        "purpose": "Primary and accent button fill only."
+      },
+      {
+        "name": "volt",
+        "value": "linear-gradient(141deg, #077ac7, #6b21ef)",
+        "purpose": "Route wires, active nav underline, selected-tab dot, mobile route spines."
+      },
+      {
+        "name": "dot-grid",
+        "value": "radial-gradient(rgba(255,255,255,.09) 1px, transparent 1.4px) 0 0 / 22px 22px",
+        "purpose": "Canvas ground on surface 2 (18px on listing placeholders)."
+      },
+      {
+        "name": "ember-corner-glow",
+        "value": "radial-gradient(closest-side, rgba(217,126,75,.16), rgba(217,126,75,0))",
+        "purpose": "Warm light anchored in a section corner."
+      },
+      {
+        "name": "rose-corner-glow",
+        "value": "radial-gradient(circle farthest-side at 100% -80%, rgba(175,106,140,.46), rgba(98,65,83,.38) 39%, rgba(0,0,0,0) 55%)",
+        "purpose": "Footer upper-right glow, from the reference."
+      }
+    ],
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Page h1 only; Stack Sans Headline 300 at line-height .9."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section h2, left in a 7/5 split with its paragraph."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "h3, card, step and node titles."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Ash running text, flow notes and secondary links."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Nav, footer links, node labels, header buttons."
+      },
+      "caption": {
+        "displayName": "Caption",
+        "purpose": "Node sublabels, photo captions, credits."
+      },
+      "lead": {
+        "displayName": "Lead",
+        "purpose": "Hero sentences, section intros and FAQ questions, 17 to 19px."
+      }
+    },
+    "shadows": [
+      {
+        "name": "glow-inset",
+        "value": "inset 0 0 0 1px rgba(255,255,255,.1), inset 0 -1px 0 0 rgba(255,142,93,.3)",
+        "purpose": "Resting cards, nodes, search shell, notices."
+      },
+      {
+        "name": "glow-inset-hi",
+        "value": "inset 0 0 0 1px rgba(255,255,255,.16), inset 0 -1px 0 0 rgba(255,142,93,.55), inset 0 -18px 32px -24px rgba(255,110,60,.35)",
+        "purpose": "Hover/active nodes and cards, flow nodes, closing and honest panels, toast."
+      },
+      {
+        "name": "canvas-edge",
+        "value": "inset 0 0 0 1px rgba(255,255,255,.06)",
+        "purpose": "Route, flow, corridor and pro panels."
+      },
+      {
+        "name": "float",
+        "value": "0 30px 80px -30px rgba(0,0,0,.8), inset 0 0 0 1px rgba(255,255,255,.16), inset 0 -1px 0 0 rgba(255,142,93,.55), inset 0 -18px 32px -24px rgba(255,110,60,.35)",
+        "purpose": "Modal panel only."
+      },
+      {
+        "name": "frost",
+        "value": "0 0 8px rgba(0,0,0,.26); backdrop-filter: blur(10px)",
+        "purpose": "Frosted ghost button over canvas and header; blur dropped at 680px and under."
+      },
+      {
+        "name": "button-highlight",
+        "value": "inset 0 1px 0 rgba(255,255,255,.3)",
+        "purpose": "Top highlight on ember buttons."
+      }
+    ],
+    "motion": [
+      {
+        "name": "reveal",
+        "value": "opacity + translateY(18px), 640ms cubic-bezier(.16, 1, .3, 1)",
+        "purpose": "The single entrance, from an already-rendered state; staggered by --reveal-delay."
+      },
+      {
+        "name": "ease",
+        "value": "cubic-bezier(.22, 1, .36, 1)",
+        "purpose": "Node lift, wire highlight, arrow nudge."
+      },
+      {
+        "name": "t-fast",
+        "value": "150ms",
+        "purpose": "Button, chip, tab state changes."
+      },
+      {
+        "name": "t-node",
+        "value": "300ms",
+        "purpose": "Node lift and wire opacity/width."
+      },
+      {
+        "name": "wire-pulse",
+        "value": "SVG animateMotion 4.2s infinite",
+        "purpose": "Pulses travel along wires toward Gabon; removed under prefers-reduced-motion."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "tablet-header",
+        "value": "1080px"
+      },
+      {
+        "name": "stack",
+        "value": "980px"
+      },
+      {
+        "name": "404-stack",
+        "value": "760px"
+      },
+      {
+        "name": "phone",
+        "value": "680px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The one action per region: ember gradient, dark ink label.",
+      "html": "<button class=\"ds-btn-primary\"><svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" aria-hidden=\"true\"><circle cx=\"11\" cy=\"11\" r=\"7\"/><path d=\"m20 20-3.5-3.5\"/></svg>Rechercher</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; gap: 8px; min-height: 50px; padding: 10px 22px; border: 0; border-radius: 8px; background: linear-gradient(30deg, #fd8925, #ff0c00); color: #1a0700; box-shadow: inset 0 1px 0 rgba(255,255,255,.3); font: 500 16px/1.2 'Stack Sans Text', system-ui, sans-serif; letter-spacing: -.01em; cursor: pointer; transition: filter 150ms, transform 150ms; } .ds-btn-primary:hover { filter: brightness(1.08) saturate(1.05); } .ds-btn-primary:active { transform: translateY(1px); } .ds-btn-primary:focus-visible { outline: 2px solid #5b8cff; outline-offset: 3px; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Silver Rail ghost outline for secondary actions such as corridor links.",
+      "html": "<button class=\"ds-btn-secondary\">Voir les offres France ⇄ Gabon <svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14M13 6l6 6-6 6\"/></svg></button>",
+      "css": ".ds-btn-secondary { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 10px 18px; border: 1px solid rgba(229,231,235,.55); border-radius: 8px; background: transparent; color: #fff; font: 400 14px/1.2 'Stack Sans Text', system-ui, sans-serif; cursor: pointer; transition: background-color 150ms, border-color 150ms; } .ds-btn-secondary:hover { background: #1f1a2a; border-color: #e5e7eb; } .ds-btn-secondary:active { transform: translateY(1px); } .ds-btn-secondary:focus-visible { outline: 2px solid #5b8cff; outline-offset: 3px; }"
+    },
+    {
+      "name": "Frosted Button",
+      "kind": "button",
+      "refersTo": "button-frost",
+      "description": "Owner-requested liquid-glass ghost for header actions over the canvas.",
+      "html": "<button class=\"ds-btn-frost\">Se connecter</button>",
+      "css": ".ds-btn-frost { min-height: 40px; padding: 8px 12px; border: 1px solid rgba(255,255,255,.1); border-radius: 8px; background: rgba(13,10,25,.28); color: #d1cece; box-shadow: 0 0 8px rgba(0,0,0,.26); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); font: 400 14px/1.2 'Stack Sans Text', system-ui, sans-serif; cursor: pointer; transition: background-color 150ms, border-color 150ms; } .ds-btn-frost:hover { background: #241f2e; border-color: rgba(255,255,255,.22); color: #fff; } .ds-btn-frost:focus-visible { outline: 2px solid #5b8cff; outline-offset: 3px; }"
+    },
+    {
+      "name": "Field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Borderless surface-3 field; volt focus.",
+      "html": "<input class=\"ds-input\" placeholder=\"Transport, pièces auto, transitaire…\">",
+      "css": ".ds-input { width: 100%; min-height: 48px; padding: 12px 14px; border: 1px solid transparent; border-radius: 8px; background: #2c2834; color: #fff; font: 400 16px/1.5 'Stack Sans Text', system-ui, sans-serif; transition: border-color 150ms, box-shadow 150ms; } .ds-input::placeholder { color: #8f8a96; } .ds-input:focus-visible { outline: none; border-color: #5b8cff; box-shadow: 0 0 0 3px rgba(91,140,255,.2); }"
+    },
+    {
+      "name": "Header Navigation",
+      "kind": "nav",
+      "refersTo": "nav-link",
+      "description": "Ash links on void; current page gets a volt underline bar.",
+      "html": "<nav class=\"ds-nav\"><a href=\"#\" aria-current=\"page\">Accueil</a><a href=\"#\">Annonces</a><a href=\"#\">Professionnels</a></nav>",
+      "css": ".ds-nav { display: flex; gap: 4px; padding: 12px 16px; background: rgba(14,9,24,.92); border-bottom: 1px solid #3e3a46; } .ds-nav a { padding: 8px 12px; border-radius: 8px; color: #d1cece; font: 400 14px/1.25 'Stack Sans Text', system-ui, sans-serif; text-decoration: none; } .ds-nav a:hover { color: #fff; } .ds-nav a[aria-current='page'] { color: #fff; } .ds-nav a[aria-current='page']::after { content: ''; display: block; height: 2px; margin-top: 4px; border-radius: 2px; background: linear-gradient(141deg, #077ac7, #6b21ef); } .ds-nav a:focus-visible { outline: 2px solid #5b8cff; outline-offset: 3px; }"
+    },
+    {
+      "name": "Filter Chip",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "Silver Rail outline; pressed takes the reference's Pill Tag fill.",
+      "html": "<div class=\"ds-chips\"><button class=\"ds-chip\" aria-pressed=\"true\">Transport</button><button class=\"ds-chip\" aria-pressed=\"false\">Pièces auto</button></div>",
+      "css": ".ds-chips { display: flex; gap: 8px; } .ds-chip { min-height: 40px; padding: 8px 12px; border: 1px solid rgba(229,231,235,.3); border-radius: 8px; background: transparent; color: #d1cece; font: 400 14px/1.2 'Stack Sans Text', system-ui, sans-serif; cursor: pointer; } .ds-chip:hover { color: #fff; border-color: rgba(229,231,235,.6); } .ds-chip[aria-pressed='true'] { background: rgba(163,163,163,.2); border-color: #e5e7eb; color: #fff; } .ds-chip:focus-visible { outline: 2px solid #5b8cff; outline-offset: 3px; }"
+    },
+    {
+      "name": "Inset-glow Card",
+      "kind": "card",
+      "refersTo": "listing-card",
+      "description": "Surface 1 card lifted by inset hairline and ember lower edge.",
+      "html": "<article class=\"ds-card\"><h3>Transport maritime Le Havre ⇄ Owendo</h3><p>Conteneurs groupés, départ chaque semaine.</p></article>",
+      "css": ".ds-card { max-width: 320px; padding: 24px; border-radius: 16px; background: #1a1624; color: #d1cece; box-shadow: inset 0 0 0 1px rgba(255,255,255,.1), inset 0 -1px 0 0 rgba(255,142,93,.3); font: 400 16px/1.5 'Stack Sans Text', system-ui, sans-serif; transition: box-shadow 300ms cubic-bezier(.22,1,.36,1), transform 300ms cubic-bezier(.22,1,.36,1); } .ds-card h3 { margin: 0 0 8px; color: #fff; font: 400 20px/1.2 'Stack Sans Headline', system-ui, sans-serif; letter-spacing: -.02em; } .ds-card p { margin: 0; } .ds-card:hover { transform: translateY(-2px); box-shadow: inset 0 0 0 1px rgba(255,255,255,.16), inset 0 -1px 0 0 rgba(255,142,93,.55), inset 0 -18px 32px -24px rgba(255,110,60,.35); }"
+    },
+    {
+      "name": "Route Node on Canvas",
+      "kind": "custom",
+      "refersTo": "node",
+      "description": "Signature: port nodes on a dotted canvas wired by volt current.",
+      "html": "<div class=\"ds-canvas\"><svg class=\"ds-wire\" viewBox=\"0 0 300 120\" aria-hidden=\"true\"><defs><linearGradient id=\"dsVolt\" x1=\"0\" x2=\"1\"><stop offset=\"0\" stop-color=\"#077ac7\"/><stop offset=\"1\" stop-color=\"#6b21ef\"/></linearGradient></defs><path d=\"M70 60 C150 60 150 60 230 60\" fill=\"none\" stroke=\"url(#dsVolt)\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg><button class=\"ds-node\"><span class=\"ds-node-box\"><b>GA</b></span><span>Owendo</span></button><button class=\"ds-node\"><span class=\"ds-node-box\"><b>FR</b></span><span>Le Havre</span></button></div>",
+      "css": ".ds-canvas { position: relative; display: flex; justify-content: space-between; padding: 24px 40px; border-radius: 24px; background-color: #1b1728; background-image: radial-gradient(rgba(255,255,255,.09) 1px, transparent 1.4px); background-size: 22px 22px; box-shadow: inset 0 0 0 1px rgba(255,255,255,.06); } .ds-wire { position: absolute; inset: 0; width: 100%; height: 100%; } .ds-node { position: relative; display: grid; justify-items: center; gap: 10px; padding: 0; border: 0; background: none; color: #fff; font: 400 14px/1.25 'Stack Sans Text', system-ui, sans-serif; cursor: pointer; } .ds-node-box { display: grid; place-items: center; width: 64px; height: 64px; border-radius: 12px; background: #1a1624; box-shadow: inset 0 0 0 1px rgba(255,255,255,.1), inset 0 -1px 0 0 rgba(255,142,93,.3); transition: box-shadow 300ms cubic-bezier(.22,1,.36,1), transform 300ms cubic-bezier(.22,1,.36,1); } .ds-node-box b { font: 400 20px 'Stack Sans Headline', system-ui, sans-serif; } .ds-node:hover .ds-node-box, .ds-node:focus-visible .ds-node-box { transform: translateY(-2px); box-shadow: inset 0 0 0 1px rgba(255,255,255,.16), inset 0 -1px 0 0 rgba(255,142,93,.55), inset 0 -18px 32px -24px rgba(255,110,60,.35); } .ds-node:focus-visible { outline: none; } .ds-node:focus-visible .ds-node-box { outline: 2px solid #5b8cff; outline-offset: 3px; }"
+    },
+    {
+      "name": "Corridor Tab",
+      "kind": "custom",
+      "refersTo": "corridor-tab-selected",
+      "description": "Vertical corridor tab; selected takes Pill Tag fill, rail outline and volt dot.",
+      "html": "<div class=\"ds-tabs\" role=\"tablist\"><button class=\"ds-tab\" role=\"tab\" aria-selected=\"true\">France ⇄ Gabon <b>FR</b></button><button class=\"ds-tab\" role=\"tab\" aria-selected=\"false\">Maroc ⇄ Gabon <b>MA</b></button></div>",
+      "css": ".ds-tabs { display: grid; gap: 8px; width: 260px; padding: 24px; border-radius: 24px; background: #1b1728; } .ds-tab { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 52px; padding: 0 18px; border: 1px solid transparent; border-radius: 8px; background: transparent; color: #d1cece; font: 400 16px 'Stack Sans Text', system-ui, sans-serif; text-align: left; cursor: pointer; transition: background-color 150ms, color 150ms, border-color 150ms; } .ds-tab b { font: 400 14px 'Stack Sans Headline', system-ui, sans-serif; color: #a8a2a2; } .ds-tab:hover { color: #fff; background: #241f30; } .ds-tab[aria-selected='true'] { color: #fff; background: rgba(163,163,163,.14); border-color: rgba(229,231,235,.35); } .ds-tab[aria-selected='true']::before { content: ''; order: -1; width: 6px; height: 6px; margin-right: -2px; border-radius: 50%; background: linear-gradient(141deg, #077ac7, #6b21ef); box-shadow: 0 0 0 3px rgba(91,140,255,.18); } .ds-tab:focus-visible { outline: 2px solid #5b8cff; outline-offset: 3px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Route Canvas",
+    "overview": "Gab X-Port is drawn as a workflow canvas: Gabon is a live hub node, the four partner ports (France, Maroc, Sénégal, Chine) are nodes wired to it, and every wire is a way to reach a professional. The visual language is the owner-pinned Refero \"n8n design system\", followed closely and adapted to the brand: a near-black violet void, stepped surfaces, inset-glow nodes and cards, an ember gradient reserved for the action, and electric violet-blue current on wires, links and focus.\n\nThe world is dark on every theme. The theme toggle is hidden and the light/dark tokens of the legacy base are all remapped onto the void, so one world serves the public pages and the app views (annonces, favoris, messagerie, compte) alike. Warmth comes from real port photographs, ember light pooled in section corners and a rose glow in the footer, which keeps a developer-tool palette reading as trade and harbour rather than software.\n\nDensity is calm on public pages (large light display type, generous section padding) and denser in the app views, which inherit the same surfaces and radii in an operating register. Proof is only what exists: real, credited port photographs; no invented counts, logos or testimonials.",
+    "keyCharacteristics": [
+      "Dark void ground (#0e0918) on every theme; depth by surface step and inset glow, never by drop shadow at rest.",
+      "Ember gradient only on primary actions, with dark ink for contrast.",
+      "Electric current (volt gradient) on wires, active indicators, link underlines and focus rings.",
+      "Node-and-wire geometry recurs: hero canvas, three-node flow, listing placeholders, 404 cut wire.",
+      "Light display weight (300) at tight leading (0.9 to 0.96).",
+      "Real port photographs clipped at 16 to 24px, credited in the footer."
+    ],
+    "rules": [
+      {
+        "name": "The Ember Acts Rule",
+        "body": "The ember gradient fills only the primary action of a region. Ember light elsewhere is diffuse corner glow, never a second filled element.",
+        "section": "colors"
+      },
+      {
+        "name": "The Current Connects Rule",
+        "body": "Volt marks connection and attention: wires, active states, link underlines, focus. It never fills a button.",
+        "section": "colors"
+      },
+      {
+        "name": "The Dark Ink Rule",
+        "body": "Text on ember is Ember Ink, never white.",
+        "section": "colors"
+      },
+      {
+        "name": "The Light Weight Rule",
+        "body": "Display and headline are weight 300. Emphasis comes from size and white against Ash, not from bold.",
+        "section": "typography"
+      },
+      {
+        "name": "The Sentence Case Rule",
+        "body": "No uppercase tracked labels; every heading and label is sentence case.",
+        "section": "typography"
+      },
+      {
+        "name": "The Inset Lift Rule",
+        "body": "Resting surfaces never carry an outset drop shadow; they rise by surface step and inset glow. Outset shadow is reserved for modals and the frosted button that sits over other content.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Corner Glow Rule",
+        "body": "Ember and rose light appear only as soft radial glows anchored in a section corner (hero lower left, closing upper right, footer upper right, Professionnels hero upper right).",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do keep the void ground on every page and theme; new app views inherit surfaces 1 to 3, not a light theme.",
+      "Do put Ember Ink (#1a0700) on any ember fill.",
+      "Do use volt for connection and focus: wires, active underlines, link underlines, the 2px focus outline.",
+      "Do express new structure as nodes and wires on a dotted canvas when the content is a route, step or link.",
+      "Do lift surfaces with the inset glow; brighten to glow inset high on hover, focus or active.",
+      "Do use 8px on controls, 12px on nodes, 16px on cards, 24px on panels and photos.",
+      "Do use real, credited port photographs, and collapse heavy canvases to lists without blur on phones (680px and under)."
+    ],
+    "donts": [
+      "Don't fill anything other than the primary action with the ember gradient, and don't set white text on it.",
+      "Don't give resting cards or panels an outset drop shadow; outset shadow belongs to modals and the frosted button only.",
+      "Don't set display or headline type bold or uppercase; they are weight 300 in sentence case.",
+      "Don't reintroduce the theme toggle or a light palette.",
+      "Don't show invented proof: no counts, testimonials or partner logos."
+    ]
+  }
+}
