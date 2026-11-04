@@ -911,9 +911,9 @@ html[data-theme="dark"] .gx-proof-grid{background:#0b1410}
 </div>
 </div>
 <div class="panel" style="margin-top:18px">
-<div class="section-head"><div><div class="kicker">Vos publications</div><h2 style="font-size:27px">Mes annonces</h2><p class="sub">Retrouvez ici les annonces publiées depuis ce compte sur cet appareil.</p></div><button class="btn btn-green" onclick="openModal('publish')">+ Publier une annonce</button></div>
+<div class="section-head"><div><div class="kicker">Vos publications</div><h2 style="font-size:27px">Mes annonces</h2><p class="sub">Retrouvez ici les annonces publiées depuis ce compte, synchronisées entre vos appareils.</p></div><button class="btn btn-green" onclick="openModal('publish')">+ Publier une annonce</button></div>
 <div id="personalListings" class="listing-grid"><div class="empty">Chargement de vos annonces…</div></div>
-<p class="form-note">Pour le moment, les annonces sont enregistrées dans le navigateur où elles ont été publiées. Elles ne sont pas encore synchronisées entre appareils.</p>
+<p class="form-note">Les annonces publiées sont enregistrées sur votre compte et accessibles depuis tous vos appareils.</p>
 </div>
 </div>
 </section>
@@ -1591,7 +1591,7 @@ async function renderPersonalListings(user){
  const {data,error}=await supabaseClient.from('listings').select('id,owner_id,title,company,category,direction,description,city,listing_type,price,status,created_at').eq('owner_id',user.id).order('created_at',{ascending:false});
  if(error){container.innerHTML='<div class="empty">Impossible de charger tes annonces : '+esc(error.message)+'</div>';return;}
  const rows=data||[];
- if(!rows.length){container.innerHTML='<div class="empty">Tu n’as pas encore publié d’annonce.<br><button class="btn btn-green" style="margin-top:12px" onclick="openModal(\'publish\')">Publier ma première annonce</button></div>';return;}
+  if(!rows.length){const role=user.user_metadata?.account_type||user.app_metadata?.account_type||'';const canPublish=['compagnie','company','exportateur','independent'].includes(role);container.innerHTML='<div class="empty">Tu n’as pas encore publié d’annonce.'+(canPublish?'<br><button class="btn btn-green" style="margin-top:12px" onclick="openModal(\\'publish\\')">Publier ma première annonce</button>':'')+'</div>';return;}
  let metricsById={};
  try{const metrics=await supabaseClient.rpc('get_my_listing_metrics');if(metrics.error)throw metrics.error;(metrics.data||[]).forEach(m=>{metricsById[String(m.listing_id)]={views:Number(m.views_count)||0,favorites:Number(m.favorites_count)||0};});}
  catch(err){console.warn('Statistiques des annonces indisponibles',err);}
