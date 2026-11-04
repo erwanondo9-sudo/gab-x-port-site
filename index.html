@@ -1031,7 +1031,7 @@ function matchesDirection(listingDirection,selectedDirection){
  if(selectedDirection==='all')return true;
  const known=['fr-ga','ga-fr','ma-ga','ga-ma','sn-ga','ga-sn','cn-ga','ga-cn'];
  if(selectedDirection==='other')return !known.includes(actual);
- return actual===selectedDirection;
+ return actual===canonicalDirection(selectedDirection);
 }
 function listingGalleryHtml(x,detail){const photos=Array.isArray(x.photoUrls)&&x.photoUrls.length?x.photoUrls:(x.photoUrl?[x.photoUrl]:[]);if(!photos.length)return '';if(detail)return '<div class="gx-listing-gallery">'+photos.map((url,i)=>'<img src="'+esc(url)+'" alt="Photo '+(i+1)+' : '+esc(x.title)+'" loading="lazy">').join('')+'</div>';return '<img class="gx-listing-photo" src="'+esc(photos[0])+'" alt="Photo : '+esc(x.title)+'" loading="lazy">'+(photos.length>1?'<small class="form-note">+ '+(photos.length-1)+' autre(s) photo(s)</small>':'');}
 function renderListings(){
@@ -1098,7 +1098,7 @@ document.getElementById('signupForm').addEventListener('submit',async e=>{
  if(password.length<10){showToast('Choisissez un mot de passe de 10 caractères minimum.');return}
  const accountType=type==='client'?'client':(independent?'exportateur':'compagnie');
  const companyPhone=company?(document.getElementById('sCompanyPhone')?.value.trim()||''):'';
-  const metadata={account_type:accountType,full_name:company?companyName:(firstName+' '+lastName).trim(),phone:company?companyPhone:(document.getElementById('sPhone')?.value.trim()||''),country:document.getElementById('sCountry').value,independent_activity:independent?document.getElementById('sIndependentActivity').value:'',independent_country:independent?document.getElementById('sIndependentCountry').value:'',company_name:company?companyName:'',representative_role:company?(document.getElementById('sRole')?.value||''):' ',company_address:company?(document.getElementById('sCompanyAddress')?.value.trim()||''):' ',company_phone:company?companyPhone:'',company_website:company?(document.getElementById('sCompanyWebsite')?.value.trim()||''):' '};
+  const metadata={account_type:accountType,full_name:company?companyName:(firstName+' '+lastName).trim(),phone:company?companyPhone:(document.getElementById('sPhone')?.value.trim()||''),country:document.getElementById('sCountry').value,independent_activity:independent?document.getElementById('sIndependentActivity').value:'',independent_country:independent?document.getElementById('sIndependentCountry').value:'',company_name:company?companyName:'',representative_role:company?(document.getElementById('sRole')?.value||''):'',company_address:company?(document.getElementById('sCompanyAddress')?.value.trim()||''):'',company_phone:company?companyPhone:'',company_website:company?(document.getElementById('sCompanyWebsite')?.value.trim()||''):''};
  setSignupBusy(true);
  try{
   const credentials={email,password,options:{data:metadata}};
