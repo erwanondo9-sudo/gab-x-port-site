@@ -1097,8 +1097,8 @@ document.getElementById('signupForm').addEventListener('submit',async e=>{
  if(!email||!email.includes('@')){showToast('Entrez une adresse e-mail valide.');return}
  if(password.length<10){showToast('Choisissez un mot de passe de 10 caractères minimum.');return}
  const accountType=type==='client'?'client':(independent?'exportateur':'compagnie');
- const companyPhone=company?document.getElementById('sCompanyPhone').value.trim():'';
-  const metadata={account_type:accountType,full_name:company?companyName:(firstName+' '+lastName).trim(),phone:company?companyPhone:document.getElementById('sPhone').value.trim(),country:document.getElementById('sCountry').value,independent_activity:independent?document.getElementById('sIndependentActivity').value:'',independent_country:independent?document.getElementById('sIndependentCountry').value:'',company_name:company?companyName:'',representative_role:company?document.getElementById('sRole').value:'',company_address:company?document.getElementById('sCompanyAddress').value.trim():'',company_phone:company?companyPhone:'',company_website:company?document.getElementById('sCompanyWebsite').value.trim():''};
+ const companyPhone=company?(document.getElementById('sCompanyPhone')?.value.trim()||''):'';
+  const metadata={account_type:accountType,full_name:company?companyName:(firstName+' '+lastName).trim(),phone:company?companyPhone:(document.getElementById('sPhone')?.value.trim()||''),country:document.getElementById('sCountry').value,independent_activity:independent?document.getElementById('sIndependentActivity').value:'',independent_country:independent?document.getElementById('sIndependentCountry').value:'',company_name:company?companyName:'',representative_role:company?(document.getElementById('sRole')?.value||''):' ',company_address:company?(document.getElementById('sCompanyAddress')?.value.trim()||''):' ',company_phone:company?companyPhone:'',company_website:company?(document.getElementById('sCompanyWebsite')?.value.trim()||''):' '};
  setSignupBusy(true);
  try{
   const credentials={email,password,options:{data:metadata}};
@@ -1561,7 +1561,6 @@ async function loadPersonalSpace(){
  const {data:{session},error:sessionError}=await supabaseClient.auth.getSession();
  if(sessionError||!session?.user){status.textContent='Connectez-vous pour accéder à votre espace personnel.';document.getElementById('accountDisplayName').textContent='Espace personnel';document.getElementById('accountDisplayEmail').textContent='Aucune session active';document.getElementById('accountTypeBadge').textContent='Non connecté';document.getElementById('accountProfileForm').querySelectorAll('input,select,button').forEach(el=>el.disabled=true);return}
  const user=session.user,meta=user.user_metadata||{};
- renderPersonalListings(user);
  window.gabxCurrentUser=user;
  document.getElementById('accountProfileForm').querySelectorAll('input,select,button').forEach(el=>el.disabled=false);
  renderPersonalListings(user);
