@@ -833,6 +833,36 @@ html[data-theme="dark"] .gx-proof-grid{background:#0b1410}
 </style>
 <link rel="stylesheet" href="/gx-polish.css">
 <script src="/gx-polish.js" defer></script>
+<script>
+/* Navigation de secours — garantit le changement d'écran via les onglets */
+(function () {
+  document.addEventListener('click', function (event) {
+    const control = event.target.closest('[data-view], [data-mobile-view]');
+    if (!control) return;
+    const name = control.getAttribute('data-view') || control.getAttribute('data-mobile-view');
+    if (!name) return;
+    const target = document.getElementById('view-' + name);
+    if (!target) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    document.querySelectorAll('.view').forEach(function (view) {
+      view.classList.toggle('active', view === target);
+    });
+    document.querySelectorAll('.site-header-nav a[data-view]').forEach(function (link) {
+      link.classList.toggle('active', link.getAttribute('data-view') === name);
+    });
+    document.querySelectorAll('.mobile-tab[data-mobile-view]').forEach(function (tab) {
+      tab.classList.toggle('active', tab.getAttribute('data-mobile-view') === name);
+    });
+    if (name === 'annonces' && typeof window.loadListings === 'function') window.loadListings();
+    if (name === 'annonces' && typeof window.renderListings === 'function') window.renderListings();
+    if (name === 'entreprises' && typeof window.renderCompanyDirectory === 'function') window.renderCompanyDirectory();
+    history.replaceState(null, '', '#' + name);
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  }, true);
+})();
+</script>
+
 </head>
 <body>
 <div class="topbar"><div class="wrap topinner"><span>🌍 Des services et partenaires au-delà des frontières</span><span>Gabon · Afrique · International</span></div></div>
