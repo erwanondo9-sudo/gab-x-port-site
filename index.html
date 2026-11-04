@@ -601,7 +601,7 @@ body #view-home .note strong,
 body #view-home .notice strong,
 body #view-home [role="note"] strong{color:#fff!important}
 
-/* Correction ciblée : carvos « Comment ça marche » en thème sombre */
+/* Correction ciblée : carte « Comment ça marche » en thème sombre */
 html[data-theme="dark"] body #view-home .gx-categories .gx-steps>div{
  background:#172923!important;
  background-color:#172923!important;
@@ -968,8 +968,8 @@ html[data-theme="dark"] .gx-proof-grid{background:#0b1410}
 <div class="field full independent-only" style="display:none"><label for="sIndependentActivity">Activité / produits ou services proposés</label><input id="sIndependentActivity" placeholder="Ex. export de produits agricoles, sourcing, représentation commerciale"></div><div class="field independent-only" style="display:none"><label for="sIndependentCountry">Pays depuis lequel vous exercez</label><select id="sIndependentCountry"><option value="France">France</option><option value="Gabon">Gabon</option><option value="Maroc">Maroc</option><option value="Sénégal">Sénégal</option><option value="Chine">Chine</option><option value="Autre">Autre</option></select></div>
 
 </div><p class="form-note">L’inscription se fait avec une adresse e-mail. Vous recevrez un e-mail pour confirmer votre compte.</p><button class="btn btn-green" type="submit" style="width:100%">Créer mon compte ↗</button></form>
-<form id="loginForm" style="display:none"><div class="form-grid"><div class="field full"><label for="lEmail">Adresse e-mail</label><input id="lEmail" type="email" required autocomplete="email" inputmode="email" autocapitalize="none" spellcheck="false" placeholder="exemple@mail.com"></div><div class="field full"><label for="lPassword">Mot de passe</label><input id="lPassword" type="password" required autocomplete="current-password"></div></div><p class="form-note">Connecte-vous pour gérer votre compte et contacter les professionnels.</p><p id="loginFeedback" role="status" aria-live="polite" style="display:none;margin:10px 0;padding:11px 12px;border-radius:10px;font-size:13px;line-height:1.45;background:#edf5e8;color:#245b3d"></p><button class="btn btn-green" type="submit" style="width:100%">Se connecter ↗</button><button class="text-btn" type="button" onclick="sendPasswordReset()">Mot de passe oublié ?</button><button class="text-btn" type="button" onclick="openModal('signup')">Créer un compte</button></form>
-<form id="resetPasswordForm" style="display:none"><p class="form-note">Choisis un nouveau mot de passe pour votre compte Gab X-Port.</p><div class="field full"><label for="newAccountPassword">Nouveau mot de passe</label><input id="newAccountPassword" type="password" minlength="10" required autocomplete="new-password" placeholder="10 caractères minimum"></div><button class="btn btn-green" type="submit" style="width:100%">Enregistrer le nouveau mot de passe</button><p id="resetPasswordFeedback" class="form-note" role="status"></p></form>
+<form id="loginForm" style="display:none"><div class="form-grid"><div class="field full"><label for="lEmail">Adresse e-mail</label><input id="lEmail" type="email" required autocomplete="email" inputmode="email" autocapitalize="none" spellcheck="false" placeholder="exemple@mail.com"></div><div class="field full"><label for="lPassword">Mot de passe</label><input id="lPassword" type="password" required autocomplete="current-password"></div></div><p class="form-note">Connectez-vous pour gérer votre compte et contacter les professionnels.</p><p id="loginFeedback" role="status" aria-live="polite" style="display:none;margin:10px 0;padding:11px 12px;border-radius:10px;font-size:13px;line-height:1.45;background:#edf5e8;color:#245b3d"></p><button class="btn btn-green" type="submit" style="width:100%">Se connecter ↗</button><button class="text-btn" type="button" onclick="sendPasswordReset()">Mot de passe oublié ?</button><button class="text-btn" type="button" onclick="openModal('signup')">Créer un compte</button></form>
+<form id="resetPasswordForm" style="display:none"><p class="form-note">Choisissez un nouveau mot de passe pour votre compte Gab X-Port.</p><div class="field full"><label for="newAccountPassword">Nouveau mot de passe</label><input id="newAccountPassword" type="password" minlength="10" required autocomplete="new-password" placeholder="10 caractères minimum"></div><button class="btn btn-green" type="submit" style="width:100%">Enregistrer le nouveau mot de passe</button><p id="resetPasswordFeedback" class="form-note" role="status"></p></form>
 <form id="listingForm"><div class="form-grid">
 
 <div class="field full"><label for="fDirection">Corridor commercial</label><select id="fDirection" required></select></div>
@@ -1099,8 +1099,8 @@ document.getElementById('signupForm').addEventListener('submit',async e=>{
   if(error)throw error;
   if(data.session&&data.user){await ensureCompanyRecord(data.user)}
   e.target.reset();updateSignupFields();closeModal();
-  showToast(data.session?'Compte créé. Vous pouvez maintenant te connecter et utiliser la messagerie.':'Compte créé. Vérifie votre boîte e-mail pour confirmer votre inscription.');
- }catch(err){console.error('Erreur lors de l’inscription',err);showToast('Inscription impossible : '+(err.message||'vérifie les champs obligavousres et réessaie.'))}
+  showToast(data.session?'Compte créé. Vous pouvez maintenant vous connecter et utiliser la messagerie.':'Compte créé. Vérifiez votre boîte e-mail pour confirmer votre inscription.');
+ }catch(err){console.error('Erreur lors de l’inscription',err);showToast('Inscription impossible : '+(err.message||'vérifie les champs obligatoires et réessaie.'))}
  finally{setSignupBusy(false)}
 });
 document.getElementById('loginForm').addEventListener('submit',async e=>{
@@ -1115,7 +1115,7 @@ document.getElementById('loginForm').addEventListener('submit',async e=>{
  try{
   const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});
   if(error)throw error;
-  if(!data?.user)throw new Error('Aucun compte utilisateur retourné. Vérifie la confirmation de votre adresse e-mail.');
+  if(!data?.user)throw new Error('Aucun compte utilisateur retourné. Vérifiez la confirmation de votre adresse e-mail.');
   window.gabxCurrentUser=data.user;
   updateAuthNavigation({user:data.user});
   closeModal();
@@ -1150,9 +1150,9 @@ async function toggleFavorite(id){
   if(user&&supabaseClient){
    const {error}=await supabaseClient.rpc('set_listing_favorite',{p_listing_id:id,p_is_favorite:!isFavorite});
    if(error)throw error;
-   showToast(isFavorite?'Annonce retirée des favoris.':'Annonce ajoutée aux favoris. Retrouve-la sur tous vos appareils.');
+   showToast(isFavorite?'Annonce retirée des favoris.':'Annonce ajoutée aux favoris. Retrouvez-la sur tous vos appareils.');
   }else{
-   showToast(isFavorite?'Annonce retirée des favoris.':'Annonce ajoutée aux favoris. Connecte-vous pour la retrouver sur vos autres appareils.');
+   showToast(isFavorite?'Annonce retirée des favoris.':'Annonce ajoutée aux favoris. Connectez-vous pour la retrouver sur vos autres appareils.');
   }
  }catch(err){console.error('Synchronisation favori',err);showToast('Favori enregistré sur cet appareil, mais la synchronisation a échoué.');}
 }
@@ -1331,7 +1331,7 @@ document.getElementById('listingForm').addEventListener('submit',async e=>{
  e.preventDefault();
  if(!supabaseClient){showToast('Le service de compte est momentanément indisponible.');return;}
  let user;try{user=await getCurrentAuthUser()}catch(err){showToast('Connexion impossible : '+err.message);return;}
- if(!user){showToast('Connecte-vous pour publier une annonce.');openModal('login');return;}
+ if(!user){showToast('Connectez-vous pour publier une annonce.');openModal('login');return;}
  const accountType=user.user_metadata?.account_type||user.app_metadata?.account_type;
  if(!['compagnie','company','exportateur','independent'].includes(accountType)){showToast('La publication est réservée aux entreprises et exportateurs indépendants.');return;}
  const photoFiles=[...(document.getElementById('fPhoto')?.files||[])];
@@ -1508,17 +1508,17 @@ document.getElementById('resetPasswordForm').addEventListener('submit',async e=>
  e.preventDefault();const feedback=document.getElementById('resetPasswordFeedback'),button=e.target.querySelector('button[type="submit"]'),password=document.getElementById('newAccountPassword').value;
  if(password.length<10){feedback.textContent='Le mot de passe doit contenir au moins 10 caractères.';return;}
  button.disabled=true;button.textContent='Enregistrement…';
- try{const {error}=await supabaseClient.auth.updateUser({password});if(error)throw error;feedback.textContent='Mot de passe modifié. Vous pouvez maintenant te connecter.';e.target.reset();setTimeout(()=>{closeModal();openModal('login');},1200);}
+ try{const {error}=await supabaseClient.auth.updateUser({password});if(error)throw error;feedback.textContent='Mot de passe modifié. Vous pouvez maintenant vous connecter.';e.target.reset();setTimeout(()=>{closeModal();openModal('login');},1200);}
  catch(err){feedback.textContent=err.message||'Impossible de modifier le mot de passe.';}
  finally{button.disabled=false;button.textContent='Enregistrer le nouveau mot de passe';}
 });
 async function requestAccountDeactivation(){
  if(!supabaseClient)return;
- const confirmed=confirm('Désactiver votre compte maintenant ? Il sera programmé pour suppression définitive dans 30 jours. Si vous te reconnecvos avant la fin du délai, la suppression sera annulée.');
+ const confirmed=confirm('Désactiver votre compte maintenant ? Il sera programmé pour suppression définitive dans 30 jours. Si vous vous reconnectez avant la fin du délai, la suppression sera annulée.');
  if(!confirmed)return;
  const button=document.getElementById('deactivateAccountBtn');if(button){button.disabled=true;button.textContent='Désactivation…';}
  try{
-  const {data:{session}}=await supabaseClient.auth.getSession();if(!session?.user)throw new Error('Connecte-vous pour continuer.');
+  const {data:{session}}=await supabaseClient.auth.getSession();if(!session?.user)throw new Error('Connectez-vous pour continuer.');
   const {error}=await supabaseClient.rpc('request_account_deletion');if(error)throw error;
   await supabaseClient.auth.signOut();updateAuthNavigation(null);showView('home');
   showToast('Compte désactivé. La suppression définitive est programmée dans 30 jours. Reconnectez-vous avant cette date pour annuler.');
@@ -1543,8 +1543,8 @@ async function loadFoundingMemberStatus(user,accountType){
   document.getElementById('foundingMemberTitle').textContent=free?'Membre fondateur — Cercle des 5':'Partenaire fondateur — Cercle des 15';
   document.getElementById('foundingMemberSubtitle').textContent='Statut enregistré pour cette entreprise';
   document.getElementById('foundingMemberDescription').textContent=free
-   ?'Ton entreprise fait partie des 5 premières inscrites. Son statut de fondatrice est conservé pour l’application des avantages prévus lors du lancement de la monétisation.'
-   :'Ton entreprise fait partie des 10 entreprises suivantes. La réduction de 50 % prévue sera associée à ce compte lors du lancement de la monétisation.';
+   ?'Votre entreprise fait partie des 5 premières inscrites. Son statut de fondatrice est conservé pour l’application des avantages prévus lors du lancement de la monétisation.'
+   :'Votre entreprise fait partie des 10 entreprises suivantes. La réduction de 50 % prévue sera associée à ce compte lors du lancement de la monétisation.';
   panel.style.display='block';
  }catch(err){console.warn('Statut membre fondateur non disponible',err);}
 }
@@ -1552,7 +1552,7 @@ async function loadPersonalSpace(){
  const status=document.getElementById('accountStatus');
  if(!supabaseClient){status.textContent='Le service de compte est momentanément indisponible.';return}
  const {data:{session},error:sessionError}=await supabaseClient.auth.getSession();
- if(sessionError||!session?.user){status.textContent='Connecte-vous pour accéder à votre espace personnel.';document.getElementById('accountDisplayName').textContent='Espace personnel';document.getElementById('accountDisplayEmail').textContent='Aucune session active';document.getElementById('accountTypeBadge').textContent='Non connecté';document.getElementById('accountProfileForm').querySelectorAll('input,select,button').forEach(el=>el.disabled=true);return}
+ if(sessionError||!session?.user){status.textContent='Connectez-vous pour accéder à votre espace personnel.';document.getElementById('accountDisplayName').textContent='Espace personnel';document.getElementById('accountDisplayEmail').textContent='Aucune session active';document.getElementById('accountTypeBadge').textContent='Non connecté';document.getElementById('accountProfileForm').querySelectorAll('input,select,button').forEach(el=>el.disabled=true);return}
  const user=session.user,meta=user.user_metadata||{};
  renderPersonalListings(user);
  window.gabxCurrentUser=user;
@@ -1598,7 +1598,7 @@ document.getElementById('accountPhotoInput').addEventListener('change',async e=>
  const status=document.getElementById('accountStatus');
  if(!['image/jpeg','image/png','image/webp'].includes(file.type)){status.textContent='Format accepté : JPG, PNG ou WEBP.';e.target.value='';return;}
  if(file.size>5*1024*1024){status.textContent='La photo doit faire 5 Mo maximum.';e.target.value='';return;}
- const {data:{session}}=await supabaseClient.auth.getSession();if(!session?.user){status.textContent='Connecte-vous pour ajouter une photo.';return;}
+ const {data:{session}}=await supabaseClient.auth.getSession();if(!session?.user){status.textContent='Connectez-vous pour ajouter une photo.';return;}
  status.textContent='Envoi de la photo…';
  try{
   const ext=file.type==='image/png'?'png':file.type==='image/webp'?'webp':'jpg';
@@ -1610,7 +1610,7 @@ document.getElementById('accountPhotoInput').addEventListener('change',async e=>
   const {error:updateError}=await supabaseClient.auth.updateUser({data:{avatar_url:avatarUrl}});
   if(updateError)throw updateError;
   setAccountAvatar(avatarUrl);
-  status.textContent='Photo de profil mise à jour.';showToast('Ta photo de profil a été enregistrée.');
+  status.textContent='Photo de profil mise à jour.';showToast('Votre photo de profil a été enregistrée.');
  }catch(err){console.error('Photo de profil',err);status.textContent='Impossible d’ajouter la photo : '+(err.message||'vérifie que le stockage des photos est disponible.');}
  finally{e.target.value='';}
 });
@@ -1618,7 +1618,7 @@ document.getElementById('publicContactMethod').addEventListener('change',e=>{con
 document.getElementById('accountProfileForm').addEventListener('submit',async e=>{
  e.preventDefault();const status=document.getElementById('accountStatus');
  if(!supabaseClient){status.textContent='Le service de compte est momentanément indisponible.';return}
- const {data:{session}}=await supabaseClient.auth.getSession();if(!session?.user){status.textContent='Connecte-vous avant de modifier votre profil.';return}
+ const {data:{session}}=await supabaseClient.auth.getSession();if(!session?.user){status.textContent='Connectez-vous avant de modifier votre profil.';return}
  const payload={full_name:document.getElementById('accountFullName').value.trim(),country:document.getElementById('accountCountry').value};
  const button=e.target.querySelector('button[type="submit"]');button.disabled=true;status.textContent='Enregistrement…';
  try{const {error}=await supabaseClient.from('profiles').update(payload).eq('id',session.user.id);if(error)throw error;
@@ -1629,7 +1629,7 @@ document.getElementById('accountProfileForm').addEventListener('submit',async e=
   }else if(currentType==='compagnie'||currentType==='company'){
    const companyName=payload.full_name,companyWebsite=document.getElementById('accountCompanyWebsite').value.trim();
    const {error:metaError}=await supabaseClient.auth.updateUser({data:{full_name:companyName,company_name:companyName,company_website:companyWebsite}});if(metaError)throw metaError;
-  }document.getElementById('accountDisplayName').textContent=payload.full_name;if(!document.getElementById('accountAvatarImage').src||document.getElementById('accountAvatarImage').style.display==='none')setAccountAvatar('',(payload.full_name.split(/\s+/).map(x=>x[0]).slice(0,2).join('')||'GX').toUpperCase());status.textContent='Profil enregistré avec succès.';showToast('Ton profil a été mis à jour.');}
+  }document.getElementById('accountDisplayName').textContent=payload.full_name;if(!document.getElementById('accountAvatarImage').src||document.getElementById('accountAvatarImage').style.display==='none')setAccountAvatar('',(payload.full_name.split(/\s+/).map(x=>x[0]).slice(0,2).join('')||'GX').toUpperCase());status.textContent='Profil enregistré avec succès.';showToast('Votre profil a été mis à jour.');}
  catch(err){console.error('Mise à jour du profil',err);status.textContent='Enregistrement impossible : '+(err.message||'erreur du service');}
  finally{button.disabled=false}
 });
@@ -1646,7 +1646,7 @@ async function renderPersonalListings(user){
  container.innerHTML=rows.map(row=>{const x=mapListing(row),stats=metricsById[String(x.id)]||{views:0,favorites:0};return `<article class="listing"><div class="listing-top"><span class="tag ${x.type==='Besoin'?'orange':''}">${esc(x.type)}</span><span>${new Date(x.createdAt).toLocaleDateString('fr-FR')}</span></div><h3>${esc(x.title)}</h3><p>${esc(x.desc)}</p><div class="meta"><span>${esc(x.direction)}</span><span>${esc(x.category)}</span><span>${esc(x.city)}</span></div><div class="meta" style="margin-top:12px;padding:10px 12px;border-radius:10px;background:var(--surface-soft,rgba(120,140,130,.09));display:flex;gap:18px;flex-wrap:wrap"><span>◉ <strong>${stats.views}</strong> vue${stats.views>1?'s':''}</span><span>♥ <strong>${stats.favorites}</strong> favori${stats.favorites>1?'s':''}</span></div><div class="listing-foot"><strong>${esc(x.company)}</strong><button class="text-btn" onclick="deleteListing('${x.id}')">Supprimer</button></div></article>`;}).join('');
 }
 async function deleteListing(id){if(!confirm('Supprimer cette annonce ?'))return;const {error}=await supabaseClient.from('listings').delete().eq('id',id);if(error){showToast('Suppression impossible : '+error.message);return;}publishedListings=publishedListings.filter(x=>String(x.id)!==String(id));renderListings();const user=await getCurrentAuthUser();if(user)await renderPersonalListings(user);showToast('Annonce supprimée.');}
-async function logoutAccount(){if(!supabaseClient){showToast('Le service de compte est momentanément indisponible.');return}const {error}=await supabaseClient.auth.signOut();if(error){showToast('Déconnexion impossible : '+error.message);return}updateAuthNavigation(null);showToast('Vous es déconnecté.');showView('home')}
+async function logoutAccount(){if(!supabaseClient){showToast('Le service de compte est momentanément indisponible.');return}const {error}=await supabaseClient.auth.signOut();if(error){showToast('Déconnexion impossible : '+error.message);return}updateAuthNavigation(null);showToast('Vous êvos déconnecté.');showView('home')}
 
 // Navigation entre vues séparées (single-page app avec écrans distincts)
 async function showView(name){
