@@ -954,7 +954,7 @@ html[data-theme="dark"] .gx-proof-grid{background:#0b1410}
 <p class="form-note" style="margin-top:18px">La désactivation lance un délai de 30 jours avant la suppression définitive du compte et de ses données associées. Une reconnexion pendant ce délai annule la demande de suppression.</p>
 </div>
 </div>
-<div class="panel" style="margin-top:18px">
+<div class="panel" id="personalListingsPanel" style="margin-top:18px;display:none">
 <div class="section-head"><div><div class="kicker">Vos publications</div><h2 style="font-size:27px">Mes annonces</h2><p class="sub">Retrouvez ici les annonces publiées depuis ce compte, synchronisées entre vos appareils.</p></div><button class="btn btn-green" onclick="openModal('publish')">+ Publier une annonce</button></div>
 <div id="personalListings" class="listing-grid"><div class="empty">Chargement de vos annonces…</div></div>
 <p class="form-note">Les annonces publiées sont enregistrées sur votre compte et accessibles depuis tous vos appareils.</p>
@@ -1563,13 +1563,16 @@ async function loadPersonalSpace(){
  const user=session.user,meta=user.user_metadata||{};
  window.gabxCurrentUser=user;
  document.getElementById('accountProfileForm').querySelectorAll('input,select,button').forEach(el=>el.disabled=false);
- renderPersonalListings(user);
  document.getElementById('accountEmail').value=user.email||'';
  let profile=null;
  const {data,error}=await supabaseClient.from('profiles').select('full_name,phone,country,account_type').eq('id',user.id).maybeSingle();
  if(error){console.error('Chargement du profil',error);status.textContent='Impossible de charger le profil : '+error.message;}
  else profile=data;
  const accountType=profile?.account_type||meta.account_type||'';
+ const canPublish=['compagnie','company','exportateur','independent'].includes(accountType);
+ const listingsPanel=document.getElementById('personalListingsPanel');
+ if(listingsPanel)listingsPanel.style.display=canPublish?'':'none';
+ if(canPublish)renderPersonalListings(user);
  const isCompany=accountType==='compagnie'||accountType==='company';
  await loadFoundingMemberStatus(user,accountType);
  const fullName=isCompany?(meta.company_name||profile?.full_name||meta.full_name||''):(profile?.full_name||meta.full_name||'');
