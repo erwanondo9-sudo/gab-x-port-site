@@ -1507,7 +1507,7 @@ async function sendPasswordReset(){
  try{
   const {error}=await supabaseClient.auth.resetPasswordForEmail(email,{redirectTo:window.location.origin});
   if(error)throw error;
-  if(feedback){feedback.textContent='Si un compte existe avec cette adresse, un lien de réinitialisation vient d’être envoyé. Vérifie aussi vos courriers indésirables.';feedback.style.display='block';feedback.style.background='#edf5e8';feedback.style.color='#245b3d';}
+  if(feedback){feedback.textContent='Si un compte existe avec cette adresse, un lien de réinitialisation vient d’être envoyé. Vérifiez aussi vos courriers indésirables.';feedback.style.display='block';feedback.style.background='#edf5e8';feedback.style.color='#245b3d';}
  }catch(err){if(feedback){feedback.textContent='Envoi impossible : '+(err.message||'réessayez plus tard.');feedback.style.display='block';}}
  finally{if(button){button.disabled=false;button.textContent='Mot de passe oublié ?';}}
 }
@@ -1676,13 +1676,9 @@ document.querySelectorAll('.site-header-nav a[data-view]').forEach(a=>a.addEvent
 const sampleCompanies=[];
 /* Les anciens profils fictifs ont été retirés : seuls les profils réels doivent être présentés. */
 
-function stars(n){return '★'.repeat(Math.round(n))+'☆'.repeat(5-Math.round(n))}
 function renderCompanyDirectory(){
  const grid=document.getElementById('companyDirectory');if(!grid)return;
- const q=(document.getElementById('companySearch')?.value||'').toLowerCase().trim(),country=document.getElementById('companyCountry')?.value||'all',sector=document.getElementById('companySector')?.value||'all';
- const filtered=sampleCompanies.filter(c=>(!q||[c.name,c.sector,c.location,c.description,c.services.join(' ')].join(' ').toLowerCase().includes(q))&&(country==='all'||c.country===country)&&(sector==='all'||c.sector===sector));
- if(!filtered.length){grid.innerHTML='<div class="empty">Aucun profil professionnel réel n’est encore disponible. Revenez consulter l’annuaire prochainement.</div>';return}
- grid.innerHTML=filtered.map(c=>`<article class="company-card"><div class="company-card-top"><div class="company-logo">${esc(c.initials)}</div><div><h3>${esc(c.name)}</h3><p>${esc(c.sector)}</p></div></div><p>📍 ${esc(c.location)}</p><p><span class="stars">${stars(c.rating)}</span> <strong>${c.rating.toFixed(1)}</strong> <span style="color:var(--muted)">(${c.reviews} avis exemple)</span></p><p>⏱ ${esc(c.delay)}</p><p>● <strong>${esc(c.availability)}</strong></p><button class="btn btn-light" onclick="openCompanyProfile('${c.id}')">Voir le profil ↗</button><button class="btn btn-green" onclick="messageCompany('${c.id}')">Contacter</button></article>`).join('');
+ grid.innerHTML='<div class="empty">Aucun profil professionnel public n’est disponible pour le moment. Les profils des entreprises et des indépendants apparaîtront ici après leur inscription et leur publication.</div>';
 }
 function homeSearchListings(){
  const q=document.getElementById('homeSearch')?.value||'';
